@@ -1,43 +1,26 @@
-# re-simple-python-project
+# Data and Statistics course for the BSc in Geosciences at UU
 
-This simple project structure template repository is adapted from the [Good Enough Project](https://github.com/bvreede/good-enough-project) Cookiecutter template by Barbara Vreede (2019).
-If you plan to develop a package, check the [template repository for a Python package](https://github.com/UtrechtUniversity/re-python-package).
+## Running instructions without Spyder
 
-## Usage
-
-Click "Use this template" at the top of this page to create a new repository with the same folder structure.
-
-## Project Structure
-
-The project structure distinguishes three kinds of folders:
-- read-only (RO): not edited by either code or researcher
-- human-writeable (HW): edited by the researcher only.
-- project-generated (PG): folders generated when running the code; these folders can be deleted or emptied and will be completely reconstituted as the project is run.
-
+To make sure the dependencies are in place, use a virtual environment. First install the dependencies (needed only once or after changing them):
 
 ```
-.
-├── .gitignore
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── data               <- All project data, ignored by git
-│   ├── processed      <- The final, canonical data sets for modeling. (PG)
-│   ├── raw            <- The original, immutable data dump. (RO)
-│   └── temp           <- Intermediate data that has been transformed. (PG)
-├── docs               <- Documentation notebook for users (HW)
-│   ├── manuscript     <- Manuscript source, e.g., LaTeX, Markdown, etc. (HW)
-│   └── reports        <- Other project reports and notebooks (e.g. Jupyter, .Rmd) (HW)
-├── results
-│   ├── figures        <- Figures for the manuscript or reports (PG)
-│   └── output         <- Other output for the manuscript or reports (PG)
-└── src                <- Source code for this project (HW)
+poetry install
+```
+Then enter the venv using:
 
 ```
+poetry shell
+```
 
-## Add a citation file
-Create a citation file for your repository using [cffinit](https://citation-file-format.github.io/cff-initializer-javascript/#/)
+After this you can run the script, either directly in a Python REPL or in an IDE, e.g. by starting VS Code from inside the venv:
 
-## License
+```
+code .
+```
 
-This project is licensed under the terms of the [MIT License](/LICENSE).
+To publish the script, run:
+
+```
+quarto render $FILENAME
+```
