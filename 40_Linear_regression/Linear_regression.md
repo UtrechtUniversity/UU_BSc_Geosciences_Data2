@@ -1,9 +1,7 @@
-# Linear regression
-
-
 # Linear regression: debunking sexual selection
 
-## Background to this example
+
+# Background to this example
 
 The [Irish deer *Megaloceros
 giganteus*](https://en.wikipedia.org/wiki/Irish_elk), formerly called
@@ -17,9 +15,9 @@ though they may have no other use in one sex other than impressing its
 potential mating partners. This must have appealed to the Victorian
 prudery and the “survival of the sexiest”.
 
-![Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye
-book, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via
-Wikimedia Commons](../Img/512px-Leeds_City_Museum,_Irish_Elk.jpg)
+<img src="../Img/512px-Leeds_City_Museum,_Irish_Elk.jpg"
+data-fig-alt="Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons"
+alt="Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0, via Wikimedia Commons" />
 
 Linear regression is how you can tell whether this spicy explanation is
 correct, as has been done by the evolutinonary biologist Steven J. Gould
@@ -126,7 +124,7 @@ print(model_fit.summary2())
     ======================================================================
     Model:              OLS                   Adj. R-squared:     0.801   
     Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-02 18:58      BIC:                52.9421 
+    Date:               2024-06-02 19:02      BIC:                52.9421 
     No. Observations:   31                    Log-Likelihood:     -23.037 
     Df Model:           1                     F-statistic:        121.9   
     Df Residuals:       29                    Prob (F-statistic): 6.68e-12
