@@ -1,32 +1,32 @@
-Sub-family,Genus,Species,Common name,Antler_length,Male_body_mass,Female_body_mass,
-Cervinae,Axis,axis,chital,845,89.5,39,
-Cervinae,Axis,porcinus,hog deer,399,41,31,
-Cervinae,Cervus,albirostris,white-lipped deer,1150,204,125,
-Cervinae,Cervus,canadensis,wapiti,1337,350,250,
-Cervinae,Cervus,duvaucelii,barasingha,813,236,145,
-Cervinae,Cervus,elaphus,red deer,936,250,125,
-Cervinae,Cervus,eldi,Eld’s deer,971.5,105,67,
-Cervinae,Cervus,nippon,sika deer,480,52,37,
-Cervinae,Cervus,timorensis,Timor deer,675,95.5,53,
-Cervinae,Cervus,unicolor,sambar,1049,192,146,
-Cervinae,Dama,dama,fallow deer,615,67,44,
-Cervinae,Elaphurus,davidianus,Père David’s deer,737,214,159,
-Muntiacinae,Elaphodus,cephalophus,tufted deer,25,18,18,
-Muntiacinae,Megamuntiacus,vuquangensis,giant muntjack,227.5,45,34,
-Muntiacinae,Muntiacus,crinifrons,black muntjac,35.5,23,24.1,
-Muntiacinae,Muntiacus,gongshanensis,Gongshan muntjak,71.7,21,16,
-Muntiacinae,Muntiacus,muntjak,muntjak,142,19,20,
-Muntiacinae,Muntiacus,putaoensis,leaf deer,32.5,12,12,
-Muntiacinae,Muntiacus,reevesi,Chinese muntjak,114,13.5,14,
-Odocoileinae,Alces,alces,moose,1440,482.5,365,
-Odocoileinae,Blastocerus,dichotomus,marsh deer,600,130,100,
-Odocoileinae,Capreolus,capreolus,Western roe deer,233.5,28,26.5,
-Odocoileinae,Capreolus,pygargus,eastern roe deer,304.5,42,39.5,
-Odocoileinae,Hippocamelus,bisculus,Chilean guemal,300,95,75,
-Odocoileinae,Mazama,americana,red brocket,115,24.5,24.5,
-Odocoileinae,Mazama,gouazoupira,gray brocket,92.5,18,18,
-Odocoileinae,Odocoileus,hemionus,mule deer,885,112.5,55.5,
-Odocoileinae,Odocoileus,virginianus,white-tailed deer,656,154.5,68.5,
-Odocoileinae,Ozotoceros,bezoarticus,pampas deer,210,33.5,33.5,
-Odocoileinae,Pudu,puda,south pudu deer,85,13,13.5,
-Odocoileinae,Rangifer,tarandus,reindeer,910,106.5,76,
+Sub-family,Genus,Species,Common name,Antler_length,Male_body_mass,Female_body_mass
+Cervinae,Axis,axis,chital,845,89.5,39
+Cervinae,Axis,porcinus,hog deer,399,41,31
+Cervinae,Cervus,albirostris,white-lipped deer,1150,204,125
+Cervinae,Cervus,canadensis,wapiti,1337,350,250
+Cervinae,Cervus,duvaucelii,barasingha,813,236,145
+Cervinae,Cervus,elaphus,red deer,936,250,125
+Cervinae,Cervus,eldi,Eld’s deer,971.5,105,67
+Cervinae,Cervus,nippon,sika deer,480,52,37
+Cervinae,Cervus,timorensis,Timor deer,675,95.5,53
+Cervinae,Cervus,unicolor,sambar,1049,192,146
+Cervinae,Dama,dama,fallow deer,615,67,44
+Cervinae,Elaphurus,davidianus,Père David’s deer,737,214,159
+Muntiacinae,Elaphodus,cephalophus,tufted deer,25,18,18
+Muntiacinae,Megamuntiacus,vuquangensis,giant muntjack,227.5,45,34
+Muntiacinae,Muntiacus,crinifrons,black muntjac,35.5,23,24.1
+Muntiacinae,Muntiacus,gongshanensis,Gongshan muntjak,71.7,21,16
+Muntiacinae,Muntiacus,muntjak,muntjak,142,19,20
+Muntiacinae,Muntiacus,putaoensis,leaf deer,32.5,12,12
+Muntiacinae,Muntiacus,reevesi,Chinese muntjak,114,13.5,14
+Odocoileinae,Alces,alces,moose,1440,482.5,365
+Odocoileinae,Blastocerus,dichotomus,marsh deer,600,130,100
+Odocoileinae,Capreolus,capreolus,Western roe deer,233.5,28,26.5
+Odocoileinae,Capreolus,pygargus,eastern roe deer,304.5,42,39.5
+Odocoileinae,Hippocamelus,bisculus,Chilean guemal,300,95,75
+Odocoileinae,Mazama,americana,red brocket,115,24.5,24.5
+Odocoileinae,Mazama,gouazoupira,gray brocket,92.5,18,18
+Odocoileinae,Odocoileus,hemionus,mule deer,885,112.5,55.5
+Odocoileinae,Odocoileus,virginianus,white-tailed deer,656,154.5,68.5
+Odocoileinae,Ozotoceros,bezoarticus,pampas deer,210,33.5,33.5
+Odocoileinae,Pudu,puda,south pudu deer,85,13,13.5
+Odocoileinae,Rangifer,tarandus,reindeer,910,106.5,76
