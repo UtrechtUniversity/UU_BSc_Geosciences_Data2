@@ -1,0 +1,86 @@
+---
+title: "Autocorrelation"
+format: gfm
+---
+We will follow the textbook's chapter 11.7 and use data on the trends in atmospheric carbon dioxide from the National Oceanic and Atmospheric Administration (NOAA, Fig. 11.9). 
+
+This material may be protected by copyright.
+Exercise based on [T. Haslwanter's textbook materials](https://github.com/thomas-haslwanter/statsintro-python-2e/blob/master/ipynbs/11_timeSeries.ipynb).
+
+# Code
+
+```{python}
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import pandas as pd
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import acf, pacf
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from statsmodels.tsa.arima.model import ARIMA
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
+```
+
+Read in the dataset:
+```{python}
+url = 'https://www.esrl.noaa.gov/gmd/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+df = pd.read_csv(url, skiprows=53, sep='\s+')
+```
+
+Assign names to variables:
+```{python}
+df.columns = ['year', 'month', 'time', 'co2', 'deseasoned', 'nr_days', 'std_days', 'uncertainty']
+```
+
+Preview the dataset:
+```{python}
+df.head()
+```
+
+Visualize it:
+```{python}
+df.plot('time', 'co2')
+```
+
+```{python}
+result_add = seasonal_decompose(df['co2'], model='additive', period=12, extrapolate_trend='freq')
+```
+
+```{python}
+result_add.plot()
+pil_kwargs = {'quality': 90}
+plt.savefig('TSA_decomposition.jpg', dpi=200, pil_kwargs=pil_kwargs)
+plt.show()
+```
+
+```{python}
+%matplotlib inline
+
+plt.plot(result_add.resid, '-')
+# plt.xlim(0, 100)
+
+```
+
+```{python}
+plot_acf(result_add.resid)
+plt.show()
+```
+
+```{python}
+plot_pacf(result_add.resid)
+plt.show()
+```
+
+```{python}
+model = ARIMA(result_add.resid, order=(1,0,1))
+model_fit = model.fit()
+print(model_fit.summary())
+```
+
+```{python}
+model = ARIMA(result_add.resid, order=(0,0,2))
+model_fit = model.fit()
+print(model_fit.summary())
+```
