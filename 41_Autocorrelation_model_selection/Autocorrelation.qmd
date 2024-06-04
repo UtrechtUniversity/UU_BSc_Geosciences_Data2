@@ -1,8 +1,8 @@
 ---
-title: "Autocorrelation"
+title: "Seasonality and autocorrelation"
 format: gfm
 ---
-We will follow the textbook's chapter 11.7 and use data on the trends in atmospheric carbon dioxide from the National Oceanic and Atmospheric Administration (NOAA, Fig. 11.9). 
+We will follow the textbook's chapter 11.7 and use data on the trends in atmospheric carbon dioxide from the National Oceanic and Atmospheric Administration (NOAA, Fig. 11.9). In 1958, C.D. Keeling started monitoring $CO_2$ levels in the Mauna Loa Observatory on Hawaii. It was the first continuous monitoring programme and provided evidence for the rise of $CO_2$ concentration in the atmosphere. You can find more about it on the [curve's official website](https://keelingcurve.ucsd.edu/).
 
 This material may be protected by copyright.
 Exercise based on [T. Haslwanter's textbook materials](https://github.com/thomas-haslwanter/statsintro-python-2e/blob/master/ipynbs/11_timeSeries.ipynb).
@@ -44,10 +44,12 @@ Visualize it:
 df.plot('time', 'co2')
 ```
 
+Here we use the function `seasonal_decompose` from `statsmodels` to separate the linear trend from the seasonal component. The measurements are taken every month so the period of seasonality is 12. We use the additive model because the amplitude of the seasonal component does not change with the level of the time series - see eq. 11.13 in the textbook. 
 ```{python}
 result_add = seasonal_decompose(df['co2'], model='additive', period=12, extrapolate_trend='freq')
 ```
 
+Now we can plot the additive components and save the figure:
 ```{python}
 result_add.plot()
 pil_kwargs = {'quality': 90}
@@ -55,24 +57,30 @@ plt.savefig('TSA_decomposition.jpg', dpi=200, pil_kwargs=pil_kwargs)
 plt.show()
 ```
 
+The first three plots are easy to interpret but what is the last one, residuals? These are the deviations from the trend and seasonality. So these are "anomalies" which cannot be explained by the seasonality or the continuous trend.
 ```{python}
 %matplotlib inline
 
 plt.plot(result_add.resid, '-')
-# plt.xlim(0, 100)
-
 ```
 
+We can check if there is any autocorrelation in the residuals.
 ```{python}
 plot_acf(result_add.resid)
 plt.show()
 ```
+Following the textbook, we find that:
+> The systematic patterns in the autocorrelation function show that some > seasonal components are not constant and have been missed. The blue 
+> shaded area indicates the 95%-confidence interval for the 
+> autocorrelation coefficients.
 
 ```{python}
+#| include: false
 plot_pacf(result_add.resid)
 plt.show()
 ```
 
+## Fit an ARIMA model
 ```{python}
 model = ARIMA(result_add.resid, order=(1,0,1))
 model_fit = model.fit()
