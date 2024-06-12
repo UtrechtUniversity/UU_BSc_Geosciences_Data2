@@ -1,6 +1,7 @@
 ---
 title: "Linear regression: debunking sexual selection"
 format: gfm
+jupyter: python3
 ---
 
 # Background to this example
