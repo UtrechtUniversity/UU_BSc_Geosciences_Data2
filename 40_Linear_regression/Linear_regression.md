@@ -126,12 +126,12 @@ Let `n` be the number of samples:
 n = antler_dataset.shape[0]
 ```
 
-To shorten the code, let’s refer to the predictor variable (body mass)
-as `x` and the response variable (antler length) as `y`:
+To shorten the code, let’s refer to the predictor variable (log body
+mass) as `x` and the response variable (log antler length) as `y`:
 
 ``` python
-x = antler_dataset.Male_body_mass
-y = antler_dataset.Antler_length
+x = np.log(antler_dataset.Male_body_mass)
+y = np.log(antler_dataset.Antler_length)
 ```
 
 In the lecture, you learned that regression coefficients can be
@@ -140,9 +140,17 @@ estimated values $\hat{y}$ and observed values $y_i$.
 
 In practice, this means calculating the following system:
 
-\$ a =  - b \$
+$a = \frac{\sum_{i=0}^n y_i}{n} - b \times \frac{\sum_{i=0}^n x_i}{n}$
 
-\$ b = \$
+$b = \frac{\sum_{i=0}^n x_i y_i - \left(\sum_{i=0}^n x_i \sum_{i=0}^n y_i\right)/n}{\sum_{i=0}^n x^2_i - \left(\sum_{i=0}^n x_i \right)^2/n}$
+
+This is much easier to calculate in Python? Can you calculate the
+correct sums of `x` and `y` on your own?
+
+<details>
+<summary>
+Solution
+</summary>
 
 ``` python
 Sxx = np.sum(x**2) - np.sum(x)**2/n
@@ -158,6 +166,8 @@ b = Sxy/Sxx
 a = mean_y - b*mean_x
 ```
 
+</details>
+
 To calculate the residuals, ywe need a vectorized operation, which is
 done here using a “lambda” function. This is a way to define a function
 in one line, without giving it a name. The residuals are the differences
@@ -168,23 +178,7 @@ fit = lambda xx: a + b*xx
 residuals = y - fit(x)
 ```
 
-From the residuals, you can calculate their variance and standard
-deviation :
-
-``` python
-var_res = np.sum(residuals**2)/(n-2)
-sd_res = np.sqrt(var_res)
-```
-
-Is this fit good? We can assess it using the t-distribution statistic,
-for which we need to calculate the degrees of freedom (`df`) and set an
-error rate of `alpha`, which is here set to 0.05:
-
-``` python
-df = n-2 
-alpha = 0.05
-tval = stats.t.isf(alpha/2, df)
-```
+Plot the residuals to check how good your fit is.
 
 ## Running a regression function
 
@@ -199,7 +193,7 @@ print(model_fit.summary2())
     ======================================================================
     Model:              OLS                   Adj. R-squared:     0.801   
     Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-17 19:44      BIC:                52.9421 
+    Date:               2024-06-17 20:05      BIC:                52.9421 
     No. Observations:   31                    Log-Likelihood:     -23.037 
     Df Model:           1                     F-statistic:        121.9   
     Df Residuals:       29                    Prob (F-statistic): 6.68e-12
@@ -219,7 +213,7 @@ print(model_fit.summary2())
     [1] Standard Errors assume that the covariance matrix of the errors is
     correctly specified.
 
-## Exercises
+Do the results agree with your manual calculations? \## Exercises
 
 ### Open Task 1: extract the regression equation
 
