@@ -134,3 +134,6 @@ dmypy.json
 .pyre/
 .Rproj.user
 .Rproj
+
+# RStudio bits
+*.Rproj
