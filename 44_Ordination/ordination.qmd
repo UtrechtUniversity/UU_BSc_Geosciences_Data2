@@ -1,0 +1,147 @@
+---
+title: "ordination"
+author: "Thomas Giesecke"
+format: html
+editor: visual
+---
+
+## PCA in small steps
+
+Ordination techniques, such as PCA, were created to visualize and analyse patterns in data with many variables. However, multidimensional spaces are hard to visualize and it is therefore helpful to follow an example in just two dimensions that can be easily visualized. This example is based on the textbook “Python Recipes for Earth Sciences” by Martin Trauth (https://doi.org/10.1007/978-3-031-07719-7).
+
+## Running Code
+
+```{python setup}
+import numpy as np
+import numpy.linalg as linalg
+import matplotlib.pyplot as plt
+from numpy.random import default_rng
+from sklearn.decomposition import PCA
+```
+
+We start by building a random two dimensional dataset. You can think of the two variables as two different measurements such as length and width of pebbles on a river bank.
+
+```{python}
+rng = default_rng(0)
+data = rng.standard_normal((30,2))
+data[:,1] = 2 + 0.8*data[:,0]
+data[:,1] = data[:,1] + \
+    0.5*rng.standard_normal(np.shape(data[:,1]))
+data[:,0] = data[:,0] +1
+```
+
+Let us look at the made up data in a scatter plot with the axis of the coordinate system intersect at the origin, which is done by: “set_position('zero')”.
+
+```{python}
+fig, ax = plt.subplots() 
+ax.plot(data[:,0],data[:,1], marker='o',
+    linestyle='none')
+for spine in ['top', 'right']:
+    ax.spines[spine].set_visible(False)    
+for spine in ['left', 'bottom']:
+    ax.spines[spine].set_position('zero')
+plt.tight_layout()    
+plt.show() 
+```
+
+Computing a PCA by hand follows the steps: i) Standardize the data; ii) Compute the covariance matrix of the dataset; iii) Compute eigenvectors and the corresponding eigenvalues; iv) Sort the eigenvectors by decreasing eigenvalues and choose k eigenvectors; v) Form a matrix of eigenvectors and transform the original matrix. We start standardizing the data by subtracting the univariate means from the two variables (columns).
+
+```{python}
+dataS = data
+dataS[:,0] = dataS[:,0]-np.mean(dataS[:,0])
+dataS[:,1] = dataS[:,1]-np.mean(dataS[:,1])
+fig, ax = plt.subplots() 
+ax.plot(dataS[:,0],data[:,1], marker='o',
+    linestyle='none')
+for spine in ['top', 'right']:
+    ax.spines[spine].set_visible(False)    
+for spine in ['left', 'bottom']:
+    ax.spines[spine].set_position('zero')
+plt.tight_layout()    
+plt.show() 
+```
+
+Next we calculate the covariance matrix for the whole dataset.
+
+```{python}
+Cov = np.cov(dataS[:,0],dataS[:,1])
+print(Cov)
+```
+
+We see that column 1 has the largest variance (column 1 versus row 1 in the matrix), which is what we observed in the scatter plot. Eigenvalues and right eigenvectors of a given square array can be obtained with the help of NumPy as numpy.linalg.eig(). It will return two values: the first one is eigenvalues of the array and second is the right eigenvectors of a given square array.
+
+```{python}
+Evalue, Evect = np.linalg.eig(Cov) 
+D,V = linalg.eig(Cov)
+print(Evalue)
+print(Evect)
+```
+
+We see that the eigenvalues are in the right order and can plot the eigenvectors into the scatter plot of the standardized data.
+
+```{python}
+fig, ax = plt.subplots() 
+ax.plot(dataS[:,0],data[:,1], marker='o',
+    linestyle='none')
+plt.plot((0,Evect[0,0]),(0,Evect[1,0]),
+         color=(0.8,0.5,0.3),
+         linewidth=0.75)    
+plt.text(Evect[0,0],Evect[1,0],'PC1',
+         color=(0.8,0.5,0.3))    
+plt.plot((0,Evect[0,1]),(0,Evect[1,1]),
+         color=(0.8,0.5,0.3),
+         linewidth=0.75)
+plt.text(V[0,1],Evect[1,1],'PC2',
+         color=(0.8,0.5,0.3))    
+for spine in ['top', 'right']:
+    ax.spines[spine].set_visible(False)    
+for spine in ['left', 'bottom']:
+    ax.spines[spine].set_position('zero')
+plt.tight_layout()    
+plt.show() 
+```
+
+Finally we multiply the standardized data with the chosen eigenvectors and look at the new data.
+
+```{python}
+newdata = np.matmul(dataS,Evect)
+
+fig, ax = plt.subplots() 
+ax.plot(newdata[:,0],newdata[:,1], marker='o',
+    linestyle='none')
+for spine in ['top', 'right']:
+    ax.spines[spine].set_visible(False)    
+for spine in ['left', 'bottom']:
+    ax.spines[spine].set_position('zero')
+plt.xlabel('PC1',loc='right')
+plt.ylabel('PC2',loc='top')
+plt.tight_layout()    
+plt.show() 
+```
+
+You can do the same by just running the PCA using the sklearn library. Please note that this procedure will use “linear dimensionality reduction using Singular Value Decomposition (SVD)” rather than solving it using matrix calculations.
+Compare if the obtained values are the same,
+
+
+```{python}
+pca = PCA(n_components=2)
+pca.fit(data)
+print(pca.components_)
+print(pca.explained_variance_ratio_)
+Pnewdata = pca.transform(data)
+```
+and also the plot sjould look the same.
+
+```{python}
+fig, ax = plt.subplots() 
+ax.plot(Pnewdata[:,0],Pnewdata[:,1], marker='o',
+    linestyle='none')
+for spine in ['top', 'right']:
+    ax.spines[spine].set_visible(False)    
+for spine in ['left', 'bottom']:
+    ax.spines[spine].set_position('zero')
+plt.xlabel('PC1',loc='right')
+plt.ylabel('PC2',loc='top')
+plt.tight_layout()    
+plt.show() 
+```
