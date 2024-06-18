@@ -1,0 +1,88 @@
+---
+title: "Linear regression: debunking sexual selection"
+format: gfm
+jupyter: python3
+---
+
+# Background to this example
+
+The [Irish deer *Megaloceros giganteus*](https://en.wikipedia.org/wiki/Irish_elk), formerly called the Irish elk, is one of the iconic members of the Ice Age fauna. Now extinct, it reached some 2.1 m shoulder height and it massive antlers spanned up to 3.6 m. In modern deer, large antlers and scary display of them predict a high success among femals and thus a high reproductive success. This is an example of **sexual selection**, through which mating "decorations" or behaviors undergo positive selection, even though they may have no other use in one sex other than impressing its potential mating partners. This must have appealed to the Victorian prudery and the "survival of the sexiest".
+
+![Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons](../Img/512px-Leeds_City_Museum,_Irish_Elk.jpg){fig-alt="Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons"}
+
+Linear regression is how you can tell whether this spicy explanation is correct, as has been done by the evolutinonary biologist Steven J. Gould (1974). He measured the shoulder heights and antler lengths of deer species of various sizes and showed that they fell on
+a line that describes the relationship. The antler length for the Irish elk was exactly as predicted based on this relationship for smaller deer. Indeed, the Irish deer survived for tens of thousands of years with its giant antlers and fared well until the end of the Pleistocene. Like many animals of the Pleistocene megafauna, its extinstion is attributed to climate change and hunting by early humans. 
+
+Can you replicate Gould's landmark study?
+
+## Code
+
+```{python setup}
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+import numpy as np
+```
+
+Gould (1974) didn't provide the dataset in his paper, which in 1974 is forgiveable. His study was replicated by Plard et al. (2011) who included a dataset in an appendix. This dataset has been converted to `csv` for you:
+
+```{python}
+antler_dataset = pd.read_csv('../Data/Antler_allometry.csv')
+```
+
+Preview the dataset:
+
+```{python}
+antler_dataset.head()
+```
+
+Preview the bivariate distribution of the body mass and antler length:
+
+```{python}
+fig, ax = plt.subplots()
+ax.plot(antler_dataset.Male_body_mass, antler_dataset.Antler_length, '*')
+ax.set_ylabel('Antler length [mm]')
+ax.set_xlabel('Body mass [kg]')
+```
+
+This plot doesn't look like a straight line, does it? Many variables, such as those related to surface and volume, grow as powers of the linear dimensions, e.g. the body mass tends to grow as the cube of the body length. Based on an understanding of how a variable scales, you could try different transformations, such as cube root of the body mass. But let's follow Gould's (1974) original approach and apply a log transformation. 
+
+```{python}
+fig, ax = plt.subplots()
+ax.plot(np.log(antler_dataset.Male_body_mass), np.log(antler_dataset.Antler_length), '*')
+ax.set_ylabel('Log Antler length [mm]')
+ax.set_xlabel('Log Body mass [kg]')
+```
+
+In this plot the log-transformed variables lie along a line, to which you can fit an ordinary least-squares (OLS) regression model using `pandas`:
+
+```{python}
+model_fit = smf.ols('np.log(Antler_length)~np.log(Male_body_mass)', antler_dataset).fit()
+print(model_fit.summary2())
+```
+
+## Exercises
+
+### Open Task 1: extract the regression equation
+
+Extract the slope and intercept of the regression line from the model summary and use the previous plot to overlie the fitted line using the extracted parameters. What is the equation of the regression line?
+
+### Open Task 2: Goodness of fit
+
+Extract the **coefficient of determination** from the model summary and place it in the corner of the plot. Does the linear model describe the dataset well? What values does the coefficient of determination take? 
+
+### Open Task 3: Statistical test(s) of the model
+
+The model summary provides the p-values and 95% confidence intervals for the slope and the intercept of the regression line.
+
+1. What is the null hypothesis for the test of the slope? 
+
+2. The confidence interval tells you whether you can reject the null hypothesis. What do you have to conclude in the interpretation of the results if the confidence interval includes zero?
+
+3. What is the null hypothesis in the test of the intercept? What do the confidence intervals tell you? Visualize the confidence intervals for the intercept on the plot.
+
+# References
+
+- Gould, S. J. (1974). The origin and function of'bizarre'structures: antler size and skull size in the'Irish Elk,'Megaloceros giganteus. Evolution, 191-220.
+
+- Plard, F., Bonenfant, C., & Gaillard, J. M. (2011). Revisiting the allometry of antlers among deer species: male–male sexual competition as a driver. Oikos, 120(4), 601-606.
