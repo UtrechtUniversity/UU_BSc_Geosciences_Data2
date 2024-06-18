@@ -140,9 +140,9 @@ estimated values $\hat{y}$ and observed values $y_i$.
 
 In practice, this means calculating the following system:
 
-$a = \frac{\sum_{i=0}^n y_i}{n} - b \times \frac{\sum_{i=0}^n x_i}{n}$
+$a = \frac{\sum_{i=0}^{n} y_i}{n} - b \times \frac{\sum_{i=0}^{n} x_i}{n}$
 
-$b = \frac{\sum_{i=0}^n x_i y_i - \left(\sum_{i=0}^n x_i \sum_{i=0}^n y_i\right)/n}{\sum_{i=0}^n x^2_i - \left(\sum_{i=0}^n x_i \right)^2/n}$
+$b = \frac{\sum_{i=0}^{n} x_i y_i - \left(\sum_{i=0}^{n} x_i \sum_{i=0}^{n} y_i\right)/n}{\sum_{i=0}^{n} x^2_i - \left(\sum_{i=0}^{n} x_i \right)^2/n}$
 
 This is much easier to calculate in Python? Can you calculate the
 correct sums of `x` and `y` on your own?
@@ -193,7 +193,7 @@ print(model_fit.summary2())
     ======================================================================
     Model:              OLS                   Adj. R-squared:     0.801   
     Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-17 20:05      BIC:                52.9421 
+    Date:               2024-06-18 08:27      BIC:                52.9421 
     No. Observations:   31                    Log-Likelihood:     -23.037 
     Df Model:           1                     F-statistic:        121.9   
     Df Residuals:       29                    Prob (F-statistic): 6.68e-12
@@ -213,7 +213,9 @@ print(model_fit.summary2())
     [1] Standard Errors assume that the covariance matrix of the errors is
     correctly specified.
 
-Do the results agree with your manual calculations? \## Exercises
+Do the results agree with your manual calculations?
+
+## Exercises
 
 ### Open Task 1: extract the regression equation
 

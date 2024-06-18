@@ -78,9 +78,9 @@ In the lecture, you learned that regression coefficients can be estimated by min
 
  In practice, this means calculating the following system:
 
-$a = \frac{\sum_{i=0}^n y_i}{n} - b \times \frac{\sum_{i=0}^n x_i}{n}$
+$a = \frac{\sum_{i=0}^{n} y_i}{n} - b \times \frac{\sum_{i=0}^{n} x_i}{n}$
 
-$b = \frac{\sum_{i=0}^n x_i y_i - \left(\sum_{i=0}^n x_i \sum_{i=0}^n y_i\right)/n}{\sum_{i=0}^n x^2_i - \left(\sum_{i=0}^n x_i \right)^2/n}$
+$b = \frac{\sum_{i=0}^{n} x_i y_i - \left(\sum_{i=0}^{n} x_i \sum_{i=0}^{n} y_i\right)/n}{\sum_{i=0}^{n} x^2_i - \left(\sum_{i=0}^{n} x_i \right)^2/n}$
 
 This is much easier to calculate in Python? Can you calculate the correct sums of `x` and `y` on your own?
 
@@ -118,6 +118,7 @@ print(model_fit.summary2())
 ```
 
 Do the results agree with your manual calculations?
+
 ## Exercises
 
 ### Open Task 1: extract the regression equation
