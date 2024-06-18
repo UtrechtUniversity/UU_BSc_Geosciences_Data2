@@ -2,7 +2,7 @@
 title: "Linear regression: debunking sexual selection"
 format: 
     gfm:
-        html-math-method: mathjax
+        html-math-method: webtex
 jupyter: python3
 ---
 
