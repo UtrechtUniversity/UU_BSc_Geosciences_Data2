@@ -52,9 +52,9 @@ This plot doesn't look like a straight line, does it? Many variables, such as th
 
 ```{python}
 fig, ax = plt.subplots()
-ax.plot(np.log(antler_dataset.Male_body_mass), np.log(antler_dataset.Antler_length), '*')
-ax.set_ylabel('Log Antler length [mm]')
-ax.set_xlabel('Log Body mass [kg]')
+ax.plot(np.log10(antler_dataset.Male_body_mass), np.log10(antler_dataset.Antler_length), '*')
+ax.set_ylabel('Log10 Antler length [mm]')
+ax.set_xlabel('Log10 Body mass [kg]')
 ```
 
 In this plot the log-transformed variables lie along a line, to which you can fit an ordinary least-squares (OLS) regression model.
@@ -68,10 +68,10 @@ Let `n` be the number of samples:
 n = antler_dataset.shape[0]
 ```
 
-To shorten the code, let's refer to the predictor variable (log body mass) as `x` and the response variable (log antler length) as `y`:
+To shorten the code, let's refer to the predictor variable (log10 body mass) as `x` and the response variable (log10 antler length) as `y`:
 ```{python}
-x = np.log(antler_dataset.Male_body_mass)
-y = np.log(antler_dataset.Antler_length)
+x = np.log10(antler_dataset.Male_body_mass)
+y = np.log10(antler_dataset.Antler_length)
 ```
 
 In the lecture, you learned that regression coefficients can be estimated by minimizing the sum of squares of the deviations between estimated values $\hat{y}$ and observed values $y_i$.
@@ -100,7 +100,7 @@ a = mean_y - b*mean_x
 ```
 </details>
 
-To calculate the residuals, ywe need a vectorized operation, which is done here using a "lambda" function. This is a way to define a function in one line, without giving it a name. The residuals are the differences between the observed and the fitted values:
+To calculate the residuals, we need a vectorized operation, which is done here using an anonymous function, also called a "lambda" function. This is a way to define a function in one line, without giving it a name. The residuals are the differences between the observed and the fitted values:
 ```{python}
 fit = lambda xx: a + b*xx
 residuals = y - fit(x)
@@ -113,7 +113,7 @@ Plot the residuals to check how good your fit is.
 Normally you may want to get the results faster, e.g. using `pandas`:
 
 ```{python}
-model_fit = smf.ols('np.log(Antler_length)~np.log(Male_body_mass)', antler_dataset).fit()
+model_fit = smf.ols('np.log10(Antler_length)~np.log10(Male_body_mass)', antler_dataset).fit()
 print(model_fit.summary2())
 ```
 
