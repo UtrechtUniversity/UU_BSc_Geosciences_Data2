@@ -16,7 +16,7 @@ Let's start with using Python again by opening your Conda environment and then o
 
 ## Code
 
-``` python
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,13 +25,13 @@ import scipy.stats as stats
 
 Now we are going to take a look at the first dataset which contains information about the amount of precipitation in the Netherlands.
 
-``` python
+```{python}
 precip = pd.read_csv("../Data/annualPrecipitation.csv", index_col=0)
 ```
 
 In this dataset you find the annual sum of precipitation in the last century. The data is now stored in the variable *precip.* You can explore the data by looking at the data within this variable with:
 
-``` python
+```{python}
 precip.head()
 ```
 
@@ -77,7 +77,7 @@ If you did it well you will find something like the image below, with the x-axis
 
 Another way is making a quantile-quantile plot of your data.
 
-``` python
+```{python}
 from statsmodels.graphics.gofplots import qqplot
 ## First we need to sort the data for qqplot to work with it that's why we use precip.sort_values("Precip") to sort the precipitation data from low to high. "Precip is the name of the column in which we have the data (you can check this with precip.head())."
 qqplot(precip.sort_values("Precip"), line='s')
@@ -109,7 +109,7 @@ Since the p-value is above 0.05 we can assume that the data follows a normal dis
 
 Let's start by exploring some statistical properties of the rainfall data, starting with the mean annual precipitation and its standard deviation.
 
-``` python
+```{python}
 precip.mean()
 precip.std()
 ```
@@ -122,11 +122,11 @@ You can see that the Netherlands has a mean $\pm$ standard deviation of around $
 
 If you did everything well you found that the total data record contains 118 years of data. For now we assume that the value of 800mm per year is the [true mean]{.underline} (µ) value of the annual precipitation in the Netherlands. Next we want to explore how many years of observations are needed to find the true value of annual precipitation. We will now use sub-samples of the full data record to see how many years we need. **Let's start by sub-sampling some of the data and computing and testing if the [sample mean]{.underline} accurately captures the [true mean]{.underline} (for which we now assume to be the +/- 800mm of the full data record).**
 
-``` python
+```{python}
 samplePrecip = precip.sample(n = 5, replace = False, random_state=1)
 ```
 
-``` python
+```python
       Precip
 Year        
 2000   932.4
@@ -138,7 +138,7 @@ Year
 
 *replace = False* indicates that every year should be only selected once and no years should be sampled twice. *random_state=1* is a way of guaranteeing that the same random numbers are selected and thus the same random years (this is mostly convenient if you want to reproduce your code, like for this practical). Now we would like to see if the average value that we obtain from the sample is a good representation of the total time series and thus represents the total [true mean]{.underline}.
 
-``` python
+```{python}
 samplePrecip.mean()
 ```
 
@@ -165,7 +165,7 @@ If you think these assumptions are valid we could use a t-test to test our hypot
 
 For now let's assume all those criteria are met and we can move on and perform an independent sample t-test. While you can also do this by hand following the appropriate equations in this course we like to focus on using and analysing the data rather than focussing on the exact mathematical equations. It is however important to understand when you can and can't use a certain test of approach. Luckily the independent sample t-test is available from the Scipy packages (a common package for statistical analysis). You can perform the test using:
 
-``` python
+```{python}
 import scipy.stats as stats
 stats.ttest_ind(precip, samplePrecip)
 ```
@@ -194,21 +194,21 @@ If all went well you find the plot above. By looking at the data there are no cl
 
 Make two sub-sample of the data one containing the first 30 years of the data and one containing the last 30 years of the data. You have two ways of doing so (look at you cheat sheet for Pandas). The first one is to use the .head() and .tail() functions.
 
-``` python
+```{python}
 firstYearsPrecip = precip.head(30)
 lastYearsPrecip = precip.tail(30)
 ```
 
 There is also another option using the .iloc() function:
 
-``` python
+```{python}
 firstYearsPrecip = precip.iloc[:30]
 lastYearsPrecip = precip.iloc[-30:]
 ```
 
 If you want to select specific year you can use:
 
-``` python
+```{python}
 firstYearsPrecip = precip.loc["1906":"1935"]
 lastYearsPrecip = precip.loc["1994":"2023"]
 ```
@@ -254,30 +254,15 @@ If you explored the data you will also see that there are strong trends in the t
 
 There are some tricks that can help you to better work with your data. You might have seen that the temperature data you got was not with an annual timestep but was actually the daily data from the Bilt weather station. There are tricks to easily aggregate your time data to different timescales. For example you can compute the annual mean temperature with:
 
-``` python
+```{python}
+Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0)
 annualTas = Tas.resample("YE").mean()
 annualTas
-
-                  Tas
-Date                 
-1901-12-31   8.783562
-1902-12-31   8.245205
-1903-12-31   9.166575
-1904-12-31   8.933607
-1905-12-31   8.713699
-              ...
-2020-12-31  11.688251
-2021-12-31  10.481096
-2022-12-31  11.572603
-2023-12-31  11.790959
-2024-12-31  10.002907
-
-[124 rows x 1 columns]
 ```
 
 You can also find the annual minimum and maximum temperatures in a fairly similar manner
 
-``` python
+```{python}
 annualMinTas = Tas.resample("YE").min()
 annualMaxTas = Tas.resample("YE").max()
 ```

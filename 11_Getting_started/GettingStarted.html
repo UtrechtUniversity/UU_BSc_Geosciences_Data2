@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="GettingStarted_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="GettingStarted_files/libs/clipboard/clipboard.min.js"></script>
 <script src="GettingStarted_files/libs/quarto-html/quarto.js"></script>
 <script src="GettingStarted_files/libs/quarto-html/popper.min.js"></script>
 <script src="GettingStarted_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -67,6 +67,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="GettingStarted_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="GettingStarted_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="GettingStarted_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -106,12 +109,25 @@ window.Quarto = {
 
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Getting started with data analysis</h1>
+</div>
 
 
 
-<section id="getting-started-with-data-analysis" class="level1">
-<h1>Getting started with data analysis</h1>
-</section>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
 <p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
@@ -124,14 +140,61 @@ window.Quarto = {
 </ul>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div id="b651ea81" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Now we are going to take a look at the first dataset which contains information about the amount of precipitation in the Netherlands.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/annualPrecipitation.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4ba8f3ba" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/annualPrecipitation.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>In this dataset you find the annual sum of precipitation in the last century. The data is now stored in the variable <em>precip.</em> You can explore the data by looking at the data within this variable with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>precip.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9bacb538" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>precip.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Precip</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Year</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1906</td>
+<td>726.3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1907</td>
+<td>661.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1908</td>
+<td>644.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1909</td>
+<td>832.7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1910</td>
+<td>814.4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>Alternatively you can explore the data with the variable explorer that you find within Spyder</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -168,9 +231,25 @@ window.Quarto = {
 <p>If you did it well you will find something like the image below, with the x-axis giving the different bins for annual precip ranging from roughly <span class="math inline">\(400-1200~mm~y^{-1}\)</span>. The y-axis gives the number of years in each bin. You can see some of the distinct bell-shape that is to be expected from a normal distribution, but we can dive in a bit further.</p>
 <p><img src="images/clipboard-2869557530.png" class="img-fluid" width="497"></p>
 <p>Another way is making a quantile-quantile plot of your data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.gofplots <span class="im">import</span> qqplot</span>
+<div id="855707eb" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.gofplots <span class="im">import</span> qqplot</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">## First we need to sort the data for qqplot to work with it that's why we use precip.sort_values("Precip") to sort the precipitation data from low to high. "Precip is the name of the column in which we have the data (you can check this with precip.head())."</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>qqplot(precip.sort_values(<span class="st">"Precip"</span>), line<span class="op">=</span><span class="st">'s'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+<figure class="figure">
+<p><img src="GettingStarted_files/figure-html/cell-5-output-1.png" width="602" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="GettingStarted_files/figure-html/cell-5-output-2.png" width="602" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><img src="images/clipboard-1121669530.png" class="img-fluid"></p>
 <p>In the figure you see the theoretical quantiles of the normal distribution and how the data (y-axis) relates to that. If the data is perfectly normally distributed it would fall on the red line.</p>
 </section>
@@ -191,23 +270,37 @@ window.Quarto = {
 <section id="testing-if-two-samples-have-the-same-mean" class="level2">
 <h2 class="anchored" data-anchor-id="testing-if-two-samples-have-the-same-mean">Testing if two samples have the same mean</h2>
 <p>Let’s start by exploring some statistical properties of the rainfall data, starting with the mean annual precipitation and its standard deviation.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>precip.mean()</span>
+<div id="86e085f0" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>precip.mean()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>precip.std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>Precip    139.186794
+dtype: float64</code></pre>
+</div>
+</div>
 <p>You can see that the Netherlands has a mean <span class="math inline">\(\pm\)</span> standard deviation of around <span class="math inline">\(802\pm139~mm~y^{-1}\)</span> precipitation. This amount varies year by year, and thus it can matter how many years of data you have to get the mean values. One of the important element is the amount of years of observations that are available. <strong>We will now explore the impact of the length of the data record on the value we find for the average annual precipitation.</strong></p>
 <section id="question-4" class="level4">
 <h4 class="anchored" data-anchor-id="question-4">Question 4</h4>
 <p><em>Can you now make a piece of code that identifies how many year of data we have? There are two ways of exploring this, which can be using a function that checks the <u>length</u> or the <u>shape</u> of the Pandas array (you can use Google to help you).</em></p>
 <p>If you did everything well you found that the total data record contains 118 years of data. For now we assume that the value of 800mm per year is the <u>true mean</u> (µ) value of the annual precipitation in the Netherlands. Next we want to explore how many years of observations are needed to find the true value of annual precipitation. We will now use sub-samples of the full data record to see how many years we need. <strong>Let’s start by sub-sampling some of the data and computing and testing if the <u>sample mean</u> accurately captures the <u>true mean</u> (for which we now assume to be the +/- 800mm of the full data record).</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>samplePrecip <span class="op">=</span> precip.sample(n <span class="op">=</span> <span class="dv">5</span>, replace <span class="op">=</span> <span class="va">False</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>      Precip</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Year        </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2000</span>   <span class="fl">932.4</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1960</span>   <span class="fl">928.7</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1965</span>  <span class="fl">1151.9</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dv">2021</span>   <span class="fl">861.3</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1980</span>   <span class="fl">861.8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="473fa0f3" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>samplePrecip <span class="op">=</span> precip.sample(n <span class="op">=</span> <span class="dv">5</span>, replace <span class="op">=</span> <span class="va">False</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>      Precip</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Year        </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2000</span>   <span class="fl">932.4</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1960</span>   <span class="fl">928.7</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1965</span>  <span class="fl">1151.9</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="dv">2021</span>   <span class="fl">861.3</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1980</span>   <span class="fl">861.8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><em>replace = False</em> indicates that every year should be only selected once and no years should be sampled twice. <em>random_state=1</em> is a way of guaranteeing that the same random numbers are selected and thus the same random years (this is mostly convenient if you want to reproduce your code, like for this practical). Now we would like to see if the average value that we obtain from the sample is a good representation of the total time series and thus represents the total <u>true mean</u>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>samplePrecip.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b8425f31" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>samplePrecip.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>Precip    947.22
+dtype: float64</code></pre>
+</div>
+</div>
 <p>You will find that the mean precipitation for this sample is <span class="math inline">\(947~mm~y^{-1}\)</span>, compared to the <span class="math inline">\(802~mm~y^{-1}\)</span> for the entire sample. You can see that these two values are different, but the question is if they are also statistically different. For this you will do an hypothesis test. The first step in constructing a hypothesis test is to be clear about what the null and alternative hypotheses are. This isn’t too hard to do. Our null hypothesis <span class="math inline">\(H_{0}\)</span>, is that the true population mean <span class="math inline">\(\mu\)</span> for annual precipitation is <span class="math inline">\(802~mm~y^{-1}\)</span>; and our alternative hypothesis is that the population mean <em>isn’t</em> <span class="math inline">\(802~mm~y^{-1}\)</span>. If we write this in mathematical notation, these hypotheses becomes</p>
 <p><span class="math display">\[
 H_{0}:\mu_{1} = \mu_{2}\\
@@ -225,9 +318,14 @@ H_{1}:\mu_{1}\neq\mu_{2}
 <h4 class="anchored" data-anchor-id="question-5">Question 5</h4>
 <p><em>Do you think all of these criteria are met or do you see one that might be violated and if so why?</em></p>
 <p>For now let’s assume all those criteria are met and we can move on and perform an independent sample t-test. While you can also do this by hand following the appropriate equations in this course we like to focus on using and analysing the data rather than focussing on the exact mathematical equations. It is however important to understand when you can and can’t use a certain test of approach. Luckily the independent sample t-test is available from the Scipy packages (a common package for statistical analysis). You can perform the test using:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>stats.ttest_ind(precip, samplePrecip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>TtestResult(statistic<span class="op">=</span>array([<span class="op">-</span><span class="fl">2.29273885</span>]), pvalue<span class="op">=</span>array([<span class="fl">0.02359</span>]), df<span class="op">=</span>array([<span class="fl">121.</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="275b074d" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>stats.ttest_ind(precip, samplePrecip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>TtestResult(statistic=array([-2.29273885]), pvalue=array([0.02359]), df=array([121.]))</code></pre>
+</div>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>TtestResult(statistic<span class="op">=</span>array([<span class="op">-</span><span class="fl">2.29273885</span>]), pvalue<span class="op">=</span>array([<span class="fl">0.02359</span>]), df<span class="op">=</span>array([<span class="fl">121.</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Python will return three values to you, the first is the so-called t-statistic, the p-value which indicates the likelihood of <span class="math inline">\(H_{0}\)</span> to be true and df the degrees of freedom, the higher this value the more samples you typically used. In this situation you can see that the <span class="math inline">\(H_{0}\)</span> is rejected (p-value &lt; 0.05) and thus we use the alternative hypothesis <span class="math inline">\(H_{1}\)</span>. This means that with just 5 years of precipitation data we cannot accurately estimate the average annual precipitation over the Netherlands for the Bilt.</p>
 </section>
 <section id="question-6" class="level4">
@@ -245,14 +343,20 @@ H_{1}:\mu_{1}\neq\mu_{2}
 <p><img src="images/clipboard-3761568892.png" class="img-fluid"></p>
 <p>If all went well you find the plot above. By looking at the data there are no clear trends in the data. We can also do a more quantitative approach using techniques that you have used before in this assignment.</p>
 <p>Make two sub-sample of the data one containing the first 30 years of the data and one containing the last 30 years of the data. You have two ways of doing so (look at you cheat sheet for Pandas). The first one is to use the .head() and .tail() functions.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.head(<span class="dv">30</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.tail(<span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="df093084" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.head(<span class="dv">30</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.tail(<span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>There is also another option using the .iloc() function:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.iloc[:<span class="dv">30</span>]</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.iloc[<span class="op">-</span><span class="dv">30</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f9b55575" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.iloc[:<span class="dv">30</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.iloc[<span class="op">-</span><span class="dv">30</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>If you want to select specific year you can use:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.loc[<span class="st">"1906"</span>:<span class="st">"1935"</span>]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.loc[<span class="st">"1994"</span>:<span class="st">"2023"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8196af2f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>firstYearsPrecip <span class="op">=</span> precip.loc[<span class="st">"1906"</span>:<span class="st">"1935"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>lastYearsPrecip <span class="op">=</span> precip.loc[<span class="st">"1994"</span>:<span class="st">"2023"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>The advantage of this method is that you can specify years you want to select. Also if they are not situated at the start of end of the timeseries. You can do the same with the <em>iloc</em> function, but in that case you do need to identify the exact row numbers of interest.</p>
 </section>
 <section id="question-8" class="level4">
@@ -290,27 +394,82 @@ H_{1}:\mu_{1906-1935}\neq\mu_{1994-2023}
 <section id="processing-your-timeseries-data" class="level1">
 <h1>Processing your timeseries data</h1>
 <p>There are some tricks that can help you to better work with your data. You might have seen that the temperature data you got was not with an annual timestep but was actually the daily data from the Bilt weather station. There are tricks to easily aggregate your time data to different timescales. For example you can compute the annual mean temperature with:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>annualTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).mean()</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>annualTas</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                  Tas</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Date                 </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="dv">1901</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>   <span class="fl">8.783562</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1902</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>   <span class="fl">8.245205</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="dv">1903</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>   <span class="fl">9.166575</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="dv">1904</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>   <span class="fl">8.933607</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="dv">1905</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>   <span class="fl">8.713699</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>              ...</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="dv">2020</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>  <span class="fl">11.688251</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="dv">2021</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>  <span class="fl">10.481096</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="dv">2022</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>  <span class="fl">11.572603</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="dv">2023</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>  <span class="fl">11.790959</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="dv">2024</span><span class="op">-</span><span class="dv">12</span><span class="op">-</span><span class="dv">31</span>  <span class="fl">10.002907</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">124</span> rows x <span class="dv">1</span> columns]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a782382e" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>annualTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).mean()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>annualTas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Tas</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Date</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1901-12-31</td>
+<td>8.783562</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1902-12-31</td>
+<td>8.245205</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1903-12-31</td>
+<td>9.166575</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1904-12-31</td>
+<td>8.933607</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1905-12-31</td>
+<td>8.713699</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-12-31</td>
+<td>11.688251</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2021-12-31</td>
+<td>10.481096</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-12-31</td>
+<td>11.572603</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2023-12-31</td>
+<td>11.790959</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-12-31</td>
+<td>10.002907</td>
+</tr>
+</tbody>
+</table>
+
+<p>124 rows × 1 columns</p>
+</div>
+</div>
+</div>
 <p>You can also find the annual minimum and maximum temperatures in a fairly similar manner</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>annualMinTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).<span class="bu">min</span>()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>annualMaxTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5476ea1c" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>annualMinTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).<span class="bu">min</span>()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>annualMaxTas <span class="op">=</span> Tas.resample(<span class="st">"YE"</span>).<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="question-9" class="level4">
 <h4 class="anchored" data-anchor-id="question-9">Question 9</h4>
 <p><em>Explore if the annual mean, min and max temperature are normally distributed.</em></p>
