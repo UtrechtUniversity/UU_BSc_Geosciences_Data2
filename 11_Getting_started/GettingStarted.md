@@ -1,184 +1,83 @@
-# Linear regression: debunking sexual selection
-
+# Getting started with data analysis
 
 # Background to this example
 
-The [Irish deer *Megaloceros
-giganteus*](https://en.wikipedia.org/wiki/Irish_elk), formerly called
-the Irish elk, is one of the iconic members of the Ice Age fauna. Now
-extinct, it reached some 2.1 m shoulder height and it massive antlers
-spanned up to 3.6 m. In modern deer, large antlers and scary display of
-them predict a high success among femals and thus a high reproductive
-success. This is an example of **sexual selection**, through which
-mating “decorations” or behaviors undergo positive selection, even
-though they may have no other use in one sex other than impressing its
-potential mating partners. This must have appealed to the Victorian
-prudery and the “survival of the sexiest”.
+Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
 
-<img src="../Img/512px-Leeds_City_Museum,_Irish_Elk.jpg"
-data-fig-alt="Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons"
-alt="Irish elk skeleton from 1862, exhibited in Leeds City MuseumStorye book, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0, via Wikimedia Commons" />
+**In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.**
 
-Linear regression is how you can tell whether this spicy explanation is
-correct, as has been done by the evolutinonary biologist Steven J. Gould
-(1974). He measured the shoulder heights and antler lengths of deer
-species of various sizes and showed that they fell on a line that
-describes the relationship. The antler length for the Irish elk was
-exactly as predicted based on this relationship for smaller deer.
-Indeed, the Irish deer survived for tens of thousands of years with its
-giant antlers and fared well until the end of the Pleistocene. Like many
-animals of the Pleistocene megafauna, its extinstion is attributed to
-climate change and hunting by early humans.
+Let's start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:
 
-Can you replicate Gould’s landmark study?
+-   Pandas (data management and data handling)
 
-## Code
+-   Numpy (statistical analysis and data handling)
+
+-   Matplotlib (plotting)
+
+## Loading the data
 
 ``` python
 import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
 import numpy as np
 ```
 
-Gould (1974) didn’t provide the dataset in his paper, which in 1974 is
-forgiveable. His study was replicated by Plard et al. (2011) who
-included a dataset in an appendix. This dataset has been converted to
-`csv` for you:
+Now we are going to take a look at the first dataset which contains information about the amount of precipitation in the Netherlands.
 
 ``` python
-antler_dataset = pd.read_csv('../Data/Antler_allometry.csv')
+precip = pd.read_csv("../Data/annualPrecipitation.csv", index_col=0)
 ```
 
-Preview the dataset:
+In this dataset you find the annual sum of precipitation in the last century. The data is now stored in the variable *precip.* You can explore the data by looking at the data within this variable with:
 
 ``` python
-antler_dataset.head()
+precip.head()
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-&#10;    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-&#10;    .dataframe thead th {
-        text-align: right;
-    }
-</style>
+Alternatively you can explore the data with the variable explorer that you find within Spyder
 
-|  | Sub-family | Genus | Species | Common name | Antler_length | Male_body_mass | Female_body_mass |
-|----|----|----|----|----|----|----|----|
-| 0 | Cervinae | Axis | axis | chital | 845.0 | 89.5 | 39.0 |
-| 1 | Cervinae | Axis | porcinus | hog deer | 399.0 | 41.0 | 31.0 |
-| 2 | Cervinae | Cervus | albirostris | white-lipped deer | 1150.0 | 204.0 | 125.0 |
-| 3 | Cervinae | Cervus | canadensis | wapiti | 1337.0 | 350.0 | 250.0 |
-| 4 | Cervinae | Cervus | duvaucelii | barasingha | 813.0 | 236.0 | 145.0 |
+![By clicking on the variable you can now look at the values within the variable explorer](images/Screenshot%202024-06-21%20at%2015.45.17.png)
 
-</div>
+![](images/Screenshot%202024-06-21%20at%2015.45.41.png)
 
-Preview the bivariate distribution of the body mass and antler length:
+# Starting with Pandas data analysis
+
+Next we go and look at the data by visualizing the data. Within Pandas there are multiple opportunities to explore and visualize the data. There are lots of resources to help you with using Pandas and provide nice tips, trick and examples. For example you can use a **cheat sheet** to quickly remember and double check which functions to use (e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>). You can also find lots of good examples that use Pandas online for different types of data and types of analysis (<https://realpython.com/search?q=pandas>).
+
+Let's start by exploring some statistical properties of the rainfall data, starting with the mean annual precipitation.
 
 ``` python
-fig, ax = plt.subplots()
-ax.plot(antler_dataset.Male_body_mass, antler_dataset.Antler_length, '*')
-ax.set_ylabel('Antler length [mm]')
-ax.set_xlabel('Body mass [kg]')
+precip.mean()
 ```
 
-    Text(0.5, 0, 'Body mass [kg]')
+You can see that the Netherlands has around 800mm of precipitation per year. This amount varies year by year, and thus it can matter how many years of data you have to get the mean values. One of the important element is the amount of years of observations that are available. **We will now explore the impact of the length of the data record on the value we find for the average annual precipitation.**
 
-![](GettingStarted_files/figure-commonmark/cell-5-output-2.png)
+Q1: Can you now make a piece of code that identifies how many year of data we have? There are two ways of exploring this, which can be using a function that checks the [length]{.underline} or the [shape]{.underline} of the Pandas array (you can use Google to help you).
 
-This plot doesn’t look like a straight line, does it? Many variables,
-such as those related to surface and volume, grow as powers of the
-linear dimensions, e.g. the body mass tends to grow as the cube of the
-body length. Based on an understanding of how a variable scales, you
-could try different transformations, such as cube root of the body mass.
-But let’s follow Gould’s (1974) original approach and apply a log
-transformation.
+If you did everything well you found that the total data record contains 118 years of data. For now we assume that the value of 800mm per year is the [true mean]{.underline} value of the annual precipitation in the Netherlands. Next we want to explore how many years of observations are needed to find the true value of annual precipitation. We will now use sub-samples of the full data record to see how many years we need. **Let's start by sub-sampling some of the data and computing and testing if the [sample mean]{.underline} accurately captures the [true mean]{.underline} (for which we now assume to be the +/- 800mm of the full data record).**
 
 ``` python
-fig, ax = plt.subplots()
-ax.plot(np.log(antler_dataset.Male_body_mass), np.log(antler_dataset.Antler_length), '*')
-ax.set_ylabel('Log Antler length [mm]')
-ax.set_xlabel('Log Body mass [kg]')
+precip.sample(n = 10, replace = False, random_state=1)
 ```
-
-    Text(0.5, 0, 'Log Body mass [kg]')
-
-![](GettingStarted_files/figure-commonmark/cell-6-output-2.png)
-
-In this plot the log-transformed variables lie along a line, to which
-you can fit an ordinary least-squares (OLS) regression model using
-`pandas`:
 
 ``` python
-model_fit = smf.ols('np.log(Antler_length)~np.log(Male_body_mass)', antler_dataset).fit()
-print(model_fit.summary2())
+      Precip
+Year        
+2000   932.4
+1960   928.7
+1965  1151.9
+2021   861.3
+1980   861.8
+1952   802.1
+1937   727.0
+1986   716.1
+1954   817.9
+2003   612.7
+2002   924.0
 ```
 
-                       Results: Ordinary least squares
-    ======================================================================
-    Model:              OLS                   Adj. R-squared:     0.801   
-    Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-24 21:31      BIC:                52.9421 
-    No. Observations:   31                    Log-Likelihood:     -23.037 
-    Df Model:           1                     F-statistic:        121.9   
-    Df Residuals:       29                    Prob (F-statistic): 6.68e-12
-    R-squared:          0.808                 Scale:              0.27667 
-    ----------------------------------------------------------------------
-                              Coef.  Std.Err.    t    P>|t|  [0.025 0.975]
-    ----------------------------------------------------------------------
-    Intercept                 1.6811   0.3838  4.3803 0.0001 0.8962 2.4661
-    np.log(Male_body_mass)    0.9904   0.0897 11.0396 0.0000 0.8069 1.1739
-    ----------------------------------------------------------------------
-    Omnibus:                4.515          Durbin-Watson:            1.659
-    Prob(Omnibus):          0.105          Jarque-Bera (JB):         3.444
-    Skew:                   -0.812         Prob(JB):                 0.179
-    Kurtosis:               3.167          Condition No.:            18   
-    ======================================================================
-    Notes:
-    [1] Standard Errors assume that the covariance matrix of the errors is
-    correctly specified.
+```{python}
+precip.sample(n = 10, replace = False, random_state=1)
+```
 
-## Exercises
-
-### Open Task 1: extract the regression equation
-
-Extract the slope and intercept of the regression line from the model
-summary and use the previous plot to overlie the fitted line using the
-extracted parameters. What is the equation of the regression line?
-
-### Open Task 2: Goodness of fit
-
-Extract the **coefficient of determination** from the model summary and
-place it in the corner of the plot. Does the linear model describe the
-dataset well? What values does the coefficient of determination take?
-
-### Open Task 3: Statistical test(s) of the model
-
-The model summary provides the p-values and 95% confidence intervals for
-the slope and the intercept of the regression line.
-
-1.  What is the null hypothesis for the test of the slope?
-
-2.  The confidence interval tells you whether you can reject the null
-    hypothesis. What do you have to conclude in the interpretation of
-    the results if the confidence interval includes zero?
-
-3.  What is the null hypothesis in the test of the intercept? What do
-    the confidence intervals tell you? Visualize the confidence
-    intervals for the intercept on the plot.
-
-# References
-
-- Gould, S. J. (1974). The origin and function of’bizarre’structures:
-  antler size and skull size in the’Irish Elk,’Megaloceros giganteus.
-  Evolution, 191-220.
-
-- Plard, F., Bonenfant, C., & Gaillard, J. M. (2011). Revisiting the
-  allometry of antlers among deer species: male–male sexual competition
-  as a driver. Oikos, 120(4), 601-606.
+*replace = False* indicates that every year should be only selected once and no years should be sampled twice. *random_state=1* is a way of guaranteeing that the same random numbers are selected and thus the same random years (this is mostly convenient if you want to reproduce your code, like for this practical).
