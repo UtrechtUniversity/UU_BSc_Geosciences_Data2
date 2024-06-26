@@ -1,7 +1,8 @@
 ---
-title: Getting started with data analysis
 toc-title: Table of contents
 ---
+
+# Getting started with data analysis
 
 # Background to this example
 
@@ -28,63 +29,41 @@ this course. We use:
 
 -   Matplotlib (plotting)
 
+-   Scipy (statistical analysis)
+
 ## Code
 
-::: {.cell execution_count="1"}
-``` {.python .cell-code}
+``` python
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 ```
-:::
 
 Now we are going to take a look at the first dataset which contains
 information about the amount of precipitation in the Netherlands.
 
-::: {.cell execution_count="2"}
-``` {.python .cell-code}
-precip = pd.read_csv("../Data/annualPrecipitation.csv", index_col=0)
+``` python
+precip = pd.read_csv("../Data/annualPrecipitation.csv", parse_dates=True, index_col=0)
 ```
-:::
 
 In this dataset you find the annual sum of precipitation in the last
 century. The data is now stored in the variable *precip.* You can
 explore the data by looking at the data within this variable with:
 
-:::: {.cell execution_count="3"}
-``` {.python .cell-code}
+``` python
 precip.head()
 ```
 
-::: {.cell-output .cell-output-display execution_count="41"}
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-         Precip
-  ------ --------
-  Year   
-  1906   726.3
-  1907   661.6
-  1908   644.0
-  1909   832.7
-  1910   814.4
-
-</div>
-:::
-::::
+``` python
+      Precip
+Year        
+1906   726.3
+1907   661.6
+1908   644.0
+1909   832.7
+1910   814.4
+```
 
 Alternatively you can explore the data with the variable explorer that
 you find within Spyder
@@ -163,21 +142,11 @@ expected from a normal distribution, but we can dive in a bit further.
 
 Another way is making a quantile-quantile plot of your data.
 
-::::: {.cell execution_count="4"}
-``` {.python .cell-code}
+``` python
 from statsmodels.graphics.gofplots import qqplot
 ## First we need to sort the data for qqplot to work with it that's why we use precip.sort_values("Precip") to sort the precipitation data from low to high. "Precip is the name of the column in which we have the data (you can check this with precip.head())."
 qqplot(precip.sort_values("Precip"), line='s')
 ```
-
-::: {.cell-output .cell-output-display execution_count="42"}
-![](GettingStarted_files/figure-markdown/cell-5-output-1.png)
-:::
-
-::: {.cell-output .cell-output-display}
-![](GettingStarted_files/figure-markdown/cell-5-output-2.png)
-:::
-:::::
 
 ![](images/clipboard-1121669530.png)
 
@@ -222,17 +191,17 @@ Let's start by exploring some statistical properties of the rainfall
 data, starting with the mean annual precipitation and its standard
 deviation.
 
-:::: {.cell execution_count="5"}
-``` {.python .cell-code}
-precip.mean()
-precip.std()
+``` python
+print(precip.mean())
+print(precip.std())
 ```
 
-::: {.cell-output .cell-output-display execution_count="43"}
-    Precip    139.186794
-    dtype: float64
-:::
-::::
+``` python
+Precip    802.147458
+dtype: float64
+Precip    139.186794
+dtype: float64
+```
 
 You can see that the Netherlands has a mean $\pm$ standard deviation of
 around $802\pm139~mm~y^{-1}$ precipitation. This amount varies year by
@@ -260,11 +229,9 @@ if the [sample mean]{.underline} accurately captures the [true
 mean]{.underline} (for which we now assume to be the +/- 800mm of the
 full data record).**
 
-::: {.cell execution_count="6"}
-``` {.python .cell-code}
+``` python
 samplePrecip = precip.sample(n = 5, replace = False, random_state=1)
 ```
-:::
 
 ``` python
       Precip
@@ -284,16 +251,9 @@ code, like for this practical). Now we would like to see if the average
 value that we obtain from the sample is a good representation of the
 total time series and thus represents the total [true mean]{.underline}.
 
-:::: {.cell execution_count="7"}
-``` {.python .cell-code}
+``` python
 samplePrecip.mean()
 ```
-
-::: {.cell-output .cell-output-display execution_count="45"}
-    Precip    947.22
-    dtype: float64
-:::
-::::
 
 You will find that the mean precipitation for this sample is
 $947~mm~y^{-1}$, compared to the $802~mm~y^{-1}$ for the entire sample.
@@ -340,16 +300,10 @@ can and can't use a certain test of approach. Luckily the independent
 sample t-test is available from the Scipy packages (a common package for
 statistical analysis). You can perform the test using:
 
-:::: {.cell execution_count="8"}
-``` {.python .cell-code}
+``` python
 import scipy.stats as stats
 stats.ttest_ind(precip, samplePrecip)
 ```
-
-::: {.cell-output .cell-output-display execution_count="46"}
-    TtestResult(statistic=array([-2.29273885]), pvalue=array([0.02359]), df=array([121.]))
-:::
-::::
 
 ``` python
 TtestResult(statistic=array([-2.29273885]), pvalue=array([0.02359]), df=array([121.]))
@@ -392,30 +346,24 @@ data and one containing the last 30 years of the data. You have two ways
 of doing so (look at you cheat sheet for Pandas). The first one is to
 use the .head() and .tail() functions.
 
-::: {.cell execution_count="9"}
-``` {.python .cell-code}
+``` python
 firstYearsPrecip = precip.head(30)
 lastYearsPrecip = precip.tail(30)
 ```
-:::
 
 There is also another option using the .iloc() function:
 
-::: {.cell execution_count="10"}
-``` {.python .cell-code}
+``` python
 firstYearsPrecip = precip.iloc[:30]
 lastYearsPrecip = precip.iloc[-30:]
 ```
-:::
 
 If you want to select specific year you can use:
 
-::: {.cell execution_count="11"}
-``` {.python .cell-code}
+``` python
 firstYearsPrecip = precip.loc["1906":"1935"]
 lastYearsPrecip = precip.loc["1994":"2023"]
 ```
-:::
 
 The advantage of this method is that you can specify years you want to
 select. Also if they are not situated at the start of end of the
@@ -473,58 +421,36 @@ station. There are tricks to easily aggregate your time data to
 different timescales. For example you can compute the annual mean
 temperature with:
 
-:::: {.cell execution_count="12"}
-``` {.python .cell-code}
+``` python
 Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0)
 annualTas = Tas.resample("YE").mean()
-annualTas
 ```
 
-::: {.cell-output .cell-output-display execution_count="50"}
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+``` python
+                  Tas
+Date                 
+1901-12-31   8.783562
+1902-12-31   8.245205
+1903-12-31   9.166575
+1904-12-31   8.933607
+1905-12-31   8.713699
+              ...
+2020-12-31  11.688251
+2021-12-31  10.481096
+2022-12-31  11.572603
+2023-12-31  11.790959
+2024-12-31  10.002907
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-               Tas
-  ------------ -----------
-  Date         
-  1901-12-31   8.783562
-  1902-12-31   8.245205
-  1903-12-31   9.166575
-  1904-12-31   8.933607
-  1905-12-31   8.713699
-  \...         \...
-  2020-12-31   11.688251
-  2021-12-31   10.481096
-  2022-12-31   11.572603
-  2023-12-31   11.790959
-  2024-12-31   10.002907
-
-<p>124 rows × 1 columns</p>
-</div>
-:::
-::::
+[124 rows x 1 columns]
+```
 
 You can also find the annual minimum and maximum temperatures in a
 fairly similar manner
 
-::: {.cell execution_count="13"}
-``` {.python .cell-code}
+``` python
 annualMinTas = Tas.resample("YE").min()
 annualMaxTas = Tas.resample("YE").max()
 ```
-:::
 
 #### Question 9
 
@@ -534,6 +460,13 @@ distributed.*
 #### Question 10
 
 *Could you explain why some of these new annual data are normally
-distributed and the daily timeseries is not. If it helps try to plot the
-daily data for the year 2022 using the [loc]{.underline} and
+distributed and the daily timeseries are not. If it helps try to plot
+the daily data for the year 2022 using the [loc]{.underline} and
 [plot]{.underline} functions*
+
+#### Question 11
+
+*Try and write the annual temperature data to a csv file. For this you
+can use the
+[.to_csv](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html)
+function to write the Pandas dataframe to a csv file.*
