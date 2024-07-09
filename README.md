@@ -42,7 +42,7 @@ To develop the computer exercises on Windows, it is easiest to use a combination
     <https://posit.co/download/rstudio-desktop/>
 8.  **Install Quarto** from: <https://quarto.org/docs/get-started/>
 9.  Open command line or anaconda prompt and **create a new conda environment** that has all the necessary dependencies by running the following line in the anaconda prompt (open via start menu):\
-    `conda create -n data2 -c conda-forge jupyter numpy pandas statsmodels matplotlib`
+    `conda create -n data2 -c conda-forge jupyter numpy pandas statsmodels matplotlib scikit-learn`
 10. Open RStudio and **set the Python interpreter** to created data2 environment (*Tools / Global options / Python / Select / Conda environments*)
 11. **Clone this repository**. Using SSH connection while cloning is required by UU. Develop your material locally using Git version control (save and commit changes frequently). For more information on using Git, refer to online sources (e.g. <https://rogerdudler.github.io/git-guide/>).
 12. **Copy the `.qmd` template** regression exercise of Emilia to work with **or create your own** Quarto document in RStudio (*File / New File / Quarto Document*). In RStudio you can toggle between the source and a visual editor for Quarto markdown.

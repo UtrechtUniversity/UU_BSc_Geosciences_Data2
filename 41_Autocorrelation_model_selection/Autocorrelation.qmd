@@ -4,7 +4,6 @@ format: gfm
 ---
 We will follow the textbook's chapter 11.7 and use data on the trends in atmospheric carbon dioxide from the National Oceanic and Atmospheric Administration (NOAA, Fig. 11.9). In 1958, C.D. Keeling started monitoring $CO_2$ levels in the Mauna Loa Observatory on Hawaii. It was the first continuous monitoring programme and provided evidence for the rise of $CO_2$ concentration in the atmosphere. You can find more about it on the [curve's official website](https://keelingcurve.ucsd.edu/).
 
-This material may be protected by copyright.
 Exercise based on [T. Haslwanter's textbook materials](https://github.com/thomas-haslwanter/statsintro-python-2e/blob/master/ipynbs/11_timeSeries.ipynb).
 
 # Code
@@ -19,14 +18,14 @@ from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa.arima.model import ARIMA
 import ssl
-
-ssl._create_default_https_context = ssl._create_unverified_context
 ```
+
+The original dataset is provided in a format that is not easy for automatic machine reading (e.g. the column headers occupy different number of lines). So to read it in, you would need to make it machine-friendly, e.g. one row = one observation. We provide this cleaned dataset for you.
 
 Read in the dataset:
 ```{python}
-url = 'https://www.esrl.noaa.gov/gmd/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-df = pd.read_csv(url, skiprows=53, sep='\s+')
+path = '../Data/monthly_in_situ_co2_mlo.csv'
+df = pd.read_csv(path, sep=',')
 ```
 
 Assign names to variables:
