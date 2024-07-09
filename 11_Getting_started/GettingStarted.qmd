@@ -25,7 +25,7 @@ import numpy as np
 import scipy.stats as stats
 ```
 
-Now we are going to take a look at the first dataset which contains information about the amount of precipitation in the Netherlands.
+Now we are going to take a look at the first dataset which contains information about the amount of precipitation in the Netherlands. We tell pandas to parse the date information, and use it as row labels:
 
 ``` python
 precip = pd.read_csv("../Data/annualPrecipitation.csv", parse_dates=True, index_col=0)
@@ -63,17 +63,17 @@ On of the first things we often do is test if data follows a Gaussian distributi
 
 ### Central limit theorem
 
-In research, to get a good idea of a population mean (\$\\mu\$), ideally you’d collect data from multiple random samples within the population. A **sampling distribution of the mean** is the distribution of the means of these different samples.
+In research, to get a good idea of a population mean (\$\\mu\$), ideally you'd collect data from multiple random samples within the population. A **sampling distribution of the mean** is the distribution of the means of these different samples.
 
-The central limit theorem shows the following:
+From probability theory, we know the following asymptotic statements:
 
 -   Law of Large Numbers: As you increase sample size (or the number of samples), then the sample mean will approach the population mean.
 
--   With multiple large samples, the sampling distribution of the mean is normally distributed, even if your original variable is not normally distributed.
+-   Central limit theorem: With multiple large samples, the sampling distribution of the mean is normally distributed, even if your original variable is not normally distributed.
 
-Parametric statistical tests typically assume that samples come from normally distributed populations, but the central limit theorem means that this assumption isn’t necessary to meet when you have a large enough sample.
+Parametric statistical tests typically assume that samples come from normally distributed populations, but the central limit theorem means that this assumption isn't necessary to meet when you have a large enough sample.
 
-You can use parametric tests for large samples from populations with any kind of distribution as long as other important assumptions are met. It depends on the how heterogenous your data is but large samples in the earth sciences can range from 30 records to 10.000 of thousands of observations.
+You can use parametric tests for large samples from populations with any kind of distribution as long as other important assumptions are met. It depends on how heterogenous your data is, but large samples in the earth sciences can range from 30 records to 10.000 of thousands of observations.
 
 ### Testing if your data is normally distributed
 
@@ -91,8 +91,8 @@ Another way is making a quantile-quantile plot of your data.
 
 ``` python
 from statsmodels.graphics.gofplots import qqplot
-## First we need to sort the data for qqplot to work with it that's why we use precip.sort_values("Precip") to sort the precipitation data from low to high. "Precip is the name of the column in which we have the data (you can check this with precip.head())."
-qqplot(precip.sort_values("Precip"), line='s')
+## For the quantile plot, we need to extract the column from the dataframe that contains the precipitation data. You can get the column names of a dataframe df using df.columns. Here, we have only one column named "Precip", containing precipitation data."
+qqplot(precip["Precip"], line='s')
 ```
 
 ![](images/clipboard-1121669530.png)
@@ -103,7 +103,7 @@ In the figure you see the theoretical quantiles of the normal distribution and h
 
 *Would you say the data is normally distributed based on this visual inspection of the data and why?*
 
-There is also a more quantitative way of checking if data is normally distributed, which is using a statistical normality test. One of the more commonly used test for this is the Shapiro Wilk Test. The [Shapiro-Wilk test](#0) evaluates a data sample and quantifies how likely it is that the data was drawn from a Gaussian distribution, named for Samuel Shapiro and Martin Wilk. In practice, the Shapiro-Wilk test is believed to be a reliable test of normality, although there is some suggestion that the test may be suitable for smaller samples of data, e.g. thousands of observations or fewer.
+There is also a more quantitative way of checking if data is normally distributed, which is using a statistical normality test. One of the more commonly used test for this is the Shapiro Wilk Test. The [Shapiro-Wilk test](#0) evaluates a data sample and quantifies how likely it is that the data was drawn from a Gaussian distribution, named for Samuel Shapiro and Martin Wilk. In practice, the Shapiro-Wilk test is believed to be a reliable test of normality, although there is some suggestion that the test may be suitable for smaller samples of data, e.g. thousands of observations or fewer. Note that the Shapiro-Wilk test examines the null hypothesis that the data is normally distributed. If it returns a p value lower than 0.05, the null hypothesis "the data follows a normal distribution" is rejected.
 
 #### Question 3
 
@@ -133,7 +133,7 @@ Precip    139.186794
 dtype: float64
 ```
 
-You can see that the Netherlands has a mean $\pm$ standard deviation of around $802\pm139~mm~y^{-1}$ precipitation. This amount varies year by year, and thus it can matter how many years of data you have to get the mean values. One of the important element is the amount of years of observations that are available. **We will now explore the impact of the length of the data record on the value we find for the average annual precipitation.**
+You can see that the Netherlands has a mean $\pm$ standard deviation (1 $\sigma$) of around $802\pm139~mm~y^{-1}$ precipitation. This amount varies year by year, and thus it can matter how many years of data you have to get the mean values. One of the important element is the amount of years of observations that are available. **We will now explore the impact of the length of the data record on the value we find for the average annual precipitation.**
 
 #### Question 4
 
@@ -161,14 +161,14 @@ Year
 samplePrecip.mean()
 ```
 
-You will find that the mean precipitation for this sample is $947~mm~y^{-1}$, compared to the $802~mm~y^{-1}$ for the entire sample. You can see that these two values are different, but the question is if they are also statistically different. For this you will do an hypothesis test. The first step in constructing a hypothesis test is to be clear about what the null and alternative hypotheses are. This isn’t too hard to do. Our null hypothesis $H_{0}$, is that the true population mean $\mu$ for annual precipitation is $802~mm~y^{-1}$; and our alternative hypothesis is that the population mean *isn’t* $802~mm~y^{-1}$. If we write this in mathematical notation, these hypotheses becomes
+You will find that the mean precipitation for this sample is $947~mm~y^{-1}$, compared to the $802~mm~y^{-1}$ for the entire sample. You can see that these two values are different, but the question is if they are also statistically different. For this you will do an hypothesis test. The first step in constructing a hypothesis test is to be clear about what the null and alternative hypotheses are. This isn't too hard to do. Our null hypothesis $H_{0}$, is that the true population mean $\mu$ for annual precipitation is $802~mm~y^{-1}$; and our alternative hypothesis is that the population mean *isn't* $802~mm~y^{-1}$. If we write this in mathematical notation, these hypotheses becomes
 
 $$
 H_{0}:\mu_{1} = \mu_{2}\\
 H_{1}:\mu_{1}\neq\mu_{2}
 $$
 
-though to be honest this notation doesn’t add much to our understanding of the problem, it’s just a compact way of writing down what we’re trying to learn from the data. Before we can do this we need to make a couple of assumptions about the data:
+though to be honest this notation doesn't add much to our understanding of the problem, it's just a compact way of writing down what we're trying to learn from the data. Before we can do this we need to make a couple of assumptions about the data:
 
 1.  The two samples are independent
 
