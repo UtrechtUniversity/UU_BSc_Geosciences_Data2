@@ -6,22 +6,22 @@ toc-title: Table of contents
 
 # Background to this example
 
-Data comes in all sorts and forms within Earth sciences, from long term
+Data come in all sorts and forms within Earth sciences, from long term
 paleo records describing Oxygen levels in the atmosphere, timeseries of
-river discharge and spatio-temporal satellite images monitoring the
+river discharge to spatio-temporal satellite images monitoring the
 vegetation. Within Earth Sciences we work with all these types of data
 to understand the past, present and future of the Earth system. Before
 we can work with these types of data we need to understand what we can
-and cannot do with the data, which conclusion we can and cannot draw.
+and cannot do with the data, which then influences the conclusions we can and cannot draw.
 
-**In this practical we will start looking at different types of data and
-distributions of these data to get a better understanding of the
+**In this practical we will start by looking at different types of data and
+the distribution of these data. This will give us a better understanding of the
 different types of data and their distributions.**
 
 Let's start with using Python again by opening your Conda environment
 and then opening Spyder (for detailed instructions please look back at
-the first practical). We start by loading some of the stand libraries in
-this course. We use:
+the first practical). We will start by loading some of the standard libraries we use in
+this course:
 
 -   Pandas (data management and data handling)
 
@@ -47,9 +47,9 @@ information about the amount of precipitation in the Netherlands.
 precip = pd.read_csv("../Data/annualPrecipitation.csv", parse_dates=True, index_col=0)
 ```
 
-In this dataset you find the annual sum of precipitation in the last
-century. The data is now stored in the variable *precip.* You can
-explore the data by looking at the data within this variable with:
+In this dataset you will find the annual sum of precipitation for the last
+century. The data is stored in the variable called *precip.* You can
+explore the *precip.* data by with the following code:
 
 ``` python
 precip.head()
@@ -66,7 +66,7 @@ Year
 ```
 
 Alternatively you can explore the data with the variable explorer that
-you find within Spyder
+you find within the Spyder consule
 
 ![By clicking on the variable you can now look at the values within the
 variable explorer](images/Screenshot%202024-06-21%20at%2015.45.17.png)
@@ -75,9 +75,9 @@ variable explorer](images/Screenshot%202024-06-21%20at%2015.45.17.png)
 
 # Starting with Pandas data analysis
 
-Next we go and look at the data by visualizing the data. Within Pandas
+Next we will go take a closer look at the *precip.* in the netherlands by visualizing the data. Within the Pandas package
 there are multiple opportunities to explore and visualize the data.
-There are lots of resources to help you with using Pandas and provide
+There are lots of resources available to help you when using Pandas and provide
 nice tips, trick and examples. For example you can use a **cheat sheet**
 to quickly remember and double check which functions to use
 (e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>). You can also
@@ -86,16 +86,16 @@ data and types of analysis (<https://realpython.com/search?q=pandas>).
 
 ## Normal distributions
 
-On of the first things we often do is test if data follows a Gaussian
-distribution and is thus normally distributed. This typically means that
-the sample we have obtained is the result of many random sample from a
-distribution. Common example are the height or weight of people, but it
-is also very common in many examples in the Earth sciences like air
+One of the first things we often need to do is test if data we are analysing follows a Gaussian
+distribution and is thus considered to be normally distributed. This typically means that
+the samples we have obtained is representitive of many random samples from the
+distribution. Common examples of normally distributed data are the height or weight of people, but it
+is also very common in many examples within Earth sciences, like air
 temperature.
 
 ### Central limit theorem
 
-In research, to get a good idea of a population mean (\$\\mu\$), ideally
+In research, to get a good idea of the population mean (\$\\mu\$), ideally
 you'd collect data from multiple random samples within the population. A
 **sampling distribution of the mean** is the distribution of the means
 of these different samples.
@@ -123,7 +123,7 @@ observations.
 ### Testing if your data is normally distributed
 
 You can test if a dataset is normally distributed, either with a visual
-inspection of the data or a statistical test. Below we will explore both
+inspection of the data or by using a statistical test. Below we will explore both
 options.
 
 #### Question 1
@@ -176,7 +176,7 @@ dataset. You can use the function stats.shapiro, for which you find the
 manual here:
 <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
 
-If you did everything well you find that:
+If you did everything well you find the below results printed out for you:
 
 ``` python
 ShapiroResult(statistic=0.9821208214707591, pvalue=0.11845170228364588)
@@ -187,7 +187,7 @@ normal distribution and is thus normally distributed.
 
 ## Testing if two samples have the same mean
 
-Let's start by exploring some statistical properties of the rainfall
+Let's start by exploring some statistical properties of the precipitation
 data, starting with the mean annual precipitation and its standard
 deviation.
 
@@ -325,9 +325,9 @@ precipitation in the Bilt (*$\mu_{1}$*).*
 
 # Looking for trends in your data
 
-With climate change meteorological variables are likely to change, we
-know that temperatures are increasing but what about precipitation. We
-could test this by looking splitting our long timeseries into multiple
+With climate change, meteorological variables are likely to change in the fture, we
+know that temperatures are increasing but what about precipitation? We
+could test this by splitting our long timeseries into multiple
 parts and checking if the mean annual precipitation is changing.
 
 #### Question 7
