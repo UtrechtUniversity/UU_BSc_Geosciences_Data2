@@ -137,3 +137,4 @@ dmypy.json
 
 # RStudio bits
 *.Rproj
+.DS_Store
