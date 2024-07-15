@@ -2,6 +2,9 @@
 title: "Seasonality and autocorrelation"
 format: gfm
 ---
+
+In Geoscience we often measure a variable though time. Just like in regression
+
 We will follow the textbook's chapter 11.7 and use data on the trends in atmospheric carbon dioxide from the National Oceanic and Atmospheric Administration (NOAA, Fig. 11.9). In 1958, C.D. Keeling started monitoring $CO_2$ levels in the Mauna Loa Observatory on Hawaii. It was the first continuous monitoring programme and provided evidence for the rise of $CO_2$ concentration in the atmosphere. You can find more about it on the [curve's official website](https://keelingcurve.ucsd.edu/).
 
 Exercise based on [T. Haslwanter's textbook materials](https://github.com/thomas-haslwanter/statsintro-python-2e/blob/master/ipynbs/11_timeSeries.ipynb).
@@ -28,24 +31,28 @@ path = '../Data/monthly_in_situ_co2_mlo.csv'
 df = pd.read_csv(path, sep=',')
 ```
 
-Assign names to variables:
-```{python}
-df.columns = ['year', 'month', 'time', 'co2', 'deseasoned', 'nr_days', 'std_days', 'uncertainty']
-```
-
 Preview the dataset:
 ```{python}
 df.head()
 ```
 
+If we wanted to plot the values in time, we could currently do it either by month number, or by the year, but not both. You need to create an extra variable that will represent the time in a continuous manner. 
+
+<details>
+  <summary>Solution</summary>
+```{python}
+df['time'] = df['Year'].map(str) + '.' + df['Month'].map(str)
+```
+
 Visualize it:
 ```{python}
-df.plot('time', 'co2')
+df.plot('time', 'CO2')
 ```
 
 Here we use the function `seasonal_decompose` from `statsmodels` to separate the linear trend from the seasonal component. The measurements are taken every month so the period of seasonality is 12. We use the additive model because the amplitude of the seasonal component does not change with the level of the time series - see eq. 11.13 in the textbook. 
+
 ```{python}
-result_add = seasonal_decompose(df['co2'], model='additive', period=12, extrapolate_trend='freq')
+result_add = seasonal_decompose(df['CO2'], model='additive', period=12, extrapolate_trend='freq')
 ```
 
 Now we can plot the additive components and save the figure:
@@ -81,7 +88,7 @@ plt.show()
 
 ## Fit an ARIMA model
 ```{python}
-model = ARIMA(result_add.resid, order=(1,0,1))
+model = ARIMA(result_add.trend, order=(1,0,1))
 model_fit = model.fit()
 print(model_fit.summary())
 ```
