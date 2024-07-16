@@ -20,6 +20,7 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa.arima.model import ARIMA
+import statsmodels.formula.api as sm
 import ssl
 ```
 
@@ -51,9 +52,16 @@ df.plot('time', 'CO2')
 
 Here we use the function `seasonal_decompose` from `statsmodels` to separate the linear trend from the seasonal component. The measurements are taken every month so the period of seasonality is 12. We use the additive model because the amplitude of the seasonal component does not change with the level of the time series - see eq. 11.13 in the textbook. 
 
+### Decomposition into trend, seasonality, and residuals
+
 ```{python}
-result_add = seasonal_decompose(df['CO2'], model='additive', period=12, extrapolate_trend='freq')
+result_add = seasonal_decompose(df['CO2'], 
+model='additive', 
+period=12, 
+extrapolate_trend='freq')
 ```
+
+What does the last line, `extrapolate_trend='freq'`, do? Use the [statsmodels documentation](https://www.statsmodels.org/dev/generated/statsmodels.tsa.seasonal.seasonal_decompose.html) to understand all the parameters.
 
 Now we can plot the additive components and save the figure:
 ```{python}
@@ -63,6 +71,22 @@ plt.savefig('TSA_decomposition.jpg', dpi=200, pil_kwargs=pil_kwargs)
 plt.show()
 ```
 
+### Zooming in on the trend
+
+In some applications, we might want to only understand one component of the time series. In the case of the $CO_2$ data, the secular trend is of wide interest and we might want to know how fast it is increasing.
+
+Now we have to account for the fact that $CO_2$ levels in each year depend on the value in the previous year. This is exactly why we cannot apply regression analysis to the entire $CO_2$ variable. But we can use the *i - 1* value to predict the *i*th value. 
+
+```{python}
+predicted = df['CO2'].shift(1)
+predictor = df['CO2']
+```
+
+```{python}
+model_fit = sm.ols(predictor[1,:], predicted[1,:]).fit()
+print(model_fit.summary2())
+
+```
 The first three plots are easy to interpret but what is the last one, residuals? These are the deviations from the trend and seasonality. So these are "anomalies" which cannot be explained by the seasonality or the continuous trend.
 ```{python}
 %matplotlib inline
