@@ -63,11 +63,9 @@ extrapolate_trend='freq')
 
 What does the last line, `extrapolate_trend='freq'`, do? Use the [statsmodels documentation](https://www.statsmodels.org/dev/generated/statsmodels.tsa.seasonal.seasonal_decompose.html) to understand all the parameters.
 
-Now we can plot the additive components and save the figure:
+Now we can plot the additive components:
 ```{python}
 result_add.plot()
-pil_kwargs = {'quality': 90}
-plt.savefig('TSA_decomposition.jpg', dpi=200, pil_kwargs=pil_kwargs)
 plt.show()
 ```
 
@@ -77,16 +75,29 @@ In some applications, we might want to only understand one component of the time
 
 Now we have to account for the fact that $CO_2$ levels in each year depend on the value in the previous year. This is exactly why we cannot apply regression analysis to the entire $CO_2$ variable. But we can use the *i - 1* value to predict the *i*th value. 
 
-```{python}
-predicted = df['CO2'].shift(1)
-predictor = df['CO2']
-```
+We use the 'shift' function to create a new variable that is the the *i - 1*  value of the trend.
 
 ```{python}
-model_fit = sm.ols(predictor[1,:], predicted[1,:]).fit()
+trend = pd.DataFrame(result_add.trend)
+trend['time'] = df['time']
+trend['predicted'] = trend['trend'].shift(1)
+```
+
+Now we can use ordinary least squares regression to fit a model that predicts the current trend value based on the previous one:
+
+```{python}
+model_fit = sm.ols('predicted~trend', data=trend).fit()
 print(model_fit.summary2())
-
 ```
+
+#### Task 1
+
+Extracts the coefficients of the model and make a plot using them. This plot represents your model fit. Overlie on it the trend values we calculated using decomposition, as well as the original time series. How good is your fit?
+
+### Seasonality
+
+Why is the $CO_2$ level so variable during the year? And how regular is this variability? We might want to characterise it 
+
 The first three plots are easy to interpret but what is the last one, residuals? These are the deviations from the trend and seasonality. So these are "anomalies" which cannot be explained by the seasonality or the continuous trend.
 ```{python}
 %matplotlib inline
