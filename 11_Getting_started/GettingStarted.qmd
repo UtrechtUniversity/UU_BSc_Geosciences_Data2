@@ -103,7 +103,7 @@ In the figure you see the theoretical quantiles of the normal distribution and h
 
 *Would you say the data is normally distributed based on this visual inspection of the data and why?*
 
-There is also a more quantitative way of checking if data is normally distributed, which is using a statistical normality test. One of the more commonly used test for this is the Shapiro Wilk Test. The [Shapiro-Wilk test](#0) evaluates a data sample and quantifies how likely it is that the data was drawn from a Gaussian distribution, named for Samuel Shapiro and Martin Wilk. In practice, the Shapiro-Wilk test is believed to be a reliable test of normality, although there is some suggestion that the test may be suitable for smaller samples of data, e.g. thousands of observations or fewer. Note that the Shapiro-Wilk test examines the null hypothesis that the data is normally distributed. If it returns a p value lower than 0.05, the null hypothesis "the data follows a normal distribution" is rejected.
+There is also a more quantitative way of checking if data is normally distributed, which is using a statistical normality test. One of the more commonly used test for this is the Shapiro Wilk Test. The [Shapiro-Wilk test](https://en.wikipedia.org/wiki/Shapiro–Wilk_test) evaluates a data sample and quantifies how likely it is that the data was drawn from a Gaussian distribution, named for Samuel Shapiro and Martin Wilk. In practice, the Shapiro-Wilk test is believed to be a reliable test of normality, although there is some suggestion that the test may be suitable for smaller samples of data, e.g. thousands of observations or fewer. Note that the Shapiro-Wilk test examines the null hypothesis that the data is normally distributed. If it returns a p value lower than 0.05, the null hypothesis "the data follows a normal distribution" is rejected.
 
 #### Question 3
 
@@ -275,7 +275,7 @@ There are some tricks that can help you to better work with your data. You might
 
 ``` python
 Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0)
-annualTas = Tas.resample("YE").mean()
+annualTas = Tas.resample("Y").mean()
 ```
 
 ``` python
