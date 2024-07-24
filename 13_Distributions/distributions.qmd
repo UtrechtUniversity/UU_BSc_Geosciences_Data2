@@ -1,12 +1,10 @@
-# Starting to work with Pandas
+# Getting started with data analysis
 
 # Background to this example
 
-When working in Python for data analysis, the Pandas packages is one most commonly used packages. Pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool, built on top of the Python programming language. It allows you to load, manipulate, analyse, visualize and write data in other file formats and ways than the original data.
+Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
 
-**In this practical we will start exploring some of the basic functions in Pandas, learn about the different formats and ways you can use Pandas.**
-
-There are lots of resources to help you with using Pandas and provide nice tips, trick and examples. For example you can use a **cheat sheet** to quickly remember and double check which functions to use (e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>). You can also find lots of good examples that use Pandas online for different types of data and types of analysis (<https://realpython.com/search?q=pandas>).
+**In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.**
 
 Let's start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:
 
@@ -18,7 +16,7 @@ Let's start with using Python again by opening your Conda environment and then o
 
 -   Scipy (statistical analysis)
 
-## Making your first dataframe
+## Code
 
 ``` python
 import pandas as pd
@@ -27,297 +25,75 @@ import numpy as np
 import scipy.stats as stats
 ```
 
-Let us first generate some random numbers to work with, for that we sample from normal distribution with mean ($\mu$) = 0 and a standard deviation ($\sigma$) of 1. For this we use the Numpy package and more specifically the function [random.normal](https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html). We will create two random datasets to play around with and explore the potential of Pandas. For the purpose of this tutorial we also set the [seed](https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html) of the random number generator. A random seed (or seed state, or just seed) is a number (or vector) used to initialize a pseudorandom number generator. This ensure that when we select the random numbers in for example a exercise like this we always draw the same "random" numbers.
+Now we are going to take a look at the first dataset which contains information about the daily temperatures in the Netherlands. We tell pandas to parse the date information, and use it as row labels:
 
 ``` python
-np.random.seed(1)
-randomData_1 = np.random.normal(loc=0, scale=1, size=100)
-randomData_2 = np.random.normal(loc=0, scale=1, size=100)
+Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0)
+Precip = pd.read_csv("../Data/dailyPrecipitation.csv", parse_dates=True, index_col=0)
+Evap = pd.read_csv("../Data/dailyEvaporation.csv", parse_dates=True, index_col=0)
 ```
 
-Then we put the the random data into a [Pandas Dataframe](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html) for more easy manipulation. For this we merge the two datasets together, labeling the first one as 'A' and the second dataset as 'B'.
+# Normal or not
 
-``` python
-df = pd.DataFrame({'A':randomData_1, 'B':randomData_2}, columns=['A','B'])
-```
-
-``` python
-           A         B
-0   1.624345 -0.447129
-1  -0.611756  1.224508
-2  -0.528172  0.403492
-3  -1.072969  0.593579
-4   0.865408 -1.094912
-..       ...       ...
-95  0.077340 -1.627438
-96 -0.343854  0.602319
-97  0.043597  0.420282
-98 -0.620001  0.810952
-99  0.698032  1.044442
-
-[100 rows x 2 columns]
-```
-
-When you look at the Dataframe you will see a couple of typical Pandas things, firstly you see the randomly generated numbers, you see the column labels 'A' and 'B' and lastly you see the numbers 0 to 99 indicating the rows numbers or in this case also the index of the dataframe. Both the [index](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.index.html) and the [columns](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.columns.html) are very important elements as they provide unique identifiers for each individual data entry in the dataframe, a bit like coordinates on a map. Also note that Python (and thus Pandas) by defaults start counting at 0 rather than 1 which is sometimes the case for other programming languages.
-
-The index and column names can be changed with the [rename](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html) and [set_index](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.set_index.html) function. Use the function pages you can try and follow the examples below
-
-``` python
-df = df.rename(columns={"B":"C"})
-```
-
-``` python
-           A         C
-0   1.624345 -0.447129
-1  -0.611756  1.224508
-2  -0.528172  0.403492
-3  -1.072969  0.593579
-4   0.865408 -1.094912
-..       ...       ...
-95  0.077340 -1.627438
-96 -0.343854  0.602319
-97  0.043597  0.420282
-98 -0.620001  0.810952
-99  0.698032  1.044442
-
-[100 rows x 2 columns]
-```
-
-Or changing the index using
-
-``` python
-df = df.set_index(np.arange(10,110))
-```
-
-``` python
-            A         C
-10   1.624345 -0.447129
-11  -0.611756  1.224508
-12  -0.528172  0.403492
-13  -1.072969  0.593579
-14   0.865408 -1.094912
-..        ...       ...
-105  0.077340 -1.627438
-106 -0.343854  0.602319
-107  0.043597  0.420282
-108 -0.620001  0.810952
-109  0.698032  1.044442
-
-[100 rows x 2 columns]
-```
-
-You will see now that the index have changed, ranging from 10 tot 109 rather than 0 to 99 before. One of the powerful characteristics of Pandas is that it can also use dates as an index and that you can use these to do some time operations. To make a string of correctly formatted dates, you can use the [date_range](https://pandas.pydata.org/docs/reference/api/pandas.date_range.html) function. The function requires either a start and end date or a length and frequency of the date format. If you look at the example below you see that we use the len function to find the total number of rows and we use the freq = 'D' which gives daily values. You can try changing it to other frequencies as well, like for example 'W' for weekly or 'Y' for yearly (more options can be found [here](https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases)). We give an example below
-
-``` python
-df = df.set_index(pd.date_range(start='1/1/2020', periods=len(df), freq='D'))
-```
-
-``` python
-                   A         C
-2020-01-01  1.624345 -0.447129
-2020-01-02 -0.611756  1.224508
-2020-01-03 -0.528172  0.403492
-2020-01-04 -1.072969  0.593579
-2020-01-05  0.865408 -1.094912
-             ...       ...
-2020-04-05  0.077340 -1.627438
-2020-04-06 -0.343854  0.602319
-2020-04-07  0.043597  0.420282
-2020-04-08 -0.620001  0.810952
-2020-04-09  0.698032  1.044442
-
-[100 rows x 2 columns]
-```
-
-Now we can do all kind of things to explore or manipulate the data. Firstly we can look at some common statistical properties, like the [mean](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html), [min](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html), [max](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html) or [median](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.median.html) values of rows and columns.
-
-``` python
-df.mean()
-```
-
-This will give you the mean over the columns. As you can see in the documentation of Pandas [mean](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html) you can also specify the axis which is set by default to 0, which means that it will take the mean over the different rows/indexes. This results in two numbers, one is the mean for column A and the other for column C. If you change this axis setting to 1 you will get the mean over the columns and thus a mean per row, resulting in 100 values in this case. You can also set it to axis=None which will give you the mean over the entire dataframe
-
-``` python
-df.mean(axis=None)
-```
-
-``` python
-0.1066888148479486
-```
+Let's start with exploring different data sources, we want to identify which distributions they follow.
 
 #### Question 1
 
-*Now try and compute the min, max and median for the same dataset.*
+*Let's start with a visual inspection. A good way to start is to make a histogram of you data. Use the cheat sheet to explore which function to use to make a histograms of the different meteorological variables.*
 
-We can also do other forms of data manipulation, for example with the [resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html) function that can help you to aggregate or resample data to different frequencies. This is for example very useful when it comes to calculating long term average, or going from hourly data to daily data. For the sake of the example we will continue to keep working with the same dataframe, but of course in the rest of you proffessional life you will more likely do this for real data.
-
-``` python
-df.resample("W").mean()
-```
-
-``` python
-                   A         C
-2020-01-05  0.055371  0.135907
-2020-01-12 -0.263757 -0.190761
-2020-01-19 -0.240095 -0.215449
-2020-01-26  0.321162  0.318309
-2020-02-02 -0.367397 -0.055023
-2020-02-09 -0.001452  0.134925
-2020-02-16 -0.075634  0.296567
-2020-02-23  0.184811  0.287754
-2020-03-01  0.366306 -0.219428
-2020-03-08  0.647443  0.067930
-2020-03-15  0.027477  0.410324
-2020-03-22 -0.133059  0.031299
-2020-03-29  0.106092  0.307538
-2020-04-05  0.285768  0.500578
-2020-04-12 -0.055556  0.719499
-```
-
-Here you have the weekly values, please not that for this instance Python will use the end of the working week as cutoff.
+As you might have seen some distributions are unlikely to be normal, but we have another way of testing this using the QQ-plot.
 
 #### Question 2
 
-*Use the [resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html) documentation to make 2-daily average of your original dataframe. You can use the example in the documentation as a source of inspiration.*
+*Let's continue with a second visual inspection. Use your knowledge from last week (or look back) to make a QQ plot of the meteorological variables. What is your conclusion based on this analysis, are the variables normally distributed?*
 
-# Exploring and manipulating the data
+#### Question 3
 
-*When you have your data in the system it will be useful to explore the properties of your data to decide how you will continue with further analysis.*
+*Try to implement the Shapiro Wilks test in Python on the different dataset. You can use the function stats.shapiro, for which you find the manual here: <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
 
-``` python
-df.describe()
-```
+#### Question 4
 
-``` python
-                A           C
-count  100.000000  100.000000
-mean     0.060583    0.152795
-std      0.889615    0.936690
-min     -2.301539   -2.434838
-25%     -0.613818   -0.300010
-50%      0.064074    0.236616
-75%      0.637410    0.743020
-max      2.185575    2.528326
-```
+*Based on the different test, histogram, QQ-plot and statistical test with Shapiro Wilks, what are your conclusions? They do not have to align for the different tests.*
 
-``` python
-df.sort_index(axis=1, ascending=False)
-```
+If we assume temperature to be normally distributed we can also derive the two mean statistical properties, namely the mean and standard deviation.
 
-``` python
-df.sort_values(by="A", ascending=False)
-```
+#### Question 5
 
-``` python
-df.["A"]
-```
+*Obtain the mean and standard deviation for the temperature record.*
 
-``` python
-df.loc["2020-01-01"]
-```
+Now that we got the mean and standard deviation we can calculate the possibility of daily temperature exceeding certain thresholds. You can use the [stats.norm.cdf()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html) function for this, and then provide the mean and standard deviation you found earlier.
 
-``` python
-df["A"].loc["2020-01-01"]
-```
+#### Question 6
 
-``` python
-df.iloc[0:3]
-```
+*What is the chance of having a daily temperature above 20C*
 
-``` python
-df["A"].iloc[0:3]
-```
+If all is well you found that in roughly 5% of the days we have temperatures above 20C in the Netherlands. If this number seems low to you, mind you that we are here talking daily average temperatures and not maximum temperatures that are often reported on the news.
 
-``` python
-df[df > 0]
-```
+A question we often hear in the media, is climate change already happening and is the world really getting warmer? Let's test that for the Netherlands.
 
-``` python
-df[df["A"] > 0]
-```
+#### Question 7
 
-``` python
-df.at["2020-01-01", "A"] = 0
-```
+*Select the last 20 years on the record and compare those to the entire record that we have. First select the years, calculate the new mean and standard deviation and then see if we are more likely to observe temperatures above 20C compared to the full record from 1901 onwards.*
 
-``` python
-df.iat[0, 1] = 0
-```
+If you did it well you find that the probability of Tas \> 20C has increased from 5% to 7%. So far we have done this mostly with the statistical approximiation of the data (e.g. a fitted normal distribution), however we also have the real data available. As a tip look at the startingPandas practical on how to test an entire dataframe for a certain condition.
 
-``` python
-df.iat[3,:] = 0
-```
+##### Question 8
 
-``` python
-df1 = df[df > -1.0]
-```
+*Count the number of days that exceed or equal \>= 20C for the entire record and the last 20 years and convert these into fractions.*
 
-``` python
-df1.describe()
-```
+If you did it well you find that in the total record we have 1436 days with temperatures \>= 20C for a total of 45097 days, which results in 3.2% of the days. For the last 20 years we 420 years \>= 20C for a total record length of 7305 which results in 5.7% of the days. As you can see these numbers don't match the once you found for Question 7.
 
-What do you notice compared to df.describe()
+##### Question 9
 
-# Dealing with missing values
+*Using the QQ plot you made earlier, can you see a reason why the normal distribution is not doing a good job for this assessment, especially for the high values. Would you expect that the answers for Questions 7 and 8 are closer when looking at \<= 0C*
 
-``` python
-df1.dropna(how="any")
-```
+#### Question 10
 
-``` python
-df1.fillna(value=5)
-```
+*Repeat Questions 6, 7 and 8 but now for <= 0C, was your initial estimate correct?*
+If all went well you find that the chance of <= 0C temperatures is around 6.5% for the entire data record (depending on the method used) and 4.1% for the last 20 years.
 
-``` python
-dp.isna(df1)
-```
+#### Question 11
 
-# Merging different data
+*Can you conclude from your assessment of Tas <= 0C that temperatures are rising and that iceskating becomes less and less likely? Or would you like to propose additional calculations or data requirements?*
 
-``` python
-randomData_3 = np.random.normal(loc=0, scale=1, size=5)
-df2 = pd.DataFrame({'D':randomData_3}, columns=['D'], index=pd.date_range(start='1/1/2020', periods=len(randomData_3), freq='D'))
-df3 = df.join(df2)
-```
-
-``` python
-df3.describe()
-```
-
-# Simple visualizations of your data
-
-``` python
-df3.plot()
-```
-
-``` python
-df3.cumsum().plot()
-```
-
-``` python
-df3.plot(kind='scatter', x='A',y='C')
-```
-
-# Working with categorical data
-
-``` python
-weekDays = pd.date_range(start='1/1/2020', periods=100, freq='D').strftime("%A")
-df4 = pd.DataFrame({'Weekday':pd.Categorical(weekDays)}, columns=['Weekday'], index=pd.date_range(start='1/1/2020', periods=len(weekDays), freq='D'))
-df5 = df3.join(df4)
-```
-
-We have now added a column with all the weekday. In the first line we transformed the datetime array to week names using the comment .strftime("%A"). You can use strftime for all kind of time conversation or rewriting options. You can explore <https://strftime.org> for options, they are also used in other programming languages. The pd.Categorical is used to enforce that Pandas sees the data as categorical. You can check this by using
-
-``` python
-df5.dtypes
-
-A           float64
-C           float64
-D           float64
-Weekday    category
-dtype: object
-```
-
-``` python
-df5.groupby("Weekday").mean()
-```
+Using the same weather data the [KNMI did an in-depth assessment](https://www.knmi.nl/over-het-knmi/nieuws/laatste-elfstedentocht-nu-25-jaar-geleden/), you can compare your answers to what they found and see if your finding are in line.

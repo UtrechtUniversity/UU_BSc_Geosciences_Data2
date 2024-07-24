@@ -85,12 +85,14 @@ annualData.describe()
 ``` python
 meteoData.dropna()
 ```
+
 No data prior to 1957 and the data of 1957 is incomplete, so we drop all years up to 1957. But we do have to remember that the last year is also not complete so we also drop that.
 
 ``` python
 annualData = meteoData[["Precip", "Evap"]].dropna().resample("YE").sum().loc["1958":"2023"]
 annualData.index = annualData.index.strftime('%Y')
 ```
+
 Attempt number 2
 
 ``` python
@@ -124,4 +126,3 @@ annualData["PrecipDef"].plot()
 ``` python
 annualData["PrecipDef"].plot(kind="hist")
 ```
-
