@@ -37,7 +37,7 @@ this course. We use:
 
 -   Scipy (statistical analysis)
 
-## Code
+## Making your first dataframe
 
 ``` python
 import pandas as pd
@@ -104,3 +104,318 @@ individual data entry in the dataframe, a bit like coordinates on a map.
 Also note that Python (and thus Pandas) by defaults start counting at 0
 rather than 1 which is sometimes the case for other programming
 languages.
+
+The index and column names can be changed with the
+[rename](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html)
+and
+[set_index](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.set_index.html)
+function. Use the function pages you can try and follow the examples
+below
+
+``` python
+df = df.rename(columns={"B":"C"})
+```
+
+``` python
+           A         C
+0   1.624345 -0.447129
+1  -0.611756  1.224508
+2  -0.528172  0.403492
+3  -1.072969  0.593579
+4   0.865408 -1.094912
+..       ...       ...
+95  0.077340 -1.627438
+96 -0.343854  0.602319
+97  0.043597  0.420282
+98 -0.620001  0.810952
+99  0.698032  1.044442
+
+[100 rows x 2 columns]
+```
+
+Or changing the index using
+
+``` python
+df = df.set_index(np.arange(10,110))
+```
+
+``` python
+            A         C
+10   1.624345 -0.447129
+11  -0.611756  1.224508
+12  -0.528172  0.403492
+13  -1.072969  0.593579
+14   0.865408 -1.094912
+..        ...       ...
+105  0.077340 -1.627438
+106 -0.343854  0.602319
+107  0.043597  0.420282
+108 -0.620001  0.810952
+109  0.698032  1.044442
+
+[100 rows x 2 columns]
+```
+
+You will see now that the index have changed, ranging from 10 tot 109
+rather than 0 to 99 before. One of the powerful characteristics of
+Pandas is that it can also use dates as an index and that you can use
+these to do some time operations. To make a string of correctly
+formatted dates, you can use the
+[date_range](https://pandas.pydata.org/docs/reference/api/pandas.date_range.html)
+function. The function requires either a start and end date or a length
+and frequency of the date format. If you look at the example below you
+see that we use the len function to find the total number of rows and we
+use the freq = 'D' which gives daily values. You can try changing it to
+other frequencies as well, like for example 'W' for weekly or 'Y' for
+yearly (more options can be found
+[here](https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases)).
+We give an example below
+
+``` python
+df = df.set_index(pd.date_range(start='1/1/2020', periods=len(df), freq='D'))
+```
+
+``` python
+                   A         C
+2020-01-01  1.624345 -0.447129
+2020-01-02 -0.611756  1.224508
+2020-01-03 -0.528172  0.403492
+2020-01-04 -1.072969  0.593579
+2020-01-05  0.865408 -1.094912
+             ...       ...
+2020-04-05  0.077340 -1.627438
+2020-04-06 -0.343854  0.602319
+2020-04-07  0.043597  0.420282
+2020-04-08 -0.620001  0.810952
+2020-04-09  0.698032  1.044442
+
+[100 rows x 2 columns]
+```
+
+Now we can do all kind of things to explore or manipulate the data.
+Firstly we can look at some common statistical properties, like the
+[mean](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html),
+[min](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html),
+[max](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html)
+or
+[median](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.median.html)
+values of rows and columns.
+
+``` python
+df.mean()
+```
+
+This will give you the mean over the columns. As you can see in the
+documentation of Pandas
+[mean](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html)
+you can also specify the axis which is set by default to 0, which means
+that it will take the mean over the different rows/indexes. This results
+in two numbers, one is the mean for column A and the other for column C.
+If you change this axis setting to 1 you will get the mean over the
+columns and thus a mean per row, resulting in 100 values in this case.
+You can also set it to axis=None which will give you the mean over the
+entire dataframe
+
+``` python
+df.mean(axis=None)
+```
+
+``` python
+0.1066888148479486
+```
+
+#### Question 1
+
+*Now try and compute the min, max and median for the same dataset.*
+
+We can also do other forms of data manipulation, for example with the
+[resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html)
+function that can help you to aggregate or resample data to different
+frequencies. This is for example very useful when it comes to
+calculating long term average, or going from hourly data to daily data.
+For the sake of the example we will continue to keep working with the
+same dataframe, but of course in the rest of you proffessional life you
+will more likely do this for real data.
+
+``` python
+df.resample("W").mean()
+```
+
+``` python
+                   A         C
+2020-01-05  0.055371  0.135907
+2020-01-12 -0.263757 -0.190761
+2020-01-19 -0.240095 -0.215449
+2020-01-26  0.321162  0.318309
+2020-02-02 -0.367397 -0.055023
+2020-02-09 -0.001452  0.134925
+2020-02-16 -0.075634  0.296567
+2020-02-23  0.184811  0.287754
+2020-03-01  0.366306 -0.219428
+2020-03-08  0.647443  0.067930
+2020-03-15  0.027477  0.410324
+2020-03-22 -0.133059  0.031299
+2020-03-29  0.106092  0.307538
+2020-04-05  0.285768  0.500578
+2020-04-12 -0.055556  0.719499
+```
+
+Here you have the weekly values, please not that for this instance
+Python will use the end of the working week as cutoff.
+
+#### Question 2
+
+*Use the
+[resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html)
+documentation to make 2-daily average of your original dataframe. You
+can use the example in the documentation as a source of inspiration.*
+
+# Exploring and manipulating the data
+
+*When you have your data in the system it will be useful to explore the
+properties of your data to decide how you will continue with further
+analysis.*
+
+``` python
+df.describe()
+```
+
+``` python
+                A           C
+count  100.000000  100.000000
+mean     0.060583    0.152795
+std      0.889615    0.936690
+min     -2.301539   -2.434838
+25%     -0.613818   -0.300010
+50%      0.064074    0.236616
+75%      0.637410    0.743020
+max      2.185575    2.528326
+```
+
+``` python
+df.sort_index(axis=1, ascending=False)
+```
+
+``` python
+df.sort_values(by="A", ascending=False)
+```
+
+``` python
+df.["A"]
+```
+
+``` python
+df.loc["2020-01-01"]
+```
+
+``` python
+df["A"].loc["2020-01-01"]
+```
+
+``` python
+df.iloc[0:3]
+```
+
+``` python
+df["A"].iloc[0:3]
+```
+
+``` python
+df[df > 0]
+```
+
+``` python
+df[df["A"] > 0]
+```
+
+``` python
+df.at["2020-01-01", "A"] = 0
+```
+
+``` python
+df.iat[0, 1] = 0
+```
+
+``` python
+df.iat[3,:] = 0
+```
+
+``` python
+df1 = df[df > -1.0]
+```
+
+``` python
+df1.describe()
+```
+
+What do you notice compared to df.describe()
+
+# Dealing with missing values
+
+``` python
+df1.dropna(how="any")
+```
+
+``` python
+df1.fillna(value=5)
+```
+
+``` python
+dp.isna(df1)
+```
+
+# Merging different data
+
+``` python
+randomData_3 = np.random.normal(loc=0, scale=1, size=5)
+df2 = pd.DataFrame({'D':randomData_3}, columns=['D'], index=pd.date_range(start='1/1/2020', periods=len(randomData_3), freq='D'))
+df3 = df.join(df2)
+```
+
+``` python
+df3.describe()
+```
+
+# Simple visualizations of your data
+
+``` python
+df3.plot()
+```
+
+``` python
+df3.cumsum().plot()
+```
+
+``` python
+df3.plot(kind='scatter', x='A',y='C')
+```
+
+# Working with categorical data
+
+``` python
+weekDays = pd.date_range(start='1/1/2020', periods=100, freq='D').strftime("%A")
+df4 = pd.DataFrame({'Weekday':pd.Categorical(weekDays)}, columns=['Weekday'], index=pd.date_range(start='1/1/2020', periods=len(weekDays), freq='D'))
+df5 = df3.join(df4)
+```
+
+We have now added a column with all the weekday. In the first line we
+transformed the datetime array to week names using the comment
+.strftime("%A"). You can use strftime for all kind of time conversation
+or rewriting options. You can explore <https://strftime.org> for
+options, they are also used in other programming languages. The
+pd.Categorical is used to enforce that Pandas sees the data as
+categorical. You can check this by using
+
+``` python
+df5.dtypes
+
+A           float64
+C           float64
+D           float64
+Weekday    category
+dtype: object
+```
+
+``` python
+df5.groupby("Weekday").mean()
+```

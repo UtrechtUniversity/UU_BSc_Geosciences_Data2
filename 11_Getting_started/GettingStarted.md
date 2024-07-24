@@ -6,22 +6,22 @@ toc-title: Table of contents
 
 # Background to this example
 
-Data come in all sorts and forms within Earth sciences, from long term
+Data comes in all sorts and forms within Earth sciences, from long term
 paleo records describing Oxygen levels in the atmosphere, timeseries of
-river discharge to spatio-temporal satellite images monitoring the
+river discharge and spatio-temporal satellite images monitoring the
 vegetation. Within Earth Sciences we work with all these types of data
 to understand the past, present and future of the Earth system. Before
 we can work with these types of data we need to understand what we can
-and cannot do with the data, which then influences the conclusions we can and cannot draw.
+and cannot do with the data, which conclusion we can and cannot draw.
 
-**In this practical we will start by looking at different types of data and
-the distribution of these data. This will give us a better understanding of the
+**In this practical we will start looking at different types of data and
+distributions of these data to get a better understanding of the
 different types of data and their distributions.**
 
 Let's start with using Python again by opening your Conda environment
 and then opening Spyder (for detailed instructions please look back at
-the first practical). We will start by loading some of the standard libraries we use in
-this course:
+the first practical). We start by loading some of the stand libraries in
+this course. We use:
 
 -   Pandas (data management and data handling)
 
@@ -41,15 +41,16 @@ import scipy.stats as stats
 ```
 
 Now we are going to take a look at the first dataset which contains
-information about the amount of precipitation in the Netherlands.
+information about the amount of precipitation in the Netherlands. We
+tell pandas to parse the date information, and use it as row labels:
 
 ``` python
 precip = pd.read_csv("../Data/annualPrecipitation.csv", parse_dates=True, index_col=0)
 ```
 
-In this dataset you will find the annual sum of precipitation for the last
-century. The data is stored in the variable called *precip.* You can
-explore the *precip.* data by with the following code:
+In this dataset you find the annual sum of precipitation in the last
+century. The data is now stored in the variable *precip.* You can
+explore the data by looking at the data within this variable with:
 
 ``` python
 precip.head()
@@ -66,7 +67,7 @@ Year
 ```
 
 Alternatively you can explore the data with the variable explorer that
-you find within the Spyder consule
+you find within Spyder
 
 ![By clicking on the variable you can now look at the values within the
 variable explorer](images/Screenshot%202024-06-21%20at%2015.45.17.png)
@@ -75,9 +76,9 @@ variable explorer](images/Screenshot%202024-06-21%20at%2015.45.17.png)
 
 # Starting with Pandas data analysis
 
-Next we will go take a closer look at the *precip.* in the netherlands by visualizing the data. Within the Pandas package
+Next we go and look at the data by visualizing the data. Within Pandas
 there are multiple opportunities to explore and visualize the data.
-There are lots of resources available to help you when using Pandas and provide
+There are lots of resources to help you with using Pandas and provide
 nice tips, trick and examples. For example you can use a **cheat sheet**
 to quickly remember and double check which functions to use
 (e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>). You can also
@@ -86,28 +87,28 @@ data and types of analysis (<https://realpython.com/search?q=pandas>).
 
 ## Normal distributions
 
-One of the first things we often need to do is test if data we are analysing follows a Gaussian
-distribution and is thus considered to be normally distributed. This typically means that
-the samples we have obtained is representitive of many random samples from the
-distribution. Common examples of normally distributed data are the height or weight of people, but it
-is also very common in many examples within Earth sciences, like air
+On of the first things we often do is test if data follows a Gaussian
+distribution and is thus normally distributed. This typically means that
+the sample we have obtained is the result of many random sample from a
+distribution. Common example are the height or weight of people, but it
+is also very common in many examples in the Earth sciences like air
 temperature.
 
 ### Central limit theorem
 
-In research, to get a good idea of the population mean (\$\\mu\$), ideally
+In research, to get a good idea of a population mean (\$\\mu\$), ideally
 you'd collect data from multiple random samples within the population. A
 **sampling distribution of the mean** is the distribution of the means
 of these different samples.
 
-The central limit theorem shows the following:
+From probability theory, we know the following asymptotic statements:
 
 -   Law of Large Numbers: As you increase sample size (or the number of
     samples), then the sample mean will approach the population mean.
 
--   With multiple large samples, the sampling distribution of the mean
-    is normally distributed, even if your original variable is not
-    normally distributed.
+-   Central limit theorem: With multiple large samples, the sampling
+    distribution of the mean is normally distributed, even if your
+    original variable is not normally distributed.
 
 Parametric statistical tests typically assume that samples come from
 normally distributed populations, but the central limit theorem means
@@ -116,14 +117,14 @@ enough sample.
 
 You can use parametric tests for large samples from populations with any
 kind of distribution as long as other important assumptions are met. It
-depends on the how heterogenous your data is but large samples in the
-earth sciences can range from 30 records to 10.000 of thousands of
+depends on how heterogenous your data is, but large samples in the earth
+sciences can range from 30 records to 10.000 of thousands of
 observations.
 
 ### Testing if your data is normally distributed
 
 You can test if a dataset is normally distributed, either with a visual
-inspection of the data or by using a statistical test. Below we will explore both
+inspection of the data or a statistical test. Below we will explore both
 options.
 
 #### Question 1
@@ -144,8 +145,8 @@ Another way is making a quantile-quantile plot of your data.
 
 ``` python
 from statsmodels.graphics.gofplots import qqplot
-## First we need to sort the data for qqplot to work with it that's why we use precip.sort_values("Precip") to sort the precipitation data from low to high. "Precip is the name of the column in which we have the data (you can check this with precip.head())."
-qqplot(precip.sort_values("Precip"), line='s')
+## For the quantile plot, we need to extract the column from the dataframe that contains the precipitation data. You can get the column names of a dataframe df using df.columns. Here, we have only one column named "Precip", containing precipitation data."
+qqplot(precip["Precip"], line='s')
 ```
 
 ![](images/clipboard-1121669530.png)
@@ -162,12 +163,16 @@ inspection of the data and why?*
 There is also a more quantitative way of checking if data is normally
 distributed, which is using a statistical normality test. One of the
 more commonly used test for this is the Shapiro Wilk Test. The
-[Shapiro-Wilk test](#0) evaluates a data sample and quantifies how
-likely it is that the data was drawn from a Gaussian distribution, named
-for Samuel Shapiro and Martin Wilk. In practice, the Shapiro-Wilk test
-is believed to be a reliable test of normality, although there is some
-suggestion that the test may be suitable for smaller samples of data,
-e.g. thousands of observations or fewer.
+[Shapiro-Wilk test](https://en.wikipedia.org/wiki/Shapiro–Wilk_test)
+evaluates a data sample and quantifies how likely it is that the data
+was drawn from a Gaussian distribution, named for Samuel Shapiro and
+Martin Wilk. In practice, the Shapiro-Wilk test is believed to be a
+reliable test of normality, although there is some suggestion that the
+test may be suitable for smaller samples of data, e.g. thousands of
+observations or fewer. Note that the Shapiro-Wilk test examines the null
+hypothesis that the data is normally distributed. If it returns a p
+value lower than 0.05, the null hypothesis "the data follows a normal
+distribution" is rejected.
 
 #### Question 3
 
@@ -176,7 +181,7 @@ dataset. You can use the function stats.shapiro, for which you find the
 manual here:
 <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
 
-If you did everything well you find the below results printed out for you:
+If you did everything well you find that:
 
 ``` python
 ShapiroResult(statistic=0.9821208214707591, pvalue=0.11845170228364588)
@@ -187,7 +192,7 @@ normal distribution and is thus normally distributed.
 
 ## Testing if two samples have the same mean
 
-Let's start by exploring some statistical properties of the precipitation
+Let's start by exploring some statistical properties of the rainfall
 data, starting with the mean annual precipitation and its standard
 deviation.
 
@@ -203,13 +208,13 @@ Precip    139.186794
 dtype: float64
 ```
 
-You can see that the Netherlands has a mean $\pm$ standard deviation of
-around $802\pm139~mm~y^{-1}$ precipitation. This amount varies year by
-year, and thus it can matter how many years of data you have to get the
-mean values. One of the important element is the amount of years of
-observations that are available. **We will now explore the impact of the
-length of the data record on the value we find for the average annual
-precipitation.**
+You can see that the Netherlands has a mean $\pm$ standard deviation (1
+$\sigma$) of around $802\pm139~mm~y^{-1}$ precipitation. This amount
+varies year by year, and thus it can matter how many years of data you
+have to get the mean values. One of the important element is the amount
+of years of observations that are available. **We will now explore the
+impact of the length of the data record on the value we find for the
+average annual precipitation.**
 
 #### Question 4
 
@@ -325,9 +330,9 @@ precipitation in the Bilt (*$\mu_{1}$*).*
 
 # Looking for trends in your data
 
-With climate change, meteorological variables are likely to change in the fture, we
-know that temperatures are increasing but what about precipitation? We
-could test this by splitting our long timeseries into multiple
+With climate change meteorological variables are likely to change, we
+know that temperatures are increasing but what about precipitation. We
+could test this by looking splitting our long timeseries into multiple
 parts and checking if the mean annual precipitation is changing.
 
 #### Question 7
@@ -470,3 +475,8 @@ the daily data for the year 2022 using the [loc]{.underline} and
 can use the
 [.to_csv](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html)
 function to write the Pandas dataframe to a csv file.*
+
+#### Question 12
+
+*The final year has no complete data, what would you propose to do with
+the data from this year?*
