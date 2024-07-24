@@ -275,7 +275,7 @@ There are some tricks that can help you to better work with your data. You might
 
 ``` python
 Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0)
-annualTas = Tas.resample("Y").mean()
+annualTas = Tas.resample("YE").mean()
 ```
 
 ``` python
@@ -314,3 +314,7 @@ annualMaxTas = Tas.resample("YE").max()
 #### Question 11
 
 *Try and write the annual temperature data to a csv file. For this you can use the [.to_csv](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html) function to write the Pandas dataframe to a csv file.*
+
+#### Question 12
+
+*The final year has no complete data, what would you propose to do with the data from this year?*
