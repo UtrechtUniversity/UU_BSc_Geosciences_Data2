@@ -18,7 +18,7 @@ Let's start with using Python again by opening your Conda environment and then o
 
 -   Scipy (statistical analysis)
 
-## Code
+## Making your first dataframe
 
 ``` python
 import pandas as pd
@@ -178,6 +178,122 @@ Here you have the weekly values, please not that for this instance Python will u
 
 #### Question 2
 
-*Use the [resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html) documentation to make 2-daily average of your original dataframe. You can use the example in the documentation as a source of inspiration.10*
+*Use the [resample](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html) documentation to make 2-daily average of your original dataframe. You can use the example in the documentation as a source of inspiration.*
 
-Now what is next.
+# Exploring and manipulating the data
+
+When you have your data in the system it will be useful to explore the properties of your data to decide how you will continue with further analysis.
+
+``` python
+df.describe()
+```
+
+``` python
+                A           C
+count  100.000000  100.000000
+mean     0.060583    0.152795
+std      0.889615    0.936690
+min     -2.301539   -2.434838
+25%     -0.613818   -0.300010
+50%      0.064074    0.236616
+75%      0.637410    0.743020
+max      2.185575    2.528326
+```
+
+``` python
+df.sort_index(axis=1, ascending=False)
+```
+
+``` python
+df.sort_values(by="A", ascending=False)
+```
+
+``` python
+df.["A"]
+```
+
+``` python
+df.loc["2020-01-01"]
+```
+
+``` python
+df["A"].loc["2020-01-01"]
+```
+
+``` python
+df.iloc[0:3]
+```
+
+``` python
+df["A"].iloc[0:3]
+```
+
+``` python
+df[df > 0]
+```
+
+``` python
+df[df["A"] > 0]
+```
+
+``` python
+df.at["2020-01-01", "A"] = 0
+```
+
+``` python
+df.iat[0, 1] = 0
+```
+
+``` python
+df.iat[3,:] = 0
+```
+
+``` python
+df1 = df[df > -1.0]
+```
+
+``` python
+df1.describe()
+```
+
+What do you notice compared to df.describe()
+
+# Dealing with missing values
+
+``` python
+df1.dropna(how="any")
+```
+
+``` python
+df1.fillna(value=5)
+```
+
+``` python
+dp.isna(df1)
+```
+
+# Merging different data
+
+``` python
+randomData_3 = np.random.normal(loc=0, scale=1, size=5)
+df2 = pd.DataFrame({'D':randomData_3}, columns=['D'], index=pd.date_range(start='1/1/2020', periods=len(randomData_3), freq='D'))
+df3 = df.join(df2)
+```
+
+``` python
+df3.describe()
+```
+
+# Simple visualizations of your data
+
+``` python
+df3.plot()
+```
+
+``` python
+df3.cumsum().plot()
+```
+
+``` python
+df3.plot(kind='scatter', x='A',y='C')
+```
