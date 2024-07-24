@@ -318,3 +318,95 @@ annualMaxTas = Tas.resample("YE").max()
 #### Question 12
 
 *The final year has no complete data, what would you propose to do with the data from this year?*
+
+# Understanding the Dutch climate
+
+We will load some new data
+
+``` python
+Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0).dropna()
+Precip = pd.read_csv("../Data/dailyPrecipitation.csv", parse_dates=True, index_col=0).dropna()
+Evap = pd.read_csv("../Data/dailyEvaporation.csv", parse_dates=True, index_col=0).dropna()
+```
+
+We will now try and obtain the seasonal cycle for the climate for these meteorological data. To do this we will add an additional data column to the data, folliwing the example from the first practical with the weekdays. Now we will use Julian Days which in Python is the day of the year since 1 Jan of that year.
+
+``` python
+julianDays = Tas.index.strftime("%j")
+df_julian = pd.DataFrame({'Julian':julianDays}, columns=['Julian'], index=Tas.index)
+TasJulian = Tas.join(df_julian)
+```
+
+#### Question 13
+
+*Now we will obtain the seasonal cycle and get an understanding of the climate in the Netherlands. You can use the groupby() function again and obtain the average temperature throughout the year. Do this and now create a line plot with the Temperature data.*
+
+If all is well the plot should look something like:
+
+![](images/clipboard-1241929393.png)
+
+If you inspect the data closely you will see that there are 366 values, this is due to leap years that have 366 days. For convenience we will drop the last year to make sure that the data is more consistent.
+
+``` python
+cycleTas = cycleTas.iloc[0:-1]
+```
+
+Following question 8 we can also look at the seasonal cycles for selected time periods.
+
+#### Question 14
+
+*Make two new dataframe with the seasonal data for 1901-2003 and 2004-2023. Plot the data in a figure by merging the two dataframes. For plotting you can use the .plot function, for selecting specific periods you can use the .loc function and by adding the second calculation to the first dataframe using a code like df\["Recent"\] = .....*
+
+If you did everything well you should have something that looks like this:
+
+![](images/clipboard-1445478787.png)
+
+#### Question 15
+
+*Now we will go and further look at the precipiation data. Load the precipitation data and create a second column that has the month numbers included. Again use strftime to find the right way to do this. Please calculate the monthly sum and not mean. Also don't forget to drop any nan data. Do this for the period 1974-2023, which is a total of 60 years.*
+
+If all is well you got the following outcome.
+
+``` python
+          Precip
+Month           
+01     69.549333
+02     55.397333
+03     57.036000
+04     47.172000
+05     58.524000
+06     66.452000
+07     79.792000
+08     80.854667
+09     72.344000
+10     77.728000
+11     79.382667
+12     80.425333
+```
+
+#### Question 16
+
+*Now plot the monthly precipitation cycle for the Netherlands using a bar plot option in pandas plot.*
+
+The result should look something like this.
+
+#### ![](images/clipboard-656853877.png)
+
+#### Question 17
+
+*Now do the same for the evaporation data for 1974-2023 and plot the monthly evaporation cycle the Netherlands using a bar plot option in pandas plot and add this to the precipitation plot.*
+
+If you did everything well you should obtain an image that look like this
+
+![](images/clipboard-3208442700.png)
+
+You can also explore the plotting that can be done with the [seaborn package](https://seaborn.pydata.org/examples/index.html) to provide more advanced plotting options and design. We will provide a simple example below.
+
+``` python
+import seaborn as sns
+sns.lineplot(x='Julian', y = "Tas", data=TasJulian.iloc[0:-1])
+```
+
+![](images/clipboard-633707258.png)
+
+This figure also provide the uncertainty on the seasonal cycle analysis. We will not dive further into seaborn, but you now have a sense of the plotting options that are available in Python also for future work.
