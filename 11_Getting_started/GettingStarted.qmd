@@ -404,9 +404,11 @@ You can also explore the plotting that can be done with the [seaborn package](ht
 
 ``` python
 import seaborn as sns
-sns.lineplot(x='Julian', y = "Tas", data=TasJulian.iloc[0:-1])
+g = sns.lineplot(x='Julian', y = "Tas", data=TasJulian)
+g.set_xticks(range(0,365,30)) # <--- set the ticks first
+g.set_xticklabels(range(0,365,30))
 ```
 
-![](images/clipboard-633707258.png)
+![](images/clipboard-1317111676.png)
 
 This figure also provide the uncertainty on the seasonal cycle analysis. We will not dive further into seaborn, but you now have a sense of the plotting options that are available in Python also for future work.
