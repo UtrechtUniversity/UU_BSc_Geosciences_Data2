@@ -227,6 +227,7 @@ plt.show()
 *Do you think there is a significant difference between the t-distribution and the normal distribution?*
 
 Now we will run the same experiment on a smaller data sample. First we create the subset of the temperature data.
+
 ``` python
 np.random.seed(10)
 sampleSize = 100
@@ -236,4 +237,3 @@ sampleData = Tas.sample(sampleSize)
 #### Question 18
 
 *What happens if you use a smaller subset of the temperature data, does the t-distribution still approximates the normal distribution of the full dataset? Adjust the codes about to show the CDF plot of the sampleData and describe your interpretation of the CDF.*
-
