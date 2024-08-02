@@ -4,6 +4,20 @@
 
 When working in Python for data analysis, the Pandas packages is one most commonly used packages. Pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool, built on top of the Python programming language. It allows you to load, manipulate, analyse, visualize and write data in other file formats and ways than the original data.
 
+**In this practical you will learn about**
+
+-   **Explore data**
+
+-   **Manipulating data**
+
+-   **Dealing with missing values**
+
+-   **Simple visuals**
+
+-   **Working with categorical data**
+
+# Getting started
+
 **In this practical we will start exploring some of the basic functions in Pandas, learn about the different formats and ways you can use Pandas.**
 
 There are lots of resources to help you with using Pandas and provide nice tips, trick and examples. For example you can use a **cheat sheet** to quickly remember and double check which functions to use (e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>) or usefull pages that describe the [most basic functions of Pandas](https://pandas.pydata.org/docs/user_guide/10min.html). You can also find lots of good examples that use Pandas online for different types of data and types of analysis (<https://realpython.com/search?q=pandas>).
@@ -182,7 +196,7 @@ Here you have the weekly values, please not that for this instance Python will u
 
 # Exploring and manipulating the data
 
-*When you have your data in the system it will be useful to explore the properties of your data to decide how you will continue with further analysis.*
+When you have your data in the system it will be useful to explore the properties of your data to decide how you will continue with further analysis. For this you can use the [describe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html) function which gives you some basic properties of your data.
 
 ``` python
 df.describe()
@@ -200,6 +214,8 @@ min     -2.301539   -2.434838
 max      2.185575    2.528326
 ```
 
+It can also be convenient to order your data in a logical array or order, for this you can use the [sort_index](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_index.html) or [sort_values](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html) functions.
+
 ``` python
 df.sort_index(axis=1, ascending=False)
 ```
@@ -208,45 +224,82 @@ df.sort_index(axis=1, ascending=False)
 df.sort_values(by="A", ascending=False)
 ```
 
+#### Question 3
+
+*What is the difference between sort_index or sort_values? When is it usefull to sort on the index and when to sort on the values, can you give some examples?*
+
+If you just want to look at one column or get the data from one column you can used the code below
+
 ``` python
-df.["A"]
+df["A"]
+df["A"].values
 ```
+
+#### Question 4
+
+*What is the difference between the two outcomes? Look at the data type with the [type](https://docs.python.org/3/library/functions.html#type) function? What is the downside of df\["A"\].values?*
+
+Maybe you are interested in selecting a single row from the dataframe, you can do this using the [loc](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html) function
 
 ``` python
 df.loc["2020-01-01"]
 ```
 
+Or maybe combine it with a specific column as well
+
 ``` python
 df["A"].loc["2020-01-01"]
 ```
+
+You can also use the [iloc](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html) function
 
 ``` python
 df.iloc[0:3]
 ```
 
+Or again for the specific column
+
 ``` python
 df["A"].iloc[0:3]
 ```
+
+#### Question 5
+
+*What is the difference between the loc and iloc functions in terms of practical use?*
+
+You can also do conditional selection of data using the example below. All value that do not satisfy the condition will be transformed into NaN.
 
 ``` python
 df[df > 0]
 ```
 
+Or if you want that condition to apply to a specific column you also define the column. Please note that you still get the output for both columns, but it is conditioned on just column "A"
+
 ``` python
 df[df["A"] > 0]
 ```
+
+Maybe you want to correct a specific value of a dataframe. For this you can use the [at](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.at.html) function.
 
 ``` python
 df.at["2020-01-01", "A"] = 0
 ```
 
+Or the [iat](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iat.html) function which is similar to iloc.
+
 ``` python
 df.iat[0, 1] = 0
 ```
 
+We can also select multiple rows with the iat function
+
 ``` python
 df.iat[3,:] = 0
 ```
+
+#### Question 6
+
+*Describe in your own words what the function below do in terms of data manipulation or selection*
 
 ``` python
 df1 = df[df > -1.0]
@@ -256,23 +309,43 @@ df1 = df[df > -1.0]
 df1.describe()
 ```
 
-What do you notice compared to df.describe()
+#### Question 7
+
+*What do you notice compared to df.describe()?*
 
 # Dealing with missing values
+
+Sometimes there are missing values in a timeseries. You can deal with this in a variety of ways, either removing the data or filling it with new values. We have several options for handling missing data in Python
+
+We can drop all rows where missing data exists using the [dropna](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html) function.
 
 ``` python
 df1.dropna(how="any")
 ```
 
+Or we can fill up the missing values with a standard value using the fillna function
+
 ``` python
 df1.fillna(value=5)
 ```
 
+We can also interpolate between the missing values. Please note this only makes sense if there is a logical order to the datapoints, for example if it is a timeseries.
+
 ``` python
-dp.isna(df1)
+df1.interpolate()
 ```
 
+We can also select the rows that contain missing values if we need them.
+
+``` python
+df1.isna()
+```
+
+Please remember these options as they might come in handy later when you are dealing with data that doesn't look nice or pretty and contains missing values.
+
 # Merging different data
+
+Sometimes we have one dataset and we want to add new data to it. You can think of data coming in different files and it needs to be merged. We now first create a new dataset which only contains 5 datapoints and join it with the "old" dataset (df) that already had 100 datapoints. For this we use the [join](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.join.html) function. When doing this always make sure that the indexes of the different dataframes have a similar range or values.
 
 ``` python
 randomData_3 = np.random.normal(loc=0, scale=1, size=5)
@@ -280,23 +353,37 @@ df2 = pd.DataFrame({'D':randomData_3}, columns=['D'], index=pd.date_range(start=
 df3 = df.join(df2)
 ```
 
+#### Question 8
+
+*Describe what you see in the description of the dataframe. Anything that jumps out to you?*
+
 ``` python
 df3.describe()
 ```
 
 # Simple visualizations of your data
 
+We can also make simple [plot](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html)s of the dataframe. Pandas will use some default plotting options, which by default is a lineplot. Please not that by default NaN data will be excluded from the plot.
+
 ``` python
 df3.plot()
 ```
+
+We can also combine operations before plotting the data using [cumsum](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cumsum.html) and then plot the data from there.
 
 ``` python
 df3.cumsum().plot()
 ```
 
+We can also make different kinds of plots, like this scatterplot for example.
+
 ``` python
 df3.plot(kind='scatter', x='A',y='C')
 ```
+
+#### Question 9
+
+*Explore more options in the plot function, specifically altering the kind. Provide at least two relevant examples.*
 
 # Working with categorical data
 
