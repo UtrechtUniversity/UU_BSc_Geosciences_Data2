@@ -408,3 +408,21 @@ dtype: object
 ``` python
 df5.groupby("Weekday").mean()
 ```
+
+#### Question 10
+
+*Describe in your own words what you see after running the groupby("Weekday") command.*
+
+# What you have learned today
+
+**If all is well you have learned today:**
+
+-   **Explore data**
+
+-   **Manipulating data**
+
+-   **Dealing with missing values**
+
+-   **Simple visuals**
+
+-   **Working with categorical data**
