@@ -87,75 +87,124 @@ meteoData["Precip"].plot(kind="hist")
 
 #### Question 3
 
-*This is histogram is helpfull, but does it tell you if the data is correct. Think about relevant metadata that is or isn't provided with the dataset. List two things that you are missing that would help you to see if these daily precipiation values make sense.*
+*This is histogram is helpful, but does it tell you if the data is correct. Think about relevant metadata that is or isn't provided with the dataset. List two things that you are missing that would help you to see if these daily precipitation values make sense.*
+
+Let's make slightly different kind of histogram, the density plot. The density plot uses interpolation and smoothing to approximate a histogram and as such give a more smooth distribution.
 
 ``` python
 meteoData["Precip"].plot(kind="density")
 ```
 
+#### Question 4
+
+*What can be a potential downside of the smoothing applied in a density plot?*
+
+We can also combine data into one histogram, which might be convenient for plotting and comparing purposes. The code below gives an example.
+
 ``` python
 meteoData[["Precip", "Evap"]].plot(kind="hist",alpha=0.5, bins=100, xlim=[0,30])
 ```
+
+We can of course also make the well know scatter plots, where we compare two variables against each other or look for relationships between these two variables.
 
 ``` python
 meteoData.plot(kind="scatter",x="Tas", y="Evap")
 meteoData.plot(kind="scatter",x="Tas", y="Evap", alpha=0.05)
 ```
 
-``` python
-annualData = meteoData[["Precip", "Evap"]].resample("YE").sum()
-```
+#### Question 5
 
-``` python
-annualData.plot(kind="scatter",x="Precip", y="Evap")
-```
+*Which of these two scatter plots do you like best and why? What is the advantage of using the alpha=0.05. Also play around with the alpha and see which value you like best.*
 
-What do you notice?
+# Combining data manipulation with visualization.
+
+#### Question 6
+
+*First Calculate the annual Precipitation and Evaporation sums and then plot them against each other in a scatterplot. The end results should look something like the figure below.*
+
+![](images/clipboard-3263943792.png)
+
+#### Question 7
+
+*Obviously something goes wrong but why, can you explain what happens?*
+
+We can go back to the basic data and describe the dataframes and see what happens.
 
 ``` python
 annualData.describe()
+meteoData.describe()
 ```
+
+#### Question 8
+
+#### *What do you notice or observe when comparing the describe summaries between the different variables?*
+
+Run the code below and see how it changes the describe output
 
 ``` python
 meteoData.dropna()
+meteoData.describe()
 ```
 
-No data prior to 1957 and the data of 1957 is incomplete, so we drop all years up to 1957. But we do have to remember that the last year is also not complete so we also drop that.
+Please not that the data prior to 1958 is incomplete, so we drop all years up to 1957. But we do have to remember that the last year is also not complete so we also drop that as well.
 
 ``` python
 annualData = meteoData[["Precip", "Evap"]].dropna().resample("YE").sum().loc["1958":"2023"]
 annualData.index = annualData.index.strftime('%Y')
 ```
 
-Attempt number 2
+#### Question 9
+
+*Can you explain why we still have to select only the years 1958 to 2023 when we already use the dropna. Especially when we look at the annual values. If you need a hint look at the values that are provided for 1958 and 2024 and compare these to the rest of the years*
+
+Now we try again to make the plot
 
 ``` python
 annualData.plot(kind="scatter",x="Precip", y="Evap")
 ```
 
+#### Question 10
+
+If all went well you see that all the zero and unrealistic values are now gone and you get a more reliable scatterplot. Show the scatterplot.
+
+We can also look at the annual timeseries using the code we used above for the daily data
+
 ``` python
 annualData.plot()
 ```
+
+![](images/clipboard-1307960221.png)The timeseries plots make a lot more sense now as we don't have that many datapoints. We can also show the data as a histogram and explore the distribution.
 
 ``` python
 annualData.plot(kind="hist", alpha=0.5, bins=20, color=["blue", "red"])
 ```
 
+sdfsdf
+
 ``` python
 annualData["EvapDef"] = annualData["Evap"] * -1.
+annualData[["Precip", "EvapDef"]].plot(kind="bar", color=["blue", "red"], stacked=True)
 ```
+
+sdfsdf
 
 ``` python
 annualData[["Precip", "EvapDef"]].plot(kind="bar", color=["blue", "red"], stacked=True)
 ```
 
+sdfsdf
+
 ``` python
 annualData["PrecipDef"] = annualData["Precip"] - annualData["Evap"]
 ```
 
+sdfsdf
+
 ``` python
 annualData["PrecipDef"].plot()
 ```
+
+sdfsdf
 
 ``` python
 annualData["PrecipDef"].plot(kind="hist")
