@@ -179,33 +179,71 @@ annualData.plot()
 annualData.plot(kind="hist", alpha=0.5, bins=20, color=["blue", "red"])
 ```
 
-sdfsdf
+To monitor the balance between water availability and water demand we can also look at the precipitation surplus for the Netherlands. To do this we will now create a stacked bar plot where we give negative values to the evaporation (water loss) and positive numbers to the precipitation.
 
 ``` python
 annualData["EvapDef"] = annualData["Evap"] * -1.
 annualData[["Precip", "EvapDef"]].plot(kind="bar", color=["blue", "red"], stacked=True)
 ```
 
-sdfsdf
+![](images/clipboard-3140990781.png)
+
+Clearly we can improve the graphics here, especially the ticks on the x-axis.
 
 ``` python
 annualData[["Precip", "EvapDef"]].plot(kind="bar", color=["blue", "red"], stacked=True)
 ```
 
-sdfsdf
+#### Question 11
+
+*We can also directly calculate the precipitation deficit by simply subtracting the value from each other and then plot the line (precipitation - evaporation). Do this and see if you obtain the same results below.*
+
+![](images/clipboard-2042549838.png)
+
+This figure is still rather empty and not informative without any additional formatting. Let's work a bit on formatting. We will need to add a better label to the x-axis, maybe have different ticks on the x-axis, a label on the y-axis is certainly needed. We can add a title and a legend if needed. Let's run to these step by step.
+
+First adding better labels. In the code you see that instead of plotting the figure directly we now name a variable *fig* that contains all the figure information. In that variable we [change the ylabel and xlabel](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html).
 
 ``` python
-annualData["PrecipDef"] = annualData["Precip"] - annualData["Evap"]
+fig = annualData["PrecipDef"].plot()
+fig.set_ylabel("Precipitation deficit (mm/y)")
+fig.set_xlabel("Year")
 ```
 
-sdfsdf
+We can also do it directly within the function. Both have their advantage in certain situations.
 
 ``` python
-annualData["PrecipDef"].plot()
+fig = annualData["PrecipDef"].plot(xlabel="Year", ylabel="Precipitation deficit (mm/y)")
 ```
 
-sdfsdf
+![](images/clipboard-1681977732.png)This looks already a little better and more informative. Now let's add the other elements.
 
 ``` python
-annualData["PrecipDef"].plot(kind="hist")
+annualData["PrecipDef"].plot(xlabel="Year", ylabel="Precipitation deficit (mm/y)", title="Precipitation deficit for the Bilt", legend=True)
 ```
+
+![](images/clipboard-1395435666.png)
+
+The options are endless, but you can find a lot of options already in the help documentation of the [pandas plotting function](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html). Always make sure that any figure you produce stands on its on, either with a legend or just because it contains all relevant information in the labels, title and legends.
+
+#### Question 12
+
+*Finally let's have a look at the distribution of the precipitation deficit values. Make a histogram of the precipitation deficit.*
+
+![](images/clipboard-505999213.png)
+
+#### Question 13
+
+*What do you think is the most informative plot, the stacked barplot, the timeseries or the histogram and why?*
+
+#### Question 14
+
+*Can you think of other informative way to plot the data in this practical. What kind of plots would work and can you provide at least 3 examples. Provide the code, the figure and the reason why you choose that plots.*
+
+# What you have learned today
+
+**If all is well you have learned today:**
+
+-   **Visualizing data**
+
+-   **What kind of figure to use**
