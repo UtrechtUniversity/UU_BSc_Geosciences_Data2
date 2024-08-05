@@ -1,0 +1,22 @@
+# Loading and Tidying data
+
+Data comes in all sorts and forms within Earth sciences
+
+
+## Code
+
+``` python
+import pandas as pd
+
+rawdata = pd.read_csv("./RawData/etmgeg_260.txt", skiprows=51, skipinitialspace=True)
+
+data = pd.DataFrame({
+     "date" : pd.to_datetime(rawdata['YYYYMMDD'], format='%Y%m%d'),
+     "precip_mm" : rawdata['RH'] * 0.1, 
+     "potEvap_mm" : rawdata['EV24'] * 0.1,
+     "Tmean_degC" : rawdata['TG'] * 0.1,
+     } )
+
+# fix negative values in precip (-1 is used to indicate values < 0.5 instead of 0 in original dataset)
+data.loc[data["precip_mm"] < 0.0, "precip_mm"] = 0.0
+```
