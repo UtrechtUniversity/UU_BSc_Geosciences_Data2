@@ -4,7 +4,19 @@
 
 Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
 
-**In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.**
+**In this practical you will learn about**
+
+-   **Simple plots to look at your data**
+
+-   **How to see which distribution can be used to describe the data**
+
+-   **Which measures you can use to describe a distribution**
+
+-   **How to check exceedance of thresholds**
+
+-   **How to work with small samples and what distributions to use in that case**
+
+# Getting started
 
 Let's start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:
 
@@ -15,8 +27,6 @@ Let's start with using Python again by opening your Conda environment and then o
 -   Matplotlib (plotting)
 
 -   Scipy (statistical analysis)
-
-## Code
 
 ``` python
 import pandas as pd
@@ -129,7 +139,7 @@ You can see straight away that fitting the normal distribution is not working fo
 
 #### Question 13
 
-*Start by resampling the precipitation data to obtain the annual maximum value using the resample function. After that make a histogram of the data and describe what you see.*
+*Start by resampling the precipitation data to obtain the annual maximum value using the [resample](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html) function. After that make a histogram of the data and describe what you see.*
 
 #### Question 14
 
@@ -204,7 +214,7 @@ plt.hist(randomYears)
 
 # Using a t-distribution
 
-When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean was unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.
+When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.
 
 We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution and a normal distribution and then plot the cumalative density function (CDF) for both distributions.
 
@@ -237,3 +247,55 @@ sampleData = Tas.sample(sampleSize)
 #### Question 18
 
 *What happens if you use a smaller subset of the temperature data, does the t-distribution still approximates the normal distribution of the full dataset? Adjust the codes about to show the CDF plot of the sampleData and describe your interpretation of the CDF.*
+
+# Do your own data exploration
+
+``` python
+Q = pd.read_csv("../RawData/Rhine_total.txt", parse_dates=True, index_col=0)
+```
+
+#### Question 19
+
+*You have loaded the daily discharge data for the Rhine river, now start and exploring. You should make the following things:*
+
+-   *Some plots that allow you to understand what the data looks like*
+
+-   *Describe some relevant statistical values*
+
+-   *Describe if the data is normal or not and why*
+
+-   *Answer the questions:*
+
+    -   *How often do we get floods above 8000m^3^s^-1^*
+
+    -   *How often do we go below 1000*
+
+-   *Create a Poisson distribution for both flood and drought*
+
+-   *Calculate the exceedance for flood and drought*
+
+    -   *Tip you can calculate the annual occurrence by comparing the values to your threshold*
+
+    -   *Then resample to yearly values*
+
+    -   *Then calculate the number of times you actually have a value*
+
+    -   *Flood: Q\[Q\>8000\].resample("YE").count()*
+
+    -   *Drought: Q\[Q\<1000\].resample("YE").count()*
+
+-   *Can you hypothesis why the Poisson distribution doesn't work for the drought example?*
+
+# What you have learned today
+
+**If all is well you have learned today:**
+
+-   **Simple plots to look at your data**
+
+-   **How to see which distribution can be used to describe the data**
+
+-   **Which measures you can use to describe a distribution**
+
+-   **How to check exceedance of thresholds**
+
+-   **How to work with small samples and what distributions to use in that case**
