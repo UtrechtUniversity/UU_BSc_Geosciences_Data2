@@ -1,4 +1,4 @@
-# Getting started with data analysis
+# Making visuals, graphs and figures of your data, as start
 
 # Background to this example
 

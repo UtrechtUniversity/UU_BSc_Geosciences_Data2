@@ -1,14 +1,22 @@
----
-toc-title: Table of contents
----
-
-# Getting started with data analysis
+# Using distributions to analyse your data
 
 # Background to this example
 
 Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
 
-**In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.**
+**In this practical you will learn about**
+
+-   **Simple plots to look at your data**
+
+-   **How to see which distribution can be used to describe the data**
+
+-   **Which measures you can use to describe a distribution**
+
+-   **How to check exceedance of thresholds**
+
+-   **How to work with small samples and what distributions to use in that case**
+
+# Getting started
 
 Let's start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:
 
@@ -19,8 +27,6 @@ Let's start with using Python again by opening your Conda environment and then o
 -   Matplotlib (plotting)
 
 -   Scipy (statistical analysis)
-
-## Code
 
 ``` python
 import pandas as pd
@@ -81,7 +87,7 @@ A question we often hear in the media, is climate change already happening and i
 
 *Select the last 20 years on the record and compare those to the entire record that we have. First select the years, calculate the new mean and standard deviation and then see if we are more likely to observe temperatures above 20C compared to the full record from 1901 onwards.*
 
-If you did it well you find that the probability of Tas \> 20C has increased from 5% to 7%. So far we have done this mostly with the statistical approximiation of the data (e.g. a fitted normal distribution), however we also have the real data available. As a tip look at the startingPandas practical on how to test an entire dataframe for a certain condition.
+If you did it well you find that the probability of Tas \> 20C has increased from 5% to 7%. So far we have done this mostly with the statistical approximiation of the data (e.g. a fitted normal distribution), however we also have the real data available. As a tip look at the startingPandas practical on how to test an entire dataframe for a certain condition.
 
 #### Question 8
 
@@ -133,7 +139,7 @@ You can see straight away that fitting the normal distribution is not working fo
 
 #### Question 13
 
-*Start by resampling the precipitation data to obtain the annual maximum value using the resample function. After that make a histogram of the data and describe what you see.*
+*Start by resampling the precipitation data to obtain the annual maximum value using the [resample](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html) function. After that make a histogram of the data and describe what you see.*
 
 #### Question 14
 
@@ -187,26 +193,28 @@ You will observe that you need a rather large sample size to obtain the "True" v
 
 *Do you think it will take longer or shorter to obtain the "True" exceedance of a value if you take a threshold with a higher probability, for example 10C. Test this with the script above and provide the figure*
 
-We can also ask ourselves the question how many days will we get in the coming year that have temperature \<= 0C. For this we can use the binominal distribution to generate likely distributions of freezing temperatures in every year. We know from the previous analysis that we have 3004 days that \<= 0C for a total record length of 45097 days, which mean on average we have 3004/45097\*365.25 = 24.33 days with \<= 0C per year on average since 1901. Now lets plot a binominal distribution.
+We can also ask ourselves the question how many days will we get in the coming year that have temperature \<= 0C. For this we can use the Poisson distribution to generate likely distributions of freezing temperatures in every year. We know from the previous analysis that we have 3004 days that \<= 0C for a total record length of 45097 days, which mean on average we have 3004/45097\*365.25 = 24.33 days with \<= 0C per year on average since 1901. Now lets plot a Poisson distribution.
 
 ``` python
 np.random.seed(10)
 avgDays = 24.33
-randomYears = stats.binom.rvs(365, avgDays/365, size=1000)
+randomYears = stats.poisson.rvs(avgDays, size=1000)
 plt.hist(randomYears)
 ```
 
-#### ![](images/clipboard-3848302595.png)Question 15
+![](images/clipboard-2646365356.png){width="676"}
 
-*We can also use the Binominal distribution to ask questions like what is the likelihood of having less than 15 freezing day? Use the [stats.binom.cdf(k, n, p)](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.poisson.html) to find the chance of having less than 15 freezing days in a given year.*
+#### Question 15
+
+*We can also use the Poisson distribution to ask questions like what is the likelihood of having less than 15 freezing day? Use the [stats.poisson.cdf(k, mu)](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.poisson.html) to find the chance of having less than 15 freezing days in a given year.*
 
 #### Question 16
 
-*If you have paid carefull attention you might have noticed that in this case the binominal distribution is approaching a normal distribution. This means again that we the Central Limit Theory comes into play. Now please lower the probability of 24.33 to something like 3 days per year does this still approach a normal distribution and if not why not?*
+*If you have paid carefull attention you might have noticed that in this case the Poisson distribution is approaching a normal distribution. This means again that we the Central Limit Theory comes into play. Now please lower the probability of 24.33 to something like 3 days per year does this still approach a normal distribution and if not why not?*
 
 # Using a t-distribution
 
-When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean was unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.
+When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.
 
 We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution and a normal distribution and then plot the cumalative density function (CDF) for both distributions.
 
@@ -239,3 +247,55 @@ sampleData = Tas.sample(sampleSize)
 #### Question 18
 
 *What happens if you use a smaller subset of the temperature data, does the t-distribution still approximates the normal distribution of the full dataset? Adjust the codes about to show the CDF plot of the sampleData and describe your interpretation of the CDF.*
+
+# Do your own data exploration
+
+``` python
+Q = pd.read_csv("../RawData/Rhine_total.txt", parse_dates=True, index_col=0)
+```
+
+#### Question 19
+
+*You have loaded the daily discharge data for the Rhine river, now start and exploring. You should make the following things:*
+
+-   *Some plots that allow you to understand what the data looks like*
+
+-   *Describe some relevant statistical values*
+
+-   *Describe if the data is normal or not and why*
+
+-   *Answer the questions:*
+
+    -   *How often do we get floods above 8000m^3^s^-1^*
+
+    -   *How often do we go below 1000*
+
+-   *Create a Poisson distribution for both flood and drought*
+
+-   *Calculate the exceedance for flood and drought*
+
+    -   *Tip you can calculate the annual occurrence by comparing the values to your threshold*
+
+    -   *Then resample to yearly values*
+
+    -   *Then calculate the number of times you actually have a value*
+
+    -   *Flood: Q\[Q\>8000\].resample("YE").count()*
+
+    -   *Drought: Q\[Q\<1000\].resample("YE").count()*
+
+-   *Can you hypothesis why the Poisson distribution doesn't work for the drought example?*
+
+# What you have learned today
+
+**If all is well you have learned today:**
+
+-   **Simple plots to look at your data**
+
+-   **How to see which distribution can be used to describe the data**
+
+-   **Which measures you can use to describe a distribution**
+
+-   **How to check exceedance of thresholds**
+
+-   **How to work with small samples and what distributions to use in that case**

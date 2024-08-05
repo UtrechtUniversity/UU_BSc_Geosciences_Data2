@@ -80,13 +80,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="getting-started-with-data-analysis" class="level1">
-<h1>Getting started with data analysis</h1>
+<section id="making-visuals-graphs-and-figures-of-your-data-as-start" class="level1">
+<h1>Making visuals, graphs and figures of your data, as start</h1>
 </section>
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
 <p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
-<p><strong>In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.</strong></p>
+<p><strong>In this practical you will learn about</strong></p>
+<ul>
+<li><p><strong>Visualizing data</strong></p></li>
+<li><p><strong>What kind of figure to use</strong></p></li>
+</ul>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting started</h1>
 <p>Let’s start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:</p>
 <ul>
 <li><p>Pandas (data management and data handling)</p></li>
@@ -94,8 +101,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Matplotlib (plotting)</p></li>
 <li><p>Scipy (statistical analysis)</p></li>
 </ul>
-<section id="code" class="level2">
-<h2 class="anchored" data-anchor-id="code">Code</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -134,30 +139,107 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3</h4>
-<p><em>This is histogram is helpfull, but does it tell you if the data is correct. Think about relevant metadata that is or isn’t provided with the dataset. List two things that you are missing that would help you to see if these daily precipiation values make sense.</em></p>
+<p><em>This is histogram is helpful, but does it tell you if the data is correct. Think about relevant metadata that is or isn’t provided with the dataset. List two things that you are missing that would help you to see if these daily precipitation values make sense.</em></p>
+<p>Let’s make slightly different kind of histogram, the density plot. The density plot uses interpolation and smoothing to approximate a histogram and as such give a more smooth distribution.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>meteoData[<span class="st">"Precip"</span>].plot(kind<span class="op">=</span><span class="st">"density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-4" class="level4">
+<h4 class="anchored" data-anchor-id="question-4">Question 4</h4>
+<p><em>What can be a potential downside of the smoothing applied in a density plot?</em></p>
+<p>We can also combine data into one histogram, which might be convenient for plotting and comparing purposes. The code below gives an example.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>meteoData[[<span class="st">"Precip"</span>, <span class="st">"Evap"</span>]].plot(kind<span class="op">=</span><span class="st">"hist"</span>,alpha<span class="op">=</span><span class="fl">0.5</span>, bins<span class="op">=</span><span class="dv">100</span>, xlim<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">30</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can of course also make the well know scatter plots, where we compare two variables against each other or look for relationships between these two variables.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>meteoData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Tas"</span>, y<span class="op">=</span><span class="st">"Evap"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>meteoData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Tas"</span>, y<span class="op">=</span><span class="st">"Evap"</span>, alpha<span class="op">=</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>annualData <span class="op">=</span> meteoData[[<span class="st">"Precip"</span>, <span class="st">"Evap"</span>]].resample(<span class="st">"YE"</span>).<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Precip"</span>, y<span class="op">=</span><span class="st">"Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>What do you notice?</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>annualData.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meteoData.dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>No data prior to 1957 and the data of 1957 is incomplete, so we drop all years up to 1957. But we do have to remember that the last year is also not complete so we also drop that.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>annualData <span class="op">=</span> meteoData[[<span class="st">"Precip"</span>, <span class="st">"Evap"</span>]].dropna().resample(<span class="st">"YE"</span>).<span class="bu">sum</span>().loc[<span class="st">"1958"</span>:<span class="st">"2023"</span>]</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>annualData.index <span class="op">=</span> annualData.index.strftime(<span class="st">'%Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Attempt number 2</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Precip"</span>, y<span class="op">=</span><span class="st">"Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>annualData.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"hist"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"EvapDef"</span>] <span class="op">=</span> annualData[<span class="st">"Evap"</span>] <span class="op">*</span> <span class="op">-</span><span class="fl">1.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>annualData[[<span class="st">"Precip"</span>, <span class="st">"EvapDef"</span>]].plot(kind<span class="op">=</span><span class="st">"bar"</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>], stacked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"PrecipDef"</span>] <span class="op">=</span> annualData[<span class="st">"Precip"</span>] <span class="op">-</span> annualData[<span class="st">"Evap"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"PrecipDef"</span>].plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"PrecipDef"</span>].plot(kind<span class="op">=</span><span class="st">"hist"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-5" class="level4">
+<h4 class="anchored" data-anchor-id="question-5">Question 5</h4>
+<p><em>Which of these two scatter plots do you like best and why? What is the advantage of using the alpha=0.05. Also play around with the alpha and see which value you like best.</em></p>
 </section>
 </section>
+<section id="combining-data-manipulation-with-visualization." class="level1">
+<h1>Combining data manipulation with visualization.</h1>
+<section id="question-6" class="level4">
+<h4 class="anchored" data-anchor-id="question-6">Question 6</h4>
+<p><em>First Calculate the annual Precipitation and Evaporation sums and then plot them against each other in a scatterplot. The end results should look something like the figure below.</em></p>
+<p><img src="images/clipboard-3263943792.png" class="img-fluid"></p>
+</section>
+<section id="question-7" class="level4">
+<h4 class="anchored" data-anchor-id="question-7">Question 7</h4>
+<p><em>Obviously something goes wrong but why, can you explain what happens?</em></p>
+<p>We can go back to the basic data and describe the dataframes and see what happens.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>annualData.describe()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>meteoData.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-8" class="level4">
+<h4 class="anchored" data-anchor-id="question-8">Question 8</h4>
+</section>
+<section id="what-do-you-notice-or-observe-when-comparing-the-describe-summaries-between-the-different-variables" class="level4">
+<h4 class="anchored" data-anchor-id="what-do-you-notice-or-observe-when-comparing-the-describe-summaries-between-the-different-variables"><em>What do you notice or observe when comparing the describe summaries between the different variables?</em></h4>
+<p>Run the code below and see how it changes the describe output</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>meteoData.dropna()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>meteoData.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Please not that the data prior to 1958 is incomplete, so we drop all years up to 1957. But we do have to remember that the last year is also not complete so we also drop that as well.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>annualData <span class="op">=</span> meteoData[[<span class="st">"Precip"</span>, <span class="st">"Evap"</span>]].dropna().resample(<span class="st">"YE"</span>).<span class="bu">sum</span>().loc[<span class="st">"1958"</span>:<span class="st">"2023"</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>annualData.index <span class="op">=</span> annualData.index.strftime(<span class="st">'%Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-9" class="level4">
+<h4 class="anchored" data-anchor-id="question-9">Question 9</h4>
+<p><em>Can you explain why we still have to select only the years 1958 to 2023 when we already use the dropna. Especially when we look at the annual values. If you need a hint look at the values that are provided for 1958 and 2024 and compare these to the rest of the years</em></p>
+<p>Now we try again to make the plot</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Precip"</span>, y<span class="op">=</span><span class="st">"Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-10" class="level4">
+<h4 class="anchored" data-anchor-id="question-10">Question 10</h4>
+<p>If all went well you see that all the zero and unrealistic values are now gone and you get a more reliable scatterplot. Show the scatterplot.</p>
+<p>We can also look at the annual timeseries using the code we used above for the daily data</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>annualData.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-1307960221.png" class="img-fluid">The timeseries plots make a lot more sense now as we don’t have that many datapoints. We can also show the data as a histogram and explore the distribution.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"hist"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To monitor the balance between water availability and water demand we can also look at the precipitation surplus for the Netherlands. To do this we will now create a stacked bar plot where we give negative values to the evaporation (water loss) and positive numbers to the precipitation.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"EvapDef"</span>] <span class="op">=</span> annualData[<span class="st">"Evap"</span>] <span class="op">*</span> <span class="op">-</span><span class="fl">1.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>annualData[[<span class="st">"Precip"</span>, <span class="st">"EvapDef"</span>]].plot(kind<span class="op">=</span><span class="st">"bar"</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>], stacked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-3140990781.png" class="img-fluid"></p>
+<p>Clearly we can improve the graphics here, especially the ticks on the x-axis.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>annualData[[<span class="st">"Precip"</span>, <span class="st">"EvapDef"</span>]].plot(kind<span class="op">=</span><span class="st">"bar"</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>], stacked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-11" class="level4">
+<h4 class="anchored" data-anchor-id="question-11">Question 11</h4>
+<p><em>We can also directly calculate the precipitation deficit by simply subtracting the value from each other and then plot the line (precipitation - evaporation). Do this and see if you obtain the same results below.</em></p>
+<p><img src="images/clipboard-2042549838.png" class="img-fluid"></p>
+<p>This figure is still rather empty and not informative without any additional formatting. Let’s work a bit on formatting. We will need to add a better label to the x-axis, maybe have different ticks on the x-axis, a label on the y-axis is certainly needed. We can add a title and a legend if needed. Let’s run to these step by step.</p>
+<p>First adding better labels. In the code you see that instead of plotting the figure directly we now name a variable <em>fig</em> that contains all the figure information. In that variable we <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">change the ylabel and xlabel</a>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> annualData[<span class="st">"PrecipDef"</span>].plot()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>fig.set_ylabel(<span class="st">"Precipitation deficit (mm/y)"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>fig.set_xlabel(<span class="st">"Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can also do it directly within the function. Both have their advantage in certain situations.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> annualData[<span class="st">"PrecipDef"</span>].plot(xlabel<span class="op">=</span><span class="st">"Year"</span>, ylabel<span class="op">=</span><span class="st">"Precipitation deficit (mm/y)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-1681977732.png" class="img-fluid">This looks already a little better and more informative. Now let’s add the other elements.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"PrecipDef"</span>].plot(xlabel<span class="op">=</span><span class="st">"Year"</span>, ylabel<span class="op">=</span><span class="st">"Precipitation deficit (mm/y)"</span>, title<span class="op">=</span><span class="st">"Precipitation deficit for the Bilt"</span>, legend<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-1395435666.png" class="img-fluid"></p>
+<p>The options are endless, but you can find a lot of options already in the help documentation of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">pandas plotting function</a>. Always make sure that any figure you produce stands on its on, either with a legend or just because it contains all relevant information in the labels, title and legends.</p>
+</section>
+<section id="question-12" class="level4">
+<h4 class="anchored" data-anchor-id="question-12">Question 12</h4>
+<p><em>Finally let’s have a look at the distribution of the precipitation deficit values. Make a histogram of the precipitation deficit.</em></p>
+<p><img src="images/clipboard-505999213.png" class="img-fluid"></p>
+</section>
+<section id="question-13" class="level4">
+<h4 class="anchored" data-anchor-id="question-13">Question 13</h4>
+<p><em>What do you think is the most informative plot, the stacked barplot, the timeseries or the histogram and why?</em></p>
+</section>
+<section id="question-14" class="level4">
+<h4 class="anchored" data-anchor-id="question-14">Question 14</h4>
+<p><em>Can you think of other informative way to plot the data in this practical. What kind of plots would work and can you provide at least 3 examples. Provide the code, the figure and the reason why you choose that plots.</em></p>
+</section>
+</section>
+<section id="what-you-have-learned-today" class="level1">
+<h1>What you have learned today</h1>
+<p><strong>If all is well you have learned today:</strong></p>
+<ul>
+<li><p><strong>Visualizing data</strong></p></li>
+<li><p><strong>What kind of figure to use</strong></p></li>
+</ul>
 </section>
 
 </main>

@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="GettingStarted_files/libs/clipboard/clipboard.min.js"></script>
-<script src="GettingStarted_files/libs/quarto-html/quarto.js"></script>
-<script src="GettingStarted_files/libs/quarto-html/popper.min.js"></script>
-<script src="GettingStarted_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="GettingStarted_files/libs/quarto-html/anchor.min.js"></script>
-<link href="GettingStarted_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="GettingStarted_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="GettingStarted_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="GettingStarted_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="GettingStarted_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="gettingStarted_files/libs/clipboard/clipboard.min.js"></script>
+<script src="gettingStarted_files/libs/quarto-html/quarto.js"></script>
+<script src="gettingStarted_files/libs/quarto-html/popper.min.js"></script>
+<script src="gettingStarted_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="gettingStarted_files/libs/quarto-html/anchor.min.js"></script>
+<link href="gettingStarted_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="gettingStarted_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="gettingStarted_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="gettingStarted_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="gettingStarted_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -115,7 +115,17 @@ window.Quarto = {
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
 <p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
-<p><strong>In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.</strong></p>
+<p><strong>In this practical you will learn about</strong></p>
+<ul>
+<li><p><strong>Explore data</strong></p></li>
+<li><p><strong>Test for normal distributions</strong></p></li>
+<li><p><strong>Look for trends</strong></p></li>
+<li><p><strong>Use hypothesis testing</strong></p></li>
+<li><p><strong>Calculate climatology and seasonal cycles of datasets</strong></p></li>
+</ul>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting started</h1>
 <p>Let’s start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:</p>
 <ul>
 <li><p>Pandas (data management and data handling)</p></li>
@@ -123,8 +133,6 @@ window.Quarto = {
 <li><p>Matplotlib (plotting)</p></li>
 <li><p>Scipy (statistical analysis)</p></li>
 </ul>
-<section id="code" class="level2">
-<h2 class="anchored" data-anchor-id="code">Code</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -148,7 +156,6 @@ window.Quarto = {
 </figure>
 </div>
 <p><img src="images/Screenshot%202024-06-21%20at%2015.45.41.png" class="img-fluid"></p>
-</section>
 </section>
 <section id="starting-with-pandas-data-analysis" class="level1">
 <h1>Starting with Pandas data analysis</h1>
@@ -338,6 +345,112 @@ H_{1}:\mu_{1906-1935}\neq\mu_{1994-2023}
 <h4 class="anchored" data-anchor-id="question-12">Question 12</h4>
 <p><em>The final year has no complete data, what would you propose to do with the data from this year?</em></p>
 </section>
+</section>
+<section id="understanding-the-dutch-climate" class="level1">
+<h1>Understanding the Dutch climate</h1>
+<p>We will load some new data</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyPrecipitation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Evap <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyEvaporation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will now try and obtain the seasonal cycle for the climate for these meteorological data. To do this we will add an additional data column to the data, folliwing the example from the first practical with the weekdays. Now we will use Julian Days which in Python is the day of the year since 1 Jan of that year.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>julianDays <span class="op">=</span> Tas.index.strftime(<span class="st">"%j"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df_julian <span class="op">=</span> pd.DataFrame({<span class="st">'Julian'</span>:julianDays}, columns<span class="op">=</span>[<span class="st">'Julian'</span>], index<span class="op">=</span>Tas.index)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>TasJulian <span class="op">=</span> Tas.join(df_julian)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="question-13" class="level4">
+<h4 class="anchored" data-anchor-id="question-13">Question 13</h4>
+<p><em>Now we will obtain the seasonal cycle and get an understanding of the climate in the Netherlands. You can use the groupby() function again and obtain the average temperature throughout the year. Do this and now create a line plot with the Temperature data.</em></p>
+<p>If all is well the plot should look something like:</p>
+<p><img src="images/clipboard-1241929393.png" class="img-fluid"></p>
+<p>If you inspect the data closely you will see that there are 366 values, this is due to leap years that have 366 days. For convenience we will drop the last year to make sure that the data is more consistent.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cycleTas <span class="op">=</span> cycleTas.iloc[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Following question 8 we can also look at the seasonal cycles for selected time periods.</p>
+</section>
+<section id="question-14" class="level4">
+<h4 class="anchored" data-anchor-id="question-14">Question 14</h4>
+<p><em>Make two new dataframe with the seasonal data for 1901-2003 and 2004-2023. Plot the data in a figure by merging the two dataframes. For plotting you can use the .plot function, for selecting specific periods you can use the .loc function and by adding the second calculation to the first dataframe using a code like df[“Recent”] = …..</em></p>
+<p>If you did everything well you should have something that looks like this:</p>
+<p><img src="images/clipboard-1445478787.png" class="img-fluid"></p>
+</section>
+<section id="question-15" class="level4">
+<h4 class="anchored" data-anchor-id="question-15">Question 15</h4>
+<p><em>Now we will go and further look at the precipiation data. Load the precipitation data and create a second column that has the month numbers included. Again use strftime to find the right way to do this. Please calculate the monthly sum and not mean. Also don’t forget to drop any nan data. Do this for the period 1974-2023, which is a total of 60 years.</em></p>
+<p>If all is well you got the following outcome.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>          Precip</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>Month           </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">1</span>     <span class="fl">69.549333</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">2</span>     <span class="fl">55.397333</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">3</span>     <span class="fl">57.036000</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">4</span>     <span class="fl">47.172000</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">5</span>     <span class="fl">58.524000</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">6</span>     <span class="fl">66.452000</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">7</span>     <span class="fl">79.792000</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">8</span>     <span class="fl">80.854667</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="er">9</span>     <span class="fl">72.344000</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>     <span class="fl">77.728000</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>     <span class="fl">79.382667</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>     <span class="fl">80.425333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-16" class="level4">
+<h4 class="anchored" data-anchor-id="question-16">Question 16</h4>
+<p><em>Now plot the monthly precipitation cycle for the Netherlands using a bar plot option in pandas plot.</em></p>
+<p>The result should look something like this.</p>
+</section>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section"><img src="images/clipboard-656853877.png" class="img-fluid"></h4>
+</section>
+<section id="question-17" class="level4">
+<h4 class="anchored" data-anchor-id="question-17">Question 17</h4>
+<p><em>Now do the same for the evaporation data for 1974-2023 and plot the monthly evaporation cycle the Netherlands using a bar plot option in pandas plot and add this to the precipitation plot.</em></p>
+<p>If you did everything well you should obtain an image that look like this</p>
+<p><img src="images/clipboard-3208442700.png" class="img-fluid"></p>
+<p>You can also explore the plotting that can be done with the <a href="https://seaborn.pydata.org/examples/index.html">seaborn package</a> to provide more advanced plotting options and design. We will provide a simple example below.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.lineplot(x<span class="op">=</span><span class="st">'Julian'</span>, y <span class="op">=</span> <span class="st">"Tas"</span>, data<span class="op">=</span>TasJulian)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>g.set_xticks(<span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">365</span>,<span class="dv">30</span>)) <span class="co"># &lt;--- set the ticks first</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>g.set_xticklabels(<span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">365</span>,<span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-1317111676.png" class="img-fluid"></p>
+<p>This figure also provide the uncertainty on the seasonal cycle analysis. We will not dive further into seaborn, but you now have a sense of the plotting options that are available in Python also for future work.</p>
+</section>
+</section>
+<section id="seasonal-decomposition" class="level1">
+<h1>Seasonal decomposition</h1>
+<p>It can be useful to understand the trends in your data or to remove the seasonal cycle from your data. We can do this using the <a href="https://www.statsmodels.org/dev/generated/statsmodels.tsa.seasonal.seasonal_decompose.html">seasonal_decompose</a> function that remove the trend and seasonality and just leave the residuals.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>decompose_Tas <span class="op">=</span> seasonal_decompose(Tas, period <span class="op">=</span> <span class="dv">365</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>decompose_Tas.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/clipboard-2863764878.png" class="img-fluid" width="619"></p>
+<p>Gives you a total overview of the data. Please note that the seasonal cycle is just deviations from the trend. That is why we can have negative seasonal temperatures even though we have no long frost periods in the Netherlands.</p>
+<section id="question-18" class="level4">
+<h4 class="anchored" data-anchor-id="question-18">Question 18</h4>
+<p><em>Looking back at Question 13, would you think based on this that there is a temperature trend? And why?</em></p>
+</section>
+</section>
+<section id="do-your-own-data-exploration" class="level1">
+<h1>Do your own data exploration</h1>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> pd.read_csv(<span class="st">"../RawData/Rhine_total.txt"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Question 19</p>
+<p><em>You have loaded the daily discharge data for the Rhine river, now start and exploring. You should make the following things:</em></p>
+<ul>
+<li><p>Create the monthly discharge data timeseries</p></li>
+<li><p>Are there trends in discharge data</p></li>
+<li><p>Make two discharge climatology figures using the techniques described in Question 14 for the period 1901-1930 and 1991-2020</p></li>
+<li><p>Test the following hypothesis <span class="math display">\[
+H_{0}:\mu_{1901-1930} = \mu_{1991-2020}\\
+H_{1}:\mu_{1901-1930}\neq\mu_{1991-2020}
+\]</span></p></li>
+</ul>
+</section>
+<section id="what-you-have-learned-today" class="level1">
+<h1>What you have learned today</h1>
+<p><strong>If all is well you have learned today:</strong></p>
+<ul>
+<li><p><strong>Explore data</strong></p></li>
+<li><p><strong>Test for normal distributions</strong></p></li>
+<li><p><strong>Look for trends</strong></p></li>
+<li><p><strong>Use hypothesis testing</strong></p></li>
+<li><p><strong>Calculate climatology and seasonal cycles of datasets</strong></p></li>
+</ul>
 </section>
 
 </main>

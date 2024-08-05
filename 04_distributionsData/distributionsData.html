@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>distributions</title>
+<title>distributionsdata</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="distributions_files/libs/clipboard/clipboard.min.js"></script>
-<script src="distributions_files/libs/quarto-html/quarto.js"></script>
-<script src="distributions_files/libs/quarto-html/popper.min.js"></script>
-<script src="distributions_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="distributions_files/libs/quarto-html/anchor.min.js"></script>
-<link href="distributions_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="distributions_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="distributions_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="distributions_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="distributions_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="distributionsData_files/libs/clipboard/clipboard.min.js"></script>
+<script src="distributionsData_files/libs/quarto-html/quarto.js"></script>
+<script src="distributionsData_files/libs/quarto-html/popper.min.js"></script>
+<script src="distributionsData_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="distributionsData_files/libs/quarto-html/anchor.min.js"></script>
+<link href="distributionsData_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="distributionsData_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="distributionsData_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="distributionsData_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="distributionsData_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -80,13 +80,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="getting-started-with-data-analysis" class="level1">
-<h1>Getting started with data analysis</h1>
+<section id="using-distributions-to-analyse-your-data" class="level1">
+<h1>Using distributions to analyse your data</h1>
 </section>
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
 <p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
-<p><strong>In this practical we will start looking at different types of data and distributions of these data to get a better understanding of the different types of data and their distributions.</strong></p>
+<p><strong>In this practical you will learn about</strong></p>
+<ul>
+<li><p><strong>Simple plots to look at your data</strong></p></li>
+<li><p><strong>How to see which distribution can be used to describe the data</strong></p></li>
+<li><p><strong>Which measures you can use to describe a distribution</strong></p></li>
+<li><p><strong>How to check exceedance of thresholds</strong></p></li>
+<li><p><strong>How to work with small samples and what distributions to use in that case</strong></p></li>
+</ul>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting started</h1>
 <p>Let’s start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:</p>
 <ul>
 <li><p>Pandas (data management and data handling)</p></li>
@@ -94,8 +104,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Matplotlib (plotting)</p></li>
 <li><p>Scipy (statistical analysis)</p></li>
 </ul>
-<section id="code" class="level2">
-<h2 class="anchored" data-anchor-id="code">Code</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -104,7 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyPrecipitation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Evap <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyEvaporation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
 </section>
 <section id="normal-or-not" class="level1">
 <h1>Normal or not</h1>
@@ -186,7 +193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-13" class="level4">
 <h4 class="anchored" data-anchor-id="question-13">Question 13</h4>
-<p><em>Start by resampling the precipitation data to obtain the annual maximum value using the resample function. After that make a histogram of the data and describe what you see.</em></p>
+<p><em>Start by resampling the precipitation data to obtain the annual maximum value using the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html">resample</a> function. After that make a histogram of the data and describe what you see.</em></p>
 </section>
 <section id="question-14" class="level4">
 <h4 class="anchored" data-anchor-id="question-14">Question 14</h4>
@@ -247,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="using-a-t-distribution" class="level1">
 <h1>Using a t-distribution</h1>
-<p>When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean was unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.</p>
+<p>When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.</p>
 <p>We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution and a normal distribution and then plot the cumalative density function (CDF) for both distributions.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(Tas)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(Tas)</span>
@@ -271,6 +278,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="question-18">Question 18</h4>
 <p><em>What happens if you use a smaller subset of the temperature data, does the t-distribution still approximates the normal distribution of the full dataset? Adjust the codes about to show the CDF plot of the sampleData and describe your interpretation of the CDF.</em></p>
 </section>
+</section>
+<section id="do-your-own-data-exploration" class="level1">
+<h1>Do your own data exploration</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> pd.read_csv(<span class="st">"../RawData/Rhine_total.txt"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="question-19" class="level4">
+<h4 class="anchored" data-anchor-id="question-19">Question 19</h4>
+<p><em>You have loaded the daily discharge data for the Rhine river, now start and exploring. You should make the following things:</em></p>
+<ul>
+<li><p><em>Some plots that allow you to understand what the data looks like</em></p></li>
+<li><p><em>Describe some relevant statistical values</em></p></li>
+<li><p><em>Describe if the data is normal or not and why</em></p></li>
+<li><p><em>Answer the questions:</em></p>
+<ul>
+<li><p><em>How often do we get floods above 8000m<sup>3</sup>s<sup>-1</sup></em></p></li>
+<li><p><em>How often do we go below 1000</em></p></li>
+</ul></li>
+<li><p><em>Create a Poisson distribution for both flood and drought</em></p></li>
+<li><p><em>Calculate the exceedance for flood and drought</em></p>
+<ul>
+<li><p><em>Tip you can calculate the annual occurrence by comparing the values to your threshold</em></p></li>
+<li><p><em>Then resample to yearly values</em></p></li>
+<li><p><em>Then calculate the number of times you actually have a value</em></p></li>
+<li><p><em>Flood: Q[Q&gt;8000].resample(“YE”).count()</em></p></li>
+<li><p><em>Drought: Q[Q&lt;1000].resample(“YE”).count()</em></p></li>
+</ul></li>
+<li><p><em>Can you hypothesis why the Poisson distribution doesn’t work for the drought example?</em></p></li>
+</ul>
+</section>
+</section>
+<section id="what-you-have-learned-today" class="level1">
+<h1>What you have learned today</h1>
+<p><strong>If all is well you have learned today:</strong></p>
+<ul>
+<li><p><strong>Simple plots to look at your data</strong></p></li>
+<li><p><strong>How to see which distribution can be used to describe the data</strong></p></li>
+<li><p><strong>Which measures you can use to describe a distribution</strong></p></li>
+<li><p><strong>How to check exceedance of thresholds</strong></p></li>
+<li><p><strong>How to work with small samples and what distributions to use in that case</strong></p></li>
+</ul>
 </section>
 
 </main>
