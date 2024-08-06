@@ -52,7 +52,7 @@ df.plot('time', 'CO2')
 
 Here we use the function `seasonal_decompose` from `statsmodels` to separate the linear trend from the seasonal component. The measurements are taken every month so the period of seasonality is 12. We use the additive model because the amplitude of the seasonal component does not change with the level of the time series - see eq. 11.13 in the textbook. 
 
-### Decomposition into trend, seasonality, and residuals
+## Decomposition into trend, seasonality, and residuals
 
 ```{python}
 result_add = seasonal_decompose(df['CO2'], 
@@ -90,15 +90,24 @@ model_fit = sm.ols('predicted~trend', data=trend).fit()
 print(model_fit.summary2())
 ```
 
-#### Task 1
+### Task 1
 
 Extracts the coefficients of the model and make a plot using them. This plot represents your model fit. Overlie on it the trend values we calculated using decomposition, as well as the original time series. How good is your fit?
 
-### Seasonality
+## Seasonality
 
-Why is the $CO_2$ level so variable during the year? And how regular is this variability? We might want to characterise it 
+Why is the $CO_2$ level so variable during the year? And how regular is this variability? We might want to characterise it.
 
+### Task 2
+Can you plot the seasonal component over a period of 12 months? You would need a horizontal axis with months and repeat the plotting over that interval for each year. 
+Add an average of the seasonal component over all years to the plot.  
+
+When in the year is the $CO_2$ level the highest? And when is it the lowest? If you look at the residues around the mean, is there a lot of variation?
+
+## Residuals
 The first three plots are easy to interpret but what is the last one, residuals? These are the deviations from the trend and seasonality. So these are "anomalies" which cannot be explained by the seasonality or the continuous trend.
+We might be interested in this for example to see if there are any "extreme events" in the $CO_2$ levels, or is the overall variability of the $CO_2$ levels increasing over time. This would tell us if a linear trend is a good model for this dataset.
+
 ```{python}
 %matplotlib inline
 
@@ -111,9 +120,14 @@ plot_acf(result_add.resid)
 plt.show()
 ```
 Following the textbook, we find that:
-> The systematic patterns in the autocorrelation function show that some > seasonal components are not constant and have been missed. The blue 
-> shaded area indicates the 95%-confidence interval for the 
-> autocorrelation coefficients.
+
+> The systematic patterns in the autocorrelation function show
+> that some seasonal components are not constant and have been
+> missed. The blue  shaded area indicates the 95%-confidence
+> interval for the autocorrelation coefficients.
+
+### Task 3
+What does it mean if there is autocorrelation in the residuals? How can you interpret the plot above? Write a sentence that you would use to explain the trends in atmospheric $CO_2$ levels over time to a non-specialist.
 
 ```{python}
 #| include: false
