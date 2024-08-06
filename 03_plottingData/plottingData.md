@@ -170,11 +170,19 @@ see which value you like best.*
 
 # Combining data manipulation with visualization.
 
+Often before you start you want to manipulate the data either into a
+different format or a different time aggregation. We will not included
+format changes here, but aggregating time can be done with the
+[resample](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html)
+function that you also used for Q1 from the first practical
+(startingPandas).
+
 #### Question 6
 
-*First Calculate the annual Precipitation and Evaporation sums and then
-plot them against each other in a scatterplot. The end results should
-look something like the figure below.*
+*First Calculate the annual Precipitation and Evaporation sums using the
+resample function (name the output annualData) and then plot them
+against each other in a scatterplot function in pandas. The end results
+should look something like the figure below.*
 
 ![](images/clipboard-3263943792.png)
 

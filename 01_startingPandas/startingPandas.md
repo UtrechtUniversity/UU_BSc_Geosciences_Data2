@@ -407,16 +407,11 @@ df.at["2020-01-01", "A"] = 0
 
 Or the
 [iat](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iat.html)
-function which is similar to iloc.
+function which is similar to iloc but works with integers, just like a
+normal matrix selection in Python.
 
 ``` python
 df.iat[0, 1] = 0
-```
-
-We can also select multiple rows with the iat function
-
-``` python
-df.iat[3,:] = 0
 ```
 
 #### Question 6

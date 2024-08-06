@@ -159,9 +159,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="combining-data-manipulation-with-visualization." class="level1">
 <h1>Combining data manipulation with visualization.</h1>
+<p>Often before you start you want to manipulate the data either into a different format or a different time aggregation. We will not included format changes here, but aggregating time can be done with the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html">resample</a> function that you also used for Q1 from the first practical (startingPandas).</p>
 <section id="question-6" class="level4">
 <h4 class="anchored" data-anchor-id="question-6">Question 6</h4>
-<p><em>First Calculate the annual Precipitation and Evaporation sums and then plot them against each other in a scatterplot. The end results should look something like the figure below.</em></p>
+<p><em>First Calculate the annual Precipitation and Evaporation sums using the resample function (name the output annualData) and then plot them against each other in a scatterplot function in pandas. The end results should look something like the figure below.</em></p>
 <p><img src="images/clipboard-3263943792.png" class="img-fluid"></p>
 </section>
 <section id="question-7" class="level4">
