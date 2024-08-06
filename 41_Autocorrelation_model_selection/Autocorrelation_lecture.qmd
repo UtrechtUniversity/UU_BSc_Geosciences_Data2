@@ -1,0 +1,57 @@
+---
+title: "Autocorrelation"
+author: "Emilia Jarochowska"
+format:
+  revealjs:
+    incremental: true   
+---
+
+## Why time series?
+
+[![SVG version by Albert Mestre, CC BY-SA 3.0](img/Phanerozoic_Biodiversity.svg)](https://commons.wikimedia.org/wiki/File:Phanerozoic_Biodiversity.svg)
+
+::: aside
+Rohde, R.A., and Muller, R.A. (2005-03). "Cycles in fossil diversity". Nature 434: 208-210.
+:::
+
+------------------------------------------------------------------------
+
+
+## What if we want to investigate relationships between variables over time or space? {.smaller}
+
+Time (and spatial) series are commonly *autocorrelated*:
+
+-   the height of children is not independent on the height of the parents
+-   the eustatic sea level in year *X + 1* is not independent on the sea level in year *X*
+
+These are real-life processes that are the outcomes of many drivers, some random and some deterministic). But they can be represented (modeled) as *autoregressive processes*.
+
+## Autoregressive processes
+
+A process $X$ is an “autoregressive process of order *p*”, in short an *AR(p)* process, if:
+
+$X_t = \alpha_1 X_{t-1} + ... + \alpha_p X_{t-p} + Z_t$
+
+an event at time $t_i$ is remembered at a later time $t_{i+k} with a strength determined by the AR-coefficients $\alpha_k$, for *k = 1, 2,..., p*. No more memory effects of this event will be felt after $t_{i+p}$.
+
+### The simplest autoregressive process AR(1)
+
+$X_t = \beta + \alpha X_{t-1} + \epsilon_t$
+
+$\beta$ is the stable mean of the process
+
+$\alpha$:
+- Values close to 1 indicate that the series is almost like a random walk
+- Values close to 0 indicate that the series is almost completely composed of random
+normally-distributed error terms
+- Other values are possible but won't be useful for us here
+
+## Assumptions of regression analysis
+
+1.  **The residuals are independent**
+
+2.  Homoscedasticity
+
+3.  The residuals of the model are normally distributed.
+
+## Autocorrelation violates assumptions of regression analysis
