@@ -187,8 +187,6 @@ plt.xscale('log')
 plt.show()
 ```
 
-![](images/clipboard-40802597.png){width="679"}
-
 You will observe that you need a rather large sample size to obtain the "True" value of 6.5% and that it is still converging even with 40000 samples present.
 
 #### Question 14
@@ -204,7 +202,6 @@ randomYears = stats.poisson.rvs(avgDays, size=1000)
 plt.hist(randomYears)
 ```
 
-![](images/clipboard-2646365356.png){width="676"}
 
 #### Question 15
 

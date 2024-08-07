@@ -300,8 +300,6 @@ plt.show()
 :::
 ::::
 
-![](images/clipboard-40802597.png){width="679"}
-
 You will observe that you need a rather large sample size to obtain the
 "True" value of 6.5% and that it is still converging even with 40000
 samples present.
@@ -328,7 +326,7 @@ randomYears = stats.poisson.rvs(avgDays, size=1000)
 plt.hist(randomYears)
 ```
 
-::: {.cell-output .cell-output-display execution_count="22"}
+::: {.cell-output .cell-output-display execution_count="40"}
     (array([  5.,  25.,  87., 190., 221., 283., 127.,  46.,  12.,   4.]),
      array([ 9. , 12.2, 15.4, 18.6, 21.8, 25. , 28.2, 31.4, 34.6, 37.8, 41. ]),
      <BarContainer object of 10 artists>)
@@ -338,8 +336,6 @@ plt.hist(randomYears)
 ![](distributionsData_files/figure-markdown/cell-5-output-2.png)
 :::
 :::::
-
-![](images/clipboard-2646365356.png){width="676"}
 
 #### Question 15
 

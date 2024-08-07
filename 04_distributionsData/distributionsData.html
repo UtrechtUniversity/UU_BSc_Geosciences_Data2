@@ -117,14 +117,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Matplotlib (plotting)</p></li>
 <li><p>Scipy (statistical analysis)</p></li>
 </ul>
-<div id="88853bff" class="cell" data-execution_count="1">
+<div id="48a3acb3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we are going to take a look at the first dataset which contains information about the daily temperatures in the Netherlands. We tell pandas to parse the date information, and use it as row labels:</p>
-<div id="7e0e62ab" class="cell" data-execution_count="2">
+<div id="b58cf445" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyPrecipitation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Evap <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyEvaporation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fraction <span class="op">=</span> sampleData[Tas <span class="op">&lt;=</span> <span class="dv">0</span>].count()<span class="op">/</span>sampleSize</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You find that the fraction is higher than the expected value of 6.5% or 0.065. This is because our sample size is insufficient to correctly reflect the data observational record. Again this confirms that sample size is very relevant when doing your work, getting enough data is key in the real world and Geosciences as well. We will explore how many samples we need using a for-loop.</p>
-<div id="a6facdbd" class="cell" data-execution_count="3">
+<div id="f01cabf4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">## To ensure we get the same random samples and thus the same answers.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Sample size</span></span>
@@ -258,18 +258,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><img src="images/clipboard-40802597.png" class="img-fluid" width="679"></p>
 <p>You will observe that you need a rather large sample size to obtain the “True” value of 6.5% and that it is still converging even with 40000 samples present.</p>
 <section id="question-14-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-14-1">Question 14</h4>
 <p><em>Do you think it will take longer or shorter to obtain the “True” exceedance of a value if you take a threshold with a higher probability, for example 10C. Test this with the script above and provide the figure</em></p>
 <p>We can also ask ourselves the question how many days will we get in the coming year that have temperature &lt;= 0C. For this we can use the Poisson distribution to generate likely distributions of freezing temperatures in every year. We know from the previous analysis that we have 3004 days that &lt;= 0C for a total record length of 45097 days, which mean on average we have 3004/45097*365.25 = 24.33 days with &lt;= 0C per year on average since 1901. Now lets plot a Poisson distribution.</p>
-<div id="8d73d951" class="cell" data-execution_count="4">
+<div id="58b41973" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>avgDays <span class="op">=</span> <span class="fl">24.33</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>randomYears <span class="op">=</span> stats.poisson.rvs(avgDays, size<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.hist(randomYears)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>(array([  5.,  25.,  87., 190., 221., 283., 127.,  46.,  12.,   4.]),
  array([ 9. , 12.2, 15.4, 18.6, 21.8, 25. , 28.2, 31.4, 34.6, 37.8, 41. ]),
  &lt;BarContainer object of 10 artists&gt;)</code></pre>
@@ -282,7 +281,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><img src="images/clipboard-2646365356.png" class="img-fluid" width="676"></p>
 </section>
 <section id="question-15" class="level4">
 <h4 class="anchored" data-anchor-id="question-15">Question 15</h4>
@@ -297,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Using a t-distribution</h1>
 <p>When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.</p>
 <p>We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution with a limited sample and a normal distribution and then plot the cumulative density function (CDF) for both distributions.</p>
-<div id="28d5e37d" class="cell" data-execution_count="5">
+<div id="24c0c700" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sampleTas <span class="op">=</span> Tas.sample(<span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(sampleTas)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>degreeF <span class="op">=</span> <span class="bu">len</span>(sampleTas) <span class="op">-</span> <span class="dv">2</span></span>
@@ -318,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>And again for the full sample of data.</p>
-<div id="a04b14d9" class="cell" data-execution_count="6">
+<div id="6fc18415" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(Tas)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(Tas)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>degreeF <span class="op">=</span> <span class="bu">len</span>(Tas) <span class="op">-</span> <span class="dv">2</span></span>
