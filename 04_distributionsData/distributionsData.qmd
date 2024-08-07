@@ -240,7 +240,7 @@ And again for the full sample of data.
 tStat, loc, scale = stats.t.fit(Tas)
 mean, std = stats.norm.fit(Tas)
 degreeF = len(Tas) - 2
-mean, std = stats.norm.fit(sampleTas)
+mean, std = stats.norm.fit(Tas)
 
 xLocs = np.arange(Tas.min().iloc[0], Tas.max().iloc[0], 0.05)
 
