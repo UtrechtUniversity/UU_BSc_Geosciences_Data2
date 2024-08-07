@@ -326,7 +326,7 @@ randomYears = stats.poisson.rvs(avgDays, size=1000)
 plt.hist(randomYears)
 ```
 
-::: {.cell-output .cell-output-display execution_count="40"}
+::: {.cell-output .cell-output-display execution_count="46"}
     (array([  5.,  25.,  87., 190., 221., 283., 127.,  46.,  12.,   4.]),
      array([ 9. , 12.2, 15.4, 18.6, 21.8, 25. , 28.2, 31.4, 34.6, 37.8, 41. ]),
      <BarContainer object of 10 artists>)
@@ -372,7 +372,7 @@ plot the cumulative density function (CDF) for both distributions.
 
 :::: {.cell execution_count="5"}
 ``` {.python .cell-code}
-sampleTas = Tas.sample(50, random_state=1)
+sampleTas = Tas.sample(15, random_state=1)
 tStat, loc, scale = stats.t.fit(sampleTas)
 degreeF = len(sampleTas) - 2
 mean, std = stats.norm.fit(sampleTas)

@@ -218,7 +218,7 @@ When we are working with problems that have small samples size, for example the 
 We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution with a limited sample and a normal distribution and then plot the cumulative density function (CDF) for both distributions.
 
 ```{python}
-sampleTas = Tas.sample(50, random_state=1)
+sampleTas = Tas.sample(15, random_state=1)
 tStat, loc, scale = stats.t.fit(sampleTas)
 degreeF = len(sampleTas) - 2
 mean, std = stats.norm.fit(sampleTas)
