@@ -275,7 +275,8 @@ size is very relevant when doing your work, getting enough data is key
 in the real world and Geosciences as well. We will explore how many
 samples we need using a for-loop.
 
-``` python
+:::: {.cell execution_count="3"}
+``` {.python .cell-code}
 ## To ensure we get the same random samples and thus the same answers.
 np.random.seed(10)
 ## Sample size
@@ -293,6 +294,11 @@ plt.plot(samplePoints, fraction, "-")
 plt.xscale('log')
 plt.show()
 ```
+
+::: {.cell-output .cell-output-display}
+![](distributionsData_files/figure-markdown/cell-4-output-1.png)
+:::
+::::
 
 ![](images/clipboard-40802597.png){width="679"}
 
@@ -314,12 +320,24 @@ have 3004 days that \<= 0C for a total record length of 45097 days,
 which mean on average we have 3004/45097\*365.25 = 24.33 days with \<=
 0C per year on average since 1901. Now lets plot a Poisson distribution.
 
-``` python
+::::: {.cell execution_count="4"}
+``` {.python .cell-code}
 np.random.seed(10)
 avgDays = 24.33
 randomYears = stats.poisson.rvs(avgDays, size=1000)
 plt.hist(randomYears)
 ```
+
+::: {.cell-output .cell-output-display execution_count="22"}
+    (array([  5.,  25.,  87., 190., 221., 283., 127.,  46.,  12.,   4.]),
+     array([ 9. , 12.2, 15.4, 18.6, 21.8, 25. , 28.2, 31.4, 34.6, 37.8, 41. ]),
+     <BarContainer object of 10 artists>)
+:::
+
+::: {.cell-output .cell-output-display}
+![](distributionsData_files/figure-markdown/cell-5-output-2.png)
+:::
+:::::
 
 ![](images/clipboard-2646365356.png){width="676"}
 
@@ -356,7 +374,7 @@ the fitting information from Question 12. We first fit both a
 t-distribution with a limited sample and a normal distribution and then
 plot the cumulative density function (CDF) for both distributions.
 
-:::: {.cell execution_count="3"}
+:::: {.cell execution_count="5"}
 ``` {.python .cell-code}
 sampleTas = Tas.sample(50, random_state=1)
 tStat, loc, scale = stats.t.fit(sampleTas)
@@ -372,13 +390,13 @@ plt.show()
 ```
 
 ::: {.cell-output .cell-output-display}
-![](distributionsData_files/figure-markdown/cell-4-output-1.png)
+![](distributionsData_files/figure-markdown/cell-6-output-1.png)
 :::
 ::::
 
 And again for the full sample of data.
 
-:::: {.cell execution_count="4"}
+:::: {.cell execution_count="6"}
 ``` {.python .cell-code}
 tStat, loc, scale = stats.t.fit(Tas)
 mean, std = stats.norm.fit(Tas)
@@ -394,7 +412,7 @@ plt.show()
 ```
 
 ::: {.cell-output .cell-output-display}
-![](distributionsData_files/figure-markdown/cell-5-output-1.png)
+![](distributionsData_files/figure-markdown/cell-7-output-1.png)
 :::
 ::::
 

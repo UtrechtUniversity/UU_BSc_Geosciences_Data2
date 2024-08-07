@@ -157,7 +157,7 @@ If all is well you find that the logarithmic annual maximum precipitation does a
 
 We can also ask ourselves the question how often does "x" happen, where "x" is a certain event or extreme. Let's go back to the temperature data and the iceskating example. In the Netherlands people are always concerned whether or not we can have a Elf-stedentocht or when we can go skating in general. Use the variable you created for Question 11, which should be a dataframe that has True and False values from 1901 onwards. We have already concluded that there is 6.5% chance of obtaining a day \<= 0C. Let's assume that this value is the true chance of having a \<= 0C. We can start drawing random samples from the full dataset.
 
-``` python
+```python
  ## To ensure we get the same random samples and thus the same answers.
 np.random.seed(10)
 sampleSize = 100
@@ -168,7 +168,7 @@ print(fraction)
 
 You find that the fraction is higher than the expected value of 6.5% or 0.065. This is because our sample size is insufficient to correctly reflect the data observational record. Again this confirms that sample size is very relevant when doing your work, getting enough data is key in the real world and Geosciences as well. We will explore how many samples we need using a for-loop.
 
-``` python
+```{python}
 ## To ensure we get the same random samples and thus the same answers.
 np.random.seed(10)
 ## Sample size
@@ -197,7 +197,7 @@ You will observe that you need a rather large sample size to obtain the "True" v
 
 We can also ask ourselves the question how many days will we get in the coming year that have temperature \<= 0C. For this we can use the Poisson distribution to generate likely distributions of freezing temperatures in every year. We know from the previous analysis that we have 3004 days that \<= 0C for a total record length of 45097 days, which mean on average we have 3004/45097\*365.25 = 24.33 days with \<= 0C per year on average since 1901. Now lets plot a Poisson distribution.
 
-``` python
+```{python}
 np.random.seed(10)
 avgDays = 24.33
 randomYears = stats.poisson.rvs(avgDays, size=1000)
