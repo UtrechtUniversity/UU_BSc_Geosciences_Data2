@@ -39,6 +39,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 import numpy as np
+import scipy.stats as stats
 ```
 
 Gould (1974) didn’t provide the dataset in his paper, which in 1974 is
@@ -112,8 +113,79 @@ ax.set_xlabel('Log Body mass [kg]')
 ![](Linear_regression_files/figure-commonmark/cell-6-output-2.png)
 
 In this plot the log-transformed variables lie along a line, to which
-you can fit an ordinary least-squares (OLS) regression model using
-`pandas`:
+you can fit an ordinary least-squares (OLS) regression model.
+
+This is rarely done by hand, but in order to understand what is
+happening in the simplest case, you can try to do it step by step.
+
+## Calculating the sum of squares
+
+Let `n` be the number of samples:
+
+``` python
+n = antler_dataset.shape[0]
+```
+
+To shorten the code, let’s refer to the predictor variable (log body
+mass) as `x` and the response variable (log antler length) as `y`:
+
+``` python
+x = np.log(antler_dataset.Male_body_mass)
+y = np.log(antler_dataset.Antler_length)
+```
+
+In the lecture, you learned that regression coefficients can be
+estimated by minimizing the sum of squares of the deviations between
+estimated values
+![\hat{y}](https://latex.codecogs.com/svg.latex?%5Chat%7By%7D "\hat{y}")
+and observed values
+![y_i](https://latex.codecogs.com/svg.latex?y_i "y_i").
+
+In practice, this means calculating the following system:
+
+![a = \frac{\sum\_{i=0}^{n} y_i}{n} - b \times \frac{\sum\_{i=0}^{n} x_i}{n}](https://latex.codecogs.com/svg.latex?a%20%3D%20%5Cfrac%7B%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20y_i%7D%7Bn%7D%20-%20b%20%5Ctimes%20%5Cfrac%7B%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20x_i%7D%7Bn%7D "a = \frac{\sum_{i=0}^{n} y_i}{n} - b \times \frac{\sum_{i=0}^{n} x_i}{n}")
+
+![b = \frac{\sum\_{i=0}^{n} x_i y_i - \left(\sum\_{i=0}^{n} x_i \sum\_{i=0}^{n} y_i\right)/n}{\sum\_{i=0}^{n} x^2_i - \left(\sum\_{i=0}^{n} x_i \right)^2/n}](https://latex.codecogs.com/svg.latex?b%20%3D%20%5Cfrac%7B%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20x_i%20y_i%20-%20%5Cleft%28%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20x_i%20%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20y_i%5Cright%29%2Fn%7D%7B%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20x%5E2_i%20-%20%5Cleft%28%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%20x_i%20%5Cright%29%5E2%2Fn%7D "b = \frac{\sum_{i=0}^{n} x_i y_i - \left(\sum_{i=0}^{n} x_i \sum_{i=0}^{n} y_i\right)/n}{\sum_{i=0}^{n} x^2_i - \left(\sum_{i=0}^{n} x_i \right)^2/n}")
+
+This is much easier to calculate in Python? Can you calculate the
+correct sums of `x` and `y` on your own?
+
+<details>
+<summary>
+Solution
+</summary>
+
+``` python
+Sxx = np.sum(x**2) - np.sum(x)**2/n
+Sxy = np.sum(x*y) - np.sum(x)*np.sum(y)/n
+mean_x = np.mean(x)
+mean_y = np.mean(y)
+```
+
+The slope and intercept of the regression line are then:
+
+``` python
+b = Sxy/Sxx
+a = mean_y - b*mean_x
+```
+
+</details>
+
+To calculate the residuals, ywe need a vectorized operation, which is
+done here using a “lambda” function. This is a way to define a function
+in one line, without giving it a name. The residuals are the differences
+between the observed and the fitted values:
+
+``` python
+fit = lambda xx: a + b*xx
+residuals = y - fit(x)
+```
+
+Plot the residuals to check how good your fit is.
+
+## Running a regression function
+
+Normally you may want to get the results faster, e.g. using `pandas`:
 
 ``` python
 model_fit = smf.ols('np.log(Antler_length)~np.log(Male_body_mass)', antler_dataset).fit()
@@ -124,7 +196,7 @@ print(model_fit.summary2())
     ======================================================================
     Model:              OLS                   Adj. R-squared:     0.801   
     Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-02 19:02      BIC:                52.9421 
+    Date:               2024-06-18 08:33      BIC:                52.9421 
     No. Observations:   31                    Log-Likelihood:     -23.037 
     Df Model:           1                     F-statistic:        121.9   
     Df Residuals:       29                    Prob (F-statistic): 6.68e-12
@@ -143,6 +215,8 @@ print(model_fit.summary2())
     Notes:
     [1] Standard Errors assume that the covariance matrix of the errors is
     correctly specified.
+
+Do the results agree with your manual calculations?
 
 ## Exercises
 
