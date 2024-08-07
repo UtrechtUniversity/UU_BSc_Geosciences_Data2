@@ -1,6 +1,8 @@
 ---
 title: "Seasonality and autocorrelation"
-format: html
+format: gfm
+execute:
+  eval: false
 ---
 
 In Geoscience we often measure a variable though time. Just like in regression
