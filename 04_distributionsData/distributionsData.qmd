@@ -2,7 +2,7 @@
 
 # Background to this example
 
-Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
+Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, time series of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.
 
 **In this practical you will learn about**
 
@@ -55,11 +55,13 @@ As you might have seen some distributions are unlikely to be normal, but we have
 
 #### Question 2
 
-*Let's continue with a second visual inspection. Use your knowledge from last week (or look back) to make a QQ plot of the meteorological variables. What is your conclusion based on this analysis, are the variables normally distributed?*
+*Let's continue with a second visual inspection. Use your knowledge from last week (or look back) to make a QQ plot of the meteorological variables. What is your conclusion based on this analysis? Are the variables normally distributed?*
 
 #### Question 3
 
-*Try to implement the Shapiro Wilks test in Python on the different dataset. You can use the function stats.shapiro, for which you find the manual here: <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
+*Try to implement the Shapiro Wilks test in Python on a different dataset. You can use the function stats.shapiro, for which you find the manual here: <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
+
+How do you interpret the return values of the test (p value and statistic)?
 
 #### Question 4
 
@@ -73,7 +75,7 @@ If we assume temperature to be normally distributed we can also derive the two m
 
 *Obtain the mean and standard deviation for the temperature record.*
 
-Now that we got the mean and standard deviation we can calculate the possibility of daily temperature exceeding certain thresholds. You can use the [stats.norm.cdf()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html) function for this, and then provide the mean and standard deviation you found earlier.
+For simplicity, we now assume our data is normally distributed. Now that we got the mean and standard deviation we can calculate the possibility of daily temperature exceeding certain thresholds. You can use the [stats.norm.cdf()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html) function for this, and then provide the mean and standard deviation you found earlier. Make sure you understand what the number returned by cdf (cumulative distribution function) represents.
 
 #### Question 6
 
@@ -97,11 +99,11 @@ If you did it well you find that in the total record we have 1436 days with temp
 
 #### Question 9
 
-*Using the QQ plot you made earlier, can you see a reason why the normal distribution is not doing a good job for this assessment, especially for the high values. Would you expect that the answers for Questions 7 and 8 are closer when looking at \<= 0C*
+*Using the QQ plot you made earlier, can you see a reason why the normal distribution is not doing a good job for this assessment, especially for the high values? Would you expect that the answers for Questions 7 and 8 are closer when looking at \<= 0C?*
 
 #### Question 10
 
-*Repeat Questions 6, 7 and 8 but now for \<= 0C, was your initial estimate correct?* If all went well you find that the chance of \<= 0C temperatures is around 6.5% for the entire data record (depending on the method used) and 4.1% for the last 20 years.
+*Repeat Questions 6, 7 and 8 but now for \<= 0C. Was your initial estimate correct?* If all went well you find that the chance of \<= 0C temperatures is around 6.5% for the entire data record (depending on the method used) and 4.1% for the last 20 years.
 
 #### Question 11
 
@@ -147,7 +149,7 @@ You can see straight away that fitting the normal distribution is not working fo
 
 #### Question 13
 
-*Now transform the data to a logarithmic and make a histogram plot does it now reflect a normal distribution?*
+*Now transform the data to a logarithmic and make a histogram plot. Does it now reflect a normal distribution?*
 
 If all is well you find that the logarithmic annual maximum precipitation does approach a normal distribution. The advantage of this is that we can now use all the tools and test we have available for the normal distribution to test different hypothesis on the data.
 
@@ -177,7 +179,7 @@ fraction = np.zeros(len(samplePoints))
 ## For-loop that loops over the samplePoints and at the same time over index numbers ranging from 0 to the length of the samplePoint variable
 for s, i in zip(samplePoints, range(len(samplePoints))):
   sampleData = Tas.sample(s)
-  fraction[i] = sampleData[Tas <= 10].count().iloc[0]/s
+  fraction[i] = sampleData[Tas <= 0].count().iloc[0]/s
   
 ## Plotting the output with log x-axis
 plt.plot(samplePoints, fraction, "-")
