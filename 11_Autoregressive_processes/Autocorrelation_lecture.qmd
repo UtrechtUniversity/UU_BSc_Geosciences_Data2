@@ -55,3 +55,5 @@ normally-distributed error terms
 3.  The residuals of the model are normally distributed.
 
 ## Autocorrelation violates assumptions of regression analysis
+
+Some assumptions of regression analysis can be violated with little penalty. But tests and confidence intervals in regression analysis are very sensitive to departures from error independence. so 

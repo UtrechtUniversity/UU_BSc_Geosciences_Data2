@@ -1,6 +1,6 @@
 ---
 title: "Autoregressive processes"
-format: gfm
+format: html
 ---
 
 Before we analyze some real-life datasets, let's first fabricate some. Why fabricate data? This is the principle of simulations, which we often use to e.g. test the performance of a method, or to understand *mechanically* how a process works. So to check if a test or a regression model detects the right thing, we might want to simulate a process with known parameters and check how well it is recovered by the regression model we fit.
