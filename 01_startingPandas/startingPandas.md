@@ -34,17 +34,17 @@ Pandas.**
 There are lots of resources to help you with using Pandas and provide
 nice tips, trick and examples. For example you can use a **cheat sheet**
 to quickly remember and double check which functions to use
-(e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>) or usefull
+(e.g. <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>) or useful
 pages that describe the [most basic functions of
 Pandas](https://pandas.pydata.org/docs/user_guide/10min.html). You can
 also find lots of good examples that use Pandas online for different
-types of data and types of analysis
+types of data and types of analyses
 (<https://realpython.com/search?q=pandas>).
 
 Let's start with using Python again by opening your Conda environment
 and then opening Spyder (for detailed instructions please look back at
-the instruction guide). We start by loading some of the stand libraries
-in this course. We use:
+the instruction guide). We start by loading some of the standard
+libraries in this course. We use:
 
 -   Pandas (data management and data handling)
 
@@ -74,7 +74,8 @@ potential of Pandas. For the purpose of this tutorial we also set the
 of the random number generator. A random seed (or seed state, or just
 seed) is a number (or vector) used to initialize a pseudorandom number
 generator. This ensure that when we select the random numbers in for
-example a exercise like this we always draw the same "random" numbers.
+example a exercise like this we always draw the same "random" numbers,
+and results are comparable between students.
 
 ``` python
 np.random.seed(1)
@@ -84,7 +85,7 @@ randomData_2 = np.random.normal(loc=0, scale=1, size=100)
 
 Then we put the the random data into a [Pandas
 Dataframe](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)
-for more easy manipulation. For this we merge the two datasets together,
+for easier manipulation. For this we merge the two datasets together,
 labeling the first one as 'A' and the second dataset as 'B'.
 
 ``` python
@@ -173,7 +174,7 @@ df = df.set_index(np.arange(10,110))
 [100 rows x 2 columns]
 ```
 
-You will see now that the index have changed, ranging from 10 tot 109
+You will see now that the index have changed, ranging from 10 to 109
 rather than 0 to 99 before. One of the powerful characteristics of
 Pandas is that it can also use dates as an index and that you can use
 these to do some time operations. To make a string of correctly
@@ -230,7 +231,7 @@ that it will take the mean over the different rows/indexes. This results
 in two numbers, one is the mean for column A and the other for column C.
 If you change this axis setting to 1 you will get the mean over the
 columns and thus a mean per row, resulting in 100 values in this case.
-You can also set it to axis=None which will give you the mean over the
+You can also set it to `axis=None` which will give you the mean over the
 entire dataframe
 
 ``` python
@@ -251,7 +252,7 @@ function that can help you to aggregate or resample data to different
 frequencies. This is for example very useful when it comes to
 calculating long term average, or going from hourly data to daily data.
 For the sake of the example we will continue to keep working with the
-same dataframe, but of course in the rest of you proffessional life you
+same dataframe, but of course in the rest of you professional life you
 will more likely do this for real data.
 
 ``` python
@@ -329,8 +330,8 @@ df.sort_values(by="A", ascending=False)
 #### Question 3
 
 *What is the difference between sort_index or sort_values? When is it
-usefull to sort on the index and when to sort on the values, can you
-give some examples?*
+useful to sort on the index and when to sort on the values, can you give
+some examples?*
 
 If you just want to look at one column or get the data from one column
 you can used the code below
@@ -381,8 +382,8 @@ df["A"].iloc[0:3]
 practical use?*
 
 You can also do conditional selection of data using the example below.
-All value that do not satisfy the condition will be transformed into
-NaN.
+All value that do not satisfy the condition will be transformed into NaN
+(Not a Number).
 
 ``` python
 df[df > 0]
@@ -510,7 +511,7 @@ df3.plot()
 
 We can also combine operations before plotting the data using
 [cumsum](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cumsum.html)
-and then plot the data from there.
+(cumulative sum) and then plot the data from there.
 
 ``` python
 df3.cumsum().plot()
@@ -538,11 +539,11 @@ df5 = df3.join(df4)
 
 We have now added a column with all the weekday. In the first line we
 transformed the datetime array to week names using the comment
-.strftime("%A"). You can use strftime for all kind of time conversation
-or rewriting options. You can explore <https://strftime.org> for
-options, they are also used in other programming languages. The
-pd.Categorical is used to enforce that Pandas sees the data as
-categorical. You can check this by using
+`.strftime("%A")`. You can use strftime for all kind of time
+conversation or rewriting options. You can explore
+<https://strftime.org> for options, they are also used in other
+programming languages. The `pd.Categorical` is used to enforce that
+Pandas sees the data as categorical. You can check this by using
 
 ``` python
 df5.dtypes

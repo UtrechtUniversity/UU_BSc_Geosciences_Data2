@@ -7,7 +7,7 @@ toc-title: Table of contents
 # Background to this example
 
 Data comes in all sorts and forms within Earth sciences, from long term
-paleo records describing Oxygen levels in the atmosphere, timeseries of
+paleo records describing Oxygen levels in the atmosphere, time series of
 river discharge and spatio-temporal satellite images monitoring the
 vegetation. Within Earth Sciences we work with all these types of data
 to understand the past, present and future of the Earth system. Before
@@ -24,8 +24,8 @@ and cannot do with the data, which conclusion we can and cannot draw.
 
 Let's start with using Python again by opening your Conda environment
 and then opening Spyder (for detailed instructions please look back at
-the first practical). We start by loading some of the stand libraries in
-this course. We use:
+the first practical). We start by loading some of the standard libraries
+in this course. We use:
 
 -   Pandas (data management and data handling)
 
@@ -108,7 +108,7 @@ meteoData.plot()
 
 #### Question 1
 
-*Why is this not very helpful. List at least three things you would like
+*Why is this not very helpful? List at least three things you would like
 to improve about this visualization to better understand if the data
 make sense.*
 
@@ -129,7 +129,7 @@ meteoData["Precip"].plot(kind="hist")
 #### Question 3
 
 *This is histogram is helpful, but does it tell you if the data is
-correct. Think about relevant metadata that is or isn't provided with
+correct? Think about relevant metadata that is or isn't provided with
 the dataset. List two things that you are missing that would help you to
 see if these daily precipitation values make sense.*
 
@@ -165,7 +165,7 @@ meteoData.plot(kind="scatter",x="Tas", y="Evap", alpha=0.05)
 #### Question 5
 
 *Which of these two scatter plots do you like best and why? What is the
-advantage of using the alpha=0.05. Also play around with the alpha and
+advantage of using the alpha=0.05? Also play around with the alpha and
 see which value you like best.*
 
 # Combining data manipulation with visualization.
@@ -188,7 +188,8 @@ should look something like the figure below.*
 
 #### Question 7
 
-*Obviously something goes wrong but why, can you explain what happens?*
+*Obviously something went wrong. Why is that? Can you explain what
+happened?*
 
 We can go back to the basic data and describe the dataframes and see
 what happens.
@@ -221,9 +222,9 @@ annualData.index = annualData.index.strftime('%Y')
 #### Question 9
 
 *Can you explain why we still have to select only the years 1958 to 2023
-when we already use the dropna. Especially when we look at the annual
-values. If you need a hint look at the values that are provided for 1958
-and 2024 and compare these to the rest of the years*
+when we already use the dropna function, especially when we look at the
+annual values? If you need a hint look at the values that are provided
+for 1958 and 2024 and compare these to the rest of the years.*
 
 Now we try again to make the plot
 
@@ -236,16 +237,16 @@ annualData.plot(kind="scatter",x="Precip", y="Evap")
 If all went well you see that all the zero and unrealistic values are
 now gone and you get a more reliable scatterplot. Show the scatterplot.
 
-We can also look at the annual timeseries using the code we used above
+We can also look at the annual time series using the code we used above
 for the daily data
 
 ``` python
 annualData.plot()
 ```
 
-![](images/clipboard-1307960221.png)The timeseries plots make a lot more
-sense now as we don't have that many datapoints. We can also show the
-data as a histogram and explore the distribution.
+![](images/clipboard-1307960221.png)The time series plots make a lot
+more sense now as we don't have that many datapoints. We can also show
+the data as a histogram and explore the distribution.
 
 ``` python
 annualData.plot(kind="hist", alpha=0.5, bins=20, color=["blue", "red"])
@@ -316,7 +317,7 @@ annualData["PrecipDef"].plot(xlabel="Year", ylabel="Precipitation deficit (mm/y)
 The options are endless, but you can find a lot of options already in
 the help documentation of the [pandas plotting
 function](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html).
-Always make sure that any figure you produce stands on its on, either
+Always make sure that any figure you produce stands on its own, either
 with a legend or just because it contains all relevant information in
 the labels, title and legends.
 
@@ -330,14 +331,14 @@ deficit values. Make a histogram of the precipitation deficit.*
 #### Question 13
 
 *What do you think is the most informative plot, the stacked barplot,
-the timeseries or the histogram and why?*
+the time series or the histogram and why?*
 
 #### Question 14
 
 *Can you think of other informative way to plot the data in this
-practical. What kind of plots would work and can you provide at least 3
+practical? What kind of plots would work? Please provide at least 3
 examples. Provide the code, the figure and the reason why you choose
-that plots.*
+these plots.*
 
 # What you have learned today
 

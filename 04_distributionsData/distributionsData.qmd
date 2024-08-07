@@ -28,7 +28,7 @@ Let's start with using Python again by opening your Conda environment and then o
 
 -   Scipy (statistical analysis)
 
-``` python
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -37,7 +37,7 @@ import scipy.stats as stats
 
 Now we are going to take a look at the first dataset which contains information about the daily temperatures in the Netherlands. We tell pandas to parse the date information, and use it as row labels:
 
-``` python
+```{python}
 Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0).dropna()
 Precip = pd.read_csv("../Data/dailyPrecipitation.csv", parse_dates=True, index_col=0).dropna()
 Evap = pd.read_csv("../Data/dailyEvaporation.csv", parse_dates=True, index_col=0).dropna()
@@ -67,7 +67,7 @@ How do you interpret the return values of the test (p value and statistic)?
 
 *Based on the different test, histogram, QQ-plot and statistical test with Shapiro Wilks, what are your conclusions? They do not have to align for the different tests.*
 
-If we assume temperature to be normally distributed we can also derive the two mean statistical properties, namely the mean and standard deviation.
+We can also derive two mean statistical properties for the temperature dataset, namely the mean and standard deviation.
 
 # Exploring the temperature data
 
@@ -218,25 +218,41 @@ plt.hist(randomYears)
 
 When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.
 
-We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution and a normal distribution and then plot the cumalative density function (CDF) for both distributions.
+We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution with a limited sample and a normal distribution and then plot the cumulative density function (CDF) for both distributions.
 
-``` python
-tStat, loc, scale = stats.t.fit(Tas)
-mean, std = stats.norm.fit(Tas)
+```{python}
+sampleTas = Tas.sample(50, random_state=1)
+tStat, loc, scale = stats.t.fit(sampleTas)
+degreeF = len(sampleTas) - 2
+mean, std = stats.norm.fit(sampleTas)
 
 xLocs = np.arange(Tas.min().iloc[0], Tas.max().iloc[0], 0.05)
 
-plt.plot(xLocs, stats.t.cdf(xLocs, tStat, loc, scale), "-", color = "Red", label="t-dist")
-plt.plot(xLocs, stats.norm.cdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
+plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), "-", color = "Red", label="t-dist")
+plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
 plt.legend()
 plt.show()
 ```
 
-![](images/clipboard-3267777830.png){width="680"}
+And again for the full sample of data.
+
+```{python}
+tStat, loc, scale = stats.t.fit(Tas)
+mean, std = stats.norm.fit(Tas)
+degreeF = len(Tas) - 2
+mean, std = stats.norm.fit(sampleTas)
+
+xLocs = np.arange(Tas.min().iloc[0], Tas.max().iloc[0], 0.05)
+
+plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), "-", color = "Red", label="t-dist")
+plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
+plt.legend()
+plt.show()
+```
 
 #### Question 17
 
-*Do you think there is a significant difference between the t-distribution and the normal distribution?*
+*Do you think there is a significant difference between the t-distribution and the normal distribution for small samples? And for the large sample?*
 
 Now we will run the same experiment on a smaller data sample. First we create the subset of the temperature data.
 

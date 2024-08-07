@@ -1,13 +1,12 @@
 ---
+title: Using distributions to analyse your data
 toc-title: Table of contents
 ---
-
-# Using distributions to analyse your data
 
 # Background to this example
 
 Data comes in all sorts and forms within Earth sciences, from long term
-paleo records describing Oxygen levels in the atmosphere, timeseries of
+paleo records describing Oxygen levels in the atmosphere, time series of
 river discharge and spatio-temporal satellite images monitoring the
 vegetation. Within Earth Sciences we work with all these types of data
 to understand the past, present and future of the Earth system. Before
@@ -42,22 +41,26 @@ this course. We use:
 
 -   Scipy (statistical analysis)
 
-``` python
+::: {.cell execution_count="1"}
+``` {.python .cell-code}
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 ```
+:::
 
 Now we are going to take a look at the first dataset which contains
 information about the daily temperatures in the Netherlands. We tell
 pandas to parse the date information, and use it as row labels:
 
-``` python
+::: {.cell execution_count="2"}
+``` {.python .cell-code}
 Tas = pd.read_csv("../Data/dailyTemperature.csv", parse_dates=True, index_col=0).dropna()
 Precip = pd.read_csv("../Data/dailyPrecipitation.csv", parse_dates=True, index_col=0).dropna()
 Evap = pd.read_csv("../Data/dailyEvaporation.csv", parse_dates=True, index_col=0).dropna()
 ```
+:::
 
 # Normal or not
 
@@ -77,15 +80,18 @@ we have another way of testing this using the QQ-plot.
 
 *Let's continue with a second visual inspection. Use your knowledge from
 last week (or look back) to make a QQ plot of the meteorological
-variables. What is your conclusion based on this analysis, are the
+variables. What is your conclusion based on this analysis? Are the
 variables normally distributed?*
 
 #### Question 3
 
-*Try to implement the Shapiro Wilks test in Python on the different
+*Try to implement the Shapiro Wilks test in Python on a different
 dataset. You can use the function stats.shapiro, for which you find the
 manual here:
 <https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html>.*
+
+How do you interpret the return values of the test (p value and
+statistic)?
 
 #### Question 4
 
@@ -93,9 +99,8 @@ manual here:
 with Shapiro Wilks, what are your conclusions? They do not have to align
 for the different tests.*
 
-If we assume temperature to be normally distributed we can also derive
-the two mean statistical properties, namely the mean and standard
-deviation.
+We can also derive two mean statistical properties for the temperature
+dataset, namely the mean and standard deviation.
 
 # Exploring the temperature data
 
@@ -103,12 +108,13 @@ deviation.
 
 *Obtain the mean and standard deviation for the temperature record.*
 
-Now that we got the mean and standard deviation we can calculate the
-possibility of daily temperature exceeding certain thresholds. You can
-use the
+For simplicity, we now assume our data is normally distributed. Now that
+we got the mean and standard deviation we can calculate the possibility
+of daily temperature exceeding certain thresholds. You can use the
 [stats.norm.cdf()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
 function for this, and then provide the mean and standard deviation you
-found earlier.
+found earlier. Make sure you understand what the number returned by cdf
+(cumulative distribution function) represents.
 
 #### Question 6
 
@@ -152,12 +158,12 @@ these numbers don't match the once you found for Question 7.
 
 *Using the QQ plot you made earlier, can you see a reason why the normal
 distribution is not doing a good job for this assessment, especially for
-the high values. Would you expect that the answers for Questions 7 and 8
-are closer when looking at \<= 0C*
+the high values? Would you expect that the answers for Questions 7 and 8
+are closer when looking at \<= 0C?*
 
 #### Question 10
 
-*Repeat Questions 6, 7 and 8 but now for \<= 0C, was your initial
+*Repeat Questions 6, 7 and 8 but now for \<= 0C. Was your initial
 estimate correct?* If all went well you find that the chance of \<= 0C
 temperatures is around 6.5% for the entire data record (depending on the
 method used) and 4.1% for the last 20 years.
@@ -233,7 +239,7 @@ not?*
 
 #### Question 13
 
-*Now transform the data to a logarithmic and make a histogram plot does
+*Now transform the data to a logarithmic and make a histogram plot. Does
 it now reflect a normal distribution?*
 
 If all is well you find that the logarithmic annual maximum
@@ -280,7 +286,7 @@ fraction = np.zeros(len(samplePoints))
 ## For-loop that loops over the samplePoints and at the same time over index numbers ranging from 0 to the length of the samplePoint variable
 for s, i in zip(samplePoints, range(len(samplePoints))):
   sampleData = Tas.sample(s)
-  fraction[i] = sampleData[Tas <= 10].count().iloc[0]/s
+  fraction[i] = sampleData[Tas <= 0].count().iloc[0]/s
   
 ## Plotting the output with log x-axis
 plt.plot(samplePoints, fraction, "-")
@@ -347,27 +353,56 @@ distribution.
 
 We can both the normal and distribution for the Temperature dataset with
 the fitting information from Question 12. We first fit both a
-t-distribution and a normal distribution and then plot the cumalative
-density function (CDF) for both distributions.
+t-distribution with a limited sample and a normal distribution and then
+plot the cumulative density function (CDF) for both distributions.
 
-``` python
-tStat, loc, scale = stats.t.fit(Tas)
-mean, std = stats.norm.fit(Tas)
+:::: {.cell execution_count="3"}
+``` {.python .cell-code}
+sampleTas = Tas.sample(50, random_state=1)
+tStat, loc, scale = stats.t.fit(sampleTas)
+degreeF = len(sampleTas) - 2
+mean, std = stats.norm.fit(sampleTas)
 
 xLocs = np.arange(Tas.min().iloc[0], Tas.max().iloc[0], 0.05)
 
-plt.plot(xLocs, stats.t.cdf(xLocs, tStat, loc, scale), "-", color = "Red", label="t-dist")
-plt.plot(xLocs, stats.norm.cdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
+plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), "-", color = "Red", label="t-dist")
+plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
 plt.legend()
 plt.show()
 ```
 
-![](images/clipboard-3267777830.png){width="680"}
+::: {.cell-output .cell-output-display}
+![](distributionsData_files/figure-markdown/cell-4-output-1.png)
+:::
+::::
+
+And again for the full sample of data.
+
+:::: {.cell execution_count="4"}
+``` {.python .cell-code}
+tStat, loc, scale = stats.t.fit(Tas)
+mean, std = stats.norm.fit(Tas)
+degreeF = len(Tas) - 2
+mean, std = stats.norm.fit(sampleTas)
+
+xLocs = np.arange(Tas.min().iloc[0], Tas.max().iloc[0], 0.05)
+
+plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), "-", color = "Red", label="t-dist")
+plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), "-", color = "Blue", label="normal-dist")
+plt.legend()
+plt.show()
+```
+
+::: {.cell-output .cell-output-display}
+![](distributionsData_files/figure-markdown/cell-5-output-1.png)
+:::
+::::
 
 #### Question 17
 
 *Do you think there is a significant difference between the
-t-distribution and the normal distribution?*
+t-distribution and the normal distribution for small samples? And for
+the large sample?*
 
 Now we will run the same experiment on a smaller data sample. First we
 create the subset of the temperature data.

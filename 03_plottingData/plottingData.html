@@ -85,7 +85,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
-<p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
+<p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, time series of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
 <p><strong>In this practical you will learn about</strong></p>
 <ul>
 <li><p><strong>Visualizing data</strong></p></li>
@@ -94,7 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="getting-started" class="level1">
 <h1>Getting started</h1>
-<p>Let’s start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the stand libraries in this course. We use:</p>
+<p>Let’s start with using Python again by opening your Conda environment and then opening Spyder (for detailed instructions please look back at the first practical). We start by loading some of the standard libraries in this course. We use:</p>
 <ul>
 <li><p>Pandas (data management and data handling)</p></li>
 <li><p>Numpy (statistical analysis and data handling)</p></li>
@@ -129,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="images/clipboard-732086209.png" class="img-fluid"></p>
 <section id="question-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-1">Question 1</h4>
-<p><em>Why is this not very helpful. List at least three things you would like to improve about this visualization to better understand if the data make sense.</em></p>
+<p><em>Why is this not very helpful? List at least three things you would like to improve about this visualization to better understand if the data make sense.</em></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>meteoData[[<span class="st">"Tas"</span>,<span class="st">"Evap"</span>]].plot(xlim<span class="op">=</span>[<span class="st">"2023"</span>,<span class="st">"2024"</span>], ylim<span class="op">=</span>[<span class="op">-</span><span class="dv">2</span>,<span class="dv">25</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="question-2" class="level4">
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3</h4>
-<p><em>This is histogram is helpful, but does it tell you if the data is correct. Think about relevant metadata that is or isn’t provided with the dataset. List two things that you are missing that would help you to see if these daily precipitation values make sense.</em></p>
+<p><em>This is histogram is helpful, but does it tell you if the data is correct? Think about relevant metadata that is or isn’t provided with the dataset. List two things that you are missing that would help you to see if these daily precipitation values make sense.</em></p>
 <p>Let’s make slightly different kind of histogram, the density plot. The density plot uses interpolation and smoothing to approximate a histogram and as such give a more smooth distribution.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>meteoData[<span class="st">"Precip"</span>].plot(kind<span class="op">=</span><span class="st">"density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-5" class="level4">
 <h4 class="anchored" data-anchor-id="question-5">Question 5</h4>
-<p><em>Which of these two scatter plots do you like best and why? What is the advantage of using the alpha=0.05. Also play around with the alpha and see which value you like best.</em></p>
+<p><em>Which of these two scatter plots do you like best and why? What is the advantage of using the alpha=0.05? Also play around with the alpha and see which value you like best.</em></p>
 </section>
 </section>
 <section id="combining-data-manipulation-with-visualization." class="level1">
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-7" class="level4">
 <h4 class="anchored" data-anchor-id="question-7">Question 7</h4>
-<p><em>Obviously something goes wrong but why, can you explain what happens?</em></p>
+<p><em>Obviously something went wrong. Why is that? Can you explain what happened?</em></p>
 <p>We can go back to the basic data and describe the dataframes and see what happens.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>annualData.describe()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>meteoData.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -186,16 +186,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-9" class="level4">
 <h4 class="anchored" data-anchor-id="question-9">Question 9</h4>
-<p><em>Can you explain why we still have to select only the years 1958 to 2023 when we already use the dropna. Especially when we look at the annual values. If you need a hint look at the values that are provided for 1958 and 2024 and compare these to the rest of the years</em></p>
+<p><em>Can you explain why we still have to select only the years 1958 to 2023 when we already use the dropna function, especially when we look at the annual values? If you need a hint look at the values that are provided for 1958 and 2024 and compare these to the rest of the years.</em></p>
 <p>Now we try again to make the plot</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"scatter"</span>,x<span class="op">=</span><span class="st">"Precip"</span>, y<span class="op">=</span><span class="st">"Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="question-10" class="level4">
 <h4 class="anchored" data-anchor-id="question-10">Question 10</h4>
 <p>If all went well you see that all the zero and unrealistic values are now gone and you get a more reliable scatterplot. Show the scatterplot.</p>
-<p>We can also look at the annual timeseries using the code we used above for the daily data</p>
+<p>We can also look at the annual time series using the code we used above for the daily data</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>annualData.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><img src="images/clipboard-1307960221.png" class="img-fluid">The timeseries plots make a lot more sense now as we don’t have that many datapoints. We can also show the data as a histogram and explore the distribution.</p>
+<p><img src="images/clipboard-1307960221.png" class="img-fluid">The time series plots make a lot more sense now as we don’t have that many datapoints. We can also show the data as a histogram and explore the distribution.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>annualData.plot(kind<span class="op">=</span><span class="st">"hist"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span>[<span class="st">"blue"</span>, <span class="st">"red"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To monitor the balance between water availability and water demand we can also look at the precipitation surplus for the Netherlands. To do this we will now create a stacked bar plot where we give negative values to the evaporation (water loss) and positive numbers to the precipitation.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"EvapDef"</span>] <span class="op">=</span> annualData[<span class="st">"Evap"</span>] <span class="op">*</span> <span class="op">-</span><span class="fl">1.</span></span>
@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="images/clipboard-1681977732.png" class="img-fluid">This looks already a little better and more informative. Now let’s add the other elements.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>annualData[<span class="st">"PrecipDef"</span>].plot(xlabel<span class="op">=</span><span class="st">"Year"</span>, ylabel<span class="op">=</span><span class="st">"Precipitation deficit (mm/y)"</span>, title<span class="op">=</span><span class="st">"Precipitation deficit for the Bilt"</span>, legend<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="images/clipboard-1395435666.png" class="img-fluid"></p>
-<p>The options are endless, but you can find a lot of options already in the help documentation of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">pandas plotting function</a>. Always make sure that any figure you produce stands on its on, either with a legend or just because it contains all relevant information in the labels, title and legends.</p>
+<p>The options are endless, but you can find a lot of options already in the help documentation of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">pandas plotting function</a>. Always make sure that any figure you produce stands on its own, either with a legend or just because it contains all relevant information in the labels, title and legends.</p>
 </section>
 <section id="question-12" class="level4">
 <h4 class="anchored" data-anchor-id="question-12">Question 12</h4>
@@ -227,11 +227,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-13" class="level4">
 <h4 class="anchored" data-anchor-id="question-13">Question 13</h4>
-<p><em>What do you think is the most informative plot, the stacked barplot, the timeseries or the histogram and why?</em></p>
+<p><em>What do you think is the most informative plot, the stacked barplot, the time series or the histogram and why?</em></p>
 </section>
 <section id="question-14" class="level4">
 <h4 class="anchored" data-anchor-id="question-14">Question 14</h4>
-<p><em>Can you think of other informative way to plot the data in this practical. What kind of plots would work and can you provide at least 3 examples. Provide the code, the figure and the reason why you choose that plots.</em></p>
+<p><em>Can you think of other informative way to plot the data in this practical? What kind of plots would work? Please provide at least 3 examples. Provide the code, the figure and the reason why you choose these plots.</em></p>
 </section>
 </section>
 <section id="what-you-have-learned-today" class="level1">

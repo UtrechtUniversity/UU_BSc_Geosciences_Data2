@@ -77,15 +77,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Using distributions to analyse your data</h1>
+</div>
 
 
 
-<section id="using-distributions-to-analyse-your-data" class="level1">
-<h1>Using distributions to analyse your data</h1>
-</section>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <section id="background-to-this-example" class="level1">
 <h1>Background to this example</h1>
-<p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, timeseries of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
+<p>Data comes in all sorts and forms within Earth sciences, from long term paleo records describing Oxygen levels in the atmosphere, time series of river discharge and spatio-temporal satellite images monitoring the vegetation. Within Earth Sciences we work with all these types of data to understand the past, present and future of the Earth system. Before we can work with these types of data we need to understand what we can and cannot do with the data, which conclusion we can and cannot draw.</p>
 <p><strong>In this practical you will learn about</strong></p>
 <ul>
 <li><p><strong>Simple plots to look at your data</strong></p></li>
@@ -104,14 +117,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Matplotlib (plotting)</p></li>
 <li><p>Scipy (statistical analysis)</p></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div id="231df9c5" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Now we are going to take a look at the first dataset which contains information about the daily temperatures in the Netherlands. We tell pandas to parse the date information, and use it as row labels:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
+<div id="106b4ac6" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Tas <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyTemperature.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Precip <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyPrecipitation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Evap <span class="op">=</span> pd.read_csv(<span class="st">"../Data/dailyEvaporation.csv"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>).dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="normal-or-not" class="level1">
 <h1>Normal or not</h1>
@@ -123,16 +140,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-2" class="level4">
 <h4 class="anchored" data-anchor-id="question-2">Question 2</h4>
-<p><em>Let’s continue with a second visual inspection. Use your knowledge from last week (or look back) to make a QQ plot of the meteorological variables. What is your conclusion based on this analysis, are the variables normally distributed?</em></p>
+<p><em>Let’s continue with a second visual inspection. Use your knowledge from last week (or look back) to make a QQ plot of the meteorological variables. What is your conclusion based on this analysis? Are the variables normally distributed?</em></p>
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3</h4>
-<p><em>Try to implement the Shapiro Wilks test in Python on the different dataset. You can use the function stats.shapiro, for which you find the manual here: <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html" class="uri">https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html</a>.</em></p>
+<p><em>Try to implement the Shapiro Wilks test in Python on a different dataset. You can use the function stats.shapiro, for which you find the manual here: <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html" class="uri">https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html</a>.</em></p>
+<p>How do you interpret the return values of the test (p value and statistic)?</p>
 </section>
 <section id="question-4" class="level4">
 <h4 class="anchored" data-anchor-id="question-4">Question 4</h4>
 <p><em>Based on the different test, histogram, QQ-plot and statistical test with Shapiro Wilks, what are your conclusions? They do not have to align for the different tests.</em></p>
-<p>If we assume temperature to be normally distributed we can also derive the two mean statistical properties, namely the mean and standard deviation.</p>
+<p>We can also derive two mean statistical properties for the temperature dataset, namely the mean and standard deviation.</p>
 </section>
 </section>
 <section id="exploring-the-temperature-data" class="level1">
@@ -140,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="question-5" class="level4">
 <h4 class="anchored" data-anchor-id="question-5">Question 5</h4>
 <p><em>Obtain the mean and standard deviation for the temperature record.</em></p>
-<p>Now that we got the mean and standard deviation we can calculate the possibility of daily temperature exceeding certain thresholds. You can use the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html">stats.norm.cdf()</a> function for this, and then provide the mean and standard deviation you found earlier.</p>
+<p>For simplicity, we now assume our data is normally distributed. Now that we got the mean and standard deviation we can calculate the possibility of daily temperature exceeding certain thresholds. You can use the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html">stats.norm.cdf()</a> function for this, and then provide the mean and standard deviation you found earlier. Make sure you understand what the number returned by cdf (cumulative distribution function) represents.</p>
 </section>
 <section id="question-6" class="level4">
 <h4 class="anchored" data-anchor-id="question-6">Question 6</h4>
@@ -160,11 +178,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-9" class="level4">
 <h4 class="anchored" data-anchor-id="question-9">Question 9</h4>
-<p><em>Using the QQ plot you made earlier, can you see a reason why the normal distribution is not doing a good job for this assessment, especially for the high values. Would you expect that the answers for Questions 7 and 8 are closer when looking at &lt;= 0C</em></p>
+<p><em>Using the QQ plot you made earlier, can you see a reason why the normal distribution is not doing a good job for this assessment, especially for the high values? Would you expect that the answers for Questions 7 and 8 are closer when looking at &lt;= 0C?</em></p>
 </section>
 <section id="question-10" class="level4">
 <h4 class="anchored" data-anchor-id="question-10">Question 10</h4>
-<p><em>Repeat Questions 6, 7 and 8 but now for &lt;= 0C, was your initial estimate correct?</em> If all went well you find that the chance of &lt;= 0C temperatures is around 6.5% for the entire data record (depending on the method used) and 4.1% for the last 20 years.</p>
+<p><em>Repeat Questions 6, 7 and 8 but now for &lt;= 0C. Was your initial estimate correct?</em> If all went well you find that the chance of &lt;= 0C temperatures is around 6.5% for the entire data record (depending on the method used) and 4.1% for the last 20 years.</p>
 </section>
 <section id="question-11" class="level4">
 <h4 class="anchored" data-anchor-id="question-11">Question 11</h4>
@@ -201,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-13-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-13-1">Question 13</h4>
-<p><em>Now transform the data to a logarithmic and make a histogram plot does it now reflect a normal distribution?</em></p>
+<p><em>Now transform the data to a logarithmic and make a histogram plot. Does it now reflect a normal distribution?</em></p>
 <p>If all is well you find that the logarithmic annual maximum precipitation does approach a normal distribution. The advantage of this is that we can now use all the tools and test we have available for the normal distribution to test different hypothesis on the data.</p>
 </section>
 </section>
@@ -225,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">## For-loop that loops over the samplePoints and at the same time over index numbers ranging from 0 to the length of the samplePoint variable</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s, i <span class="kw">in</span> <span class="bu">zip</span>(samplePoints, <span class="bu">range</span>(<span class="bu">len</span>(samplePoints))):</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  sampleData <span class="op">=</span> Tas.sample(s)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  fraction[i] <span class="op">=</span> sampleData[Tas <span class="op">&lt;=</span> <span class="dv">10</span>].count().iloc[<span class="dv">0</span>]<span class="op">/</span>s</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  fraction[i] <span class="op">=</span> sampleData[Tas <span class="op">&lt;=</span> <span class="dv">0</span>].count().iloc[<span class="dv">0</span>]<span class="op">/</span>s</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">## Plotting the output with log x-axis</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.plot(samplePoints, fraction, <span class="st">"-"</span>)</span>
@@ -255,24 +273,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="using-a-t-distribution" class="level1">
 <h1>Using a t-distribution</h1>
 <p>When we are working with problems that have small samples size, for example the field observations where sample sizes might be as low as several measurements maybe up to a 100. Since in these measurements the true variance of the mean is unknown, it must be approximated by the sample standard error of the mean. And the ratio between the sample mean and the standard error had a distribution that is called the t-distribution, and converges for larger values towards the normal distribution.</p>
-<p>We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution and a normal distribution and then plot the cumalative density function (CDF) for both distributions.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(Tas)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(Tas)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>xLocs <span class="op">=</span> np.arange(Tas.<span class="bu">min</span>().iloc[<span class="dv">0</span>], Tas.<span class="bu">max</span>().iloc[<span class="dv">0</span>], <span class="fl">0.05</span>)</span>
+<p>We can both the normal and distribution for the Temperature dataset with the fitting information from Question 12. We first fit both a t-distribution with a limited sample and a normal distribution and then plot the cumulative density function (CDF) for both distributions.</p>
+<div id="fd896def" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sampleTas <span class="op">=</span> Tas.sample(<span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(sampleTas)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>degreeF <span class="op">=</span> <span class="bu">len</span>(sampleTas) <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(sampleTas)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.t.cdf(xLocs, tStat, loc, scale), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Red"</span>, label<span class="op">=</span><span class="st">"t-dist"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.norm.cdf(xLocs, mean, std), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Blue"</span>, label<span class="op">=</span><span class="st">"normal-dist"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><img src="images/clipboard-3267777830.png" class="img-fluid" width="680"></p>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>xLocs <span class="op">=</span> np.arange(Tas.<span class="bu">min</span>().iloc[<span class="dv">0</span>], Tas.<span class="bu">max</span>().iloc[<span class="dv">0</span>], <span class="fl">0.05</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Red"</span>, label<span class="op">=</span><span class="st">"t-dist"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Blue"</span>, label<span class="op">=</span><span class="st">"normal-dist"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="distributionsData_files/figure-html/cell-4-output-1.png" width="579" height="411" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And again for the full sample of data.</p>
+<div id="50e31219" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tStat, loc, scale <span class="op">=</span> stats.t.fit(Tas)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(Tas)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>degreeF <span class="op">=</span> <span class="bu">len</span>(Tas) <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>mean, std <span class="op">=</span> stats.norm.fit(sampleTas)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>xLocs <span class="op">=</span> np.arange(Tas.<span class="bu">min</span>().iloc[<span class="dv">0</span>], Tas.<span class="bu">max</span>().iloc[<span class="dv">0</span>], <span class="fl">0.05</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.t.pdf(xLocs, degreeF, loc, scale), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Red"</span>, label<span class="op">=</span><span class="st">"t-dist"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.plot(xLocs, stats.norm.pdf(xLocs, mean, std), <span class="st">"-"</span>, color <span class="op">=</span> <span class="st">"Blue"</span>, label<span class="op">=</span><span class="st">"normal-dist"</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="distributionsData_files/figure-html/cell-5-output-1.png" width="579" height="411" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="question-17" class="level4">
 <h4 class="anchored" data-anchor-id="question-17">Question 17</h4>
-<p><em>Do you think there is a significant difference between the t-distribution and the normal distribution?</em></p>
+<p><em>Do you think there is a significant difference between the t-distribution and the normal distribution for small samples? And for the large sample?</em></p>
 <p>Now we will run the same experiment on a smaller data sample. First we create the subset of the temperature data.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>sampleData <span class="op">=</span> Tas.sample(sampleSize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sampleData <span class="op">=</span> Tas.sample(sampleSize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="question-18" class="level4">
 <h4 class="anchored" data-anchor-id="question-18">Question 18</h4>
@@ -281,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="do-your-own-data-exploration" class="level1">
 <h1>Do your own data exploration</h1>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> pd.read_csv(<span class="st">"../RawData/Rhine_total.txt"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> pd.read_csv(<span class="st">"../RawData/Rhine_total.txt"</span>, parse_dates<span class="op">=</span><span class="va">True</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="question-19" class="level4">
 <h4 class="anchored" data-anchor-id="question-19">Question 19</h4>
 <p><em>You have loaded the daily discharge data for the Rhine river, now start and exploring. You should make the following things:</em></p>
