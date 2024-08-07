@@ -46,6 +46,7 @@ If we wanted to plot the values in time, we could currently do it either by mont
 ```{python}
 df['time'] = df['Year'].map(str) + '.' + df['Month'].map(str)
 ```
+</details>
 
 Visualize it:
 ```{python}

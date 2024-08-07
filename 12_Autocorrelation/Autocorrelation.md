@@ -62,6 +62,8 @@ Solution
 df['time'] = df['Year'].map(str) + '.' + df['Month'].map(str)
 ```
 
+</details>
+
 Visualize it:
 
 ``` python
