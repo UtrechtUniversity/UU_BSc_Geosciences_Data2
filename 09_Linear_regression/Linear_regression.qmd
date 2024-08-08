@@ -4,6 +4,8 @@ format:
     gfm:
         html-math-method: webtex
 jupyter: python3
+execute:
+  eval: false
 ---
 
 # Background to this example

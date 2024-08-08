@@ -57,6 +57,8 @@ Here we use the function `seasonal_decompose` from `statsmodels` to separate the
 
 ## Decomposition into trend, seasonality, and residuals
 
+In practical 2, you learned how to decompose a time series:
+
 ```{python}
 result_add = seasonal_decompose(df['CO2'], 
 model='additive', 
@@ -137,6 +139,17 @@ What does it mean if there is autocorrelation in the residuals? How can you inte
 plot_pacf(result_add.resid)
 plt.show()
 ```
+
+## So can we do regression analysis or not?
+
+After all, we ended up here because we wanted to use regression analysis. For example, if we wanted to understand the relationship between atmospheric temperature on $CO_2$ levels. You can have a look at this [old publication by Thomson (1997)](https://www.pnas.org/doi/10.1073/pnas.94.16.8370) for a walk-through of why this is not a trivial problem. You will notice that this study uses many methods, more than we can cover in this course. So don't worry if you cannot understand all of them. It is just an "honest answer" to studying the relationship between multiple time series. In general, you could take three approaches:
+
+1. Fit a multicoponent model to your time series, where the components would be the trend, an autoregressive process, a moving average, and seasonal components. This is most often done using an **AR(I)MA model**. Some of the estimated components could be zero, but this would only show up in model fitting. After that, we could focus on a specific part of it, for example, the trend. And then we would estimate the parameters of the trend and compare them with the same parameters of another time series, testing the null hypothesis that they don't differ. 
+
+2. Transform your dataset, e.g. use filters, detrending, or differencing. This is often done in the frequency domain, where you can use Fourier analysis to separate the components of the time series. So instead of looking at the change through time, you would look at the spectrum. You will encounter it more in the context of astrochronology. 
+
+3. Use a lagged regression (finally!) to define a transfer function between $CO_2$ and temperature. This is a more mechanistic approach, where you are not trying to understand the components of a time series, you just want a model that predicts one time series based on another. 
+
 
 ## Fit an ARIMA model
 ```{python}

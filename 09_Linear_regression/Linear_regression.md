@@ -57,29 +57,6 @@ Preview the dataset:
 antler_dataset.head()
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-&#10;    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-&#10;    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-|     | Sub-family | Genus  | Species     | Common name       | Antler_length | Male_body_mass | Female_body_mass |
-|-----|------------|--------|-------------|-------------------|---------------|----------------|------------------|
-| 0   | Cervinae   | Axis   | axis        | chital            | 845.0         | 89.5           | 39.0             |
-| 1   | Cervinae   | Axis   | porcinus    | hog deer          | 399.0         | 41.0           | 31.0             |
-| 2   | Cervinae   | Cervus | albirostris | white-lipped deer | 1150.0        | 204.0          | 125.0            |
-| 3   | Cervinae   | Cervus | canadensis  | wapiti            | 1337.0        | 350.0          | 250.0            |
-| 4   | Cervinae   | Cervus | duvaucelii  | barasingha        | 813.0         | 236.0          | 145.0            |
-
-</div>
-
 Preview the bivariate distribution of the body mass and antler length:
 
 ``` python
@@ -88,10 +65,6 @@ ax.plot(antler_dataset.Male_body_mass, antler_dataset.Antler_length, '*')
 ax.set_ylabel('Antler length [mm]')
 ax.set_xlabel('Body mass [kg]')
 ```
-
-    Text(0.5, 0, 'Body mass [kg]')
-
-![](Linear_regression_files/figure-commonmark/cell-5-output-2.png)
 
 This plot doesn’t look like a straight line, does it? Many variables,
 such as those related to surface and volume, grow as powers of the
@@ -103,14 +76,10 @@ transformation.
 
 ``` python
 fig, ax = plt.subplots()
-ax.plot(np.log(antler_dataset.Male_body_mass), np.log(antler_dataset.Antler_length), '*')
-ax.set_ylabel('Log Antler length [mm]')
-ax.set_xlabel('Log Body mass [kg]')
+ax.plot(np.log10(antler_dataset.Male_body_mass), np.log10(antler_dataset.Antler_length), '*')
+ax.set_ylabel('Log10 Antler length [mm]')
+ax.set_xlabel('Log10 Body mass [kg]')
 ```
-
-    Text(0.5, 0, 'Log Body mass [kg]')
-
-![](Linear_regression_files/figure-commonmark/cell-6-output-2.png)
 
 In this plot the log-transformed variables lie along a line, to which
 you can fit an ordinary least-squares (OLS) regression model.
@@ -126,12 +95,12 @@ Let `n` be the number of samples:
 n = antler_dataset.shape[0]
 ```
 
-To shorten the code, let’s refer to the predictor variable (log body
-mass) as `x` and the response variable (log antler length) as `y`:
+To shorten the code, let’s refer to the predictor variable (log10 body
+mass) as `x` and the response variable (log10 antler length) as `y`:
 
 ``` python
-x = np.log(antler_dataset.Male_body_mass)
-y = np.log(antler_dataset.Antler_length)
+x = np.log10(antler_dataset.Male_body_mass)
+y = np.log10(antler_dataset.Antler_length)
 ```
 
 In the lecture, you learned that regression coefficients can be
@@ -171,10 +140,11 @@ a = mean_y - b*mean_x
 
 </details>
 
-To calculate the residuals, ywe need a vectorized operation, which is
-done here using a “lambda” function. This is a way to define a function
-in one line, without giving it a name. The residuals are the differences
-between the observed and the fitted values:
+To calculate the residuals, we need a vectorized operation, which is
+done here using an anonymous function, also called a “lambda” function.
+This is a way to define a function in one line, without giving it a
+name. The residuals are the differences between the observed and the
+fitted values:
 
 ``` python
 fit = lambda xx: a + b*xx
@@ -188,33 +158,9 @@ Plot the residuals to check how good your fit is.
 Normally you may want to get the results faster, e.g. using `pandas`:
 
 ``` python
-model_fit = smf.ols('np.log(Antler_length)~np.log(Male_body_mass)', antler_dataset).fit()
+model_fit = smf.ols('np.log10(Antler_length)~np.log10(Male_body_mass)', antler_dataset).fit()
 print(model_fit.summary2())
 ```
-
-                       Results: Ordinary least squares
-    ======================================================================
-    Model:              OLS                   Adj. R-squared:     0.801   
-    Dependent Variable: np.log(Antler_length) AIC:                50.0742 
-    Date:               2024-06-18 08:33      BIC:                52.9421 
-    No. Observations:   31                    Log-Likelihood:     -23.037 
-    Df Model:           1                     F-statistic:        121.9   
-    Df Residuals:       29                    Prob (F-statistic): 6.68e-12
-    R-squared:          0.808                 Scale:              0.27667 
-    ----------------------------------------------------------------------
-                              Coef.  Std.Err.    t    P>|t|  [0.025 0.975]
-    ----------------------------------------------------------------------
-    Intercept                 1.6811   0.3838  4.3803 0.0001 0.8962 2.4661
-    np.log(Male_body_mass)    0.9904   0.0897 11.0396 0.0000 0.8069 1.1739
-    ----------------------------------------------------------------------
-    Omnibus:                4.515          Durbin-Watson:            1.659
-    Prob(Omnibus):          0.105          Jarque-Bera (JB):         3.444
-    Skew:                   -0.812         Prob(JB):                 0.179
-    Kurtosis:               3.167          Condition No.:            18   
-    ======================================================================
-    Notes:
-    [1] Standard Errors assume that the covariance matrix of the errors is
-    correctly specified.
 
 Do the results agree with your manual calculations?
 
